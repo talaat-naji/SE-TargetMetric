@@ -14,6 +14,6 @@ class Stock extends Model
     }
 
     public function products(){
-        return $this->hasManyThrough(Product::class,User::class);
+        return $this->hasMany(Product::class,"id");
     }
 }

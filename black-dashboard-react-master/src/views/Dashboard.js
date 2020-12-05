@@ -21,6 +21,7 @@ import classNames from "classnames";
 // react plugin used to create charts
 import { Line, Bar } from "react-chartjs-2";
 
+import apiClient from "../services/api";
 // reactstrap components
 import {
   Button,
@@ -50,19 +51,171 @@ import {
   chartExample4
 } from "variables/charts.js";
 
+
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      bigChartData: "data1"
+      bigChartData: "data1",
+      myData: [],
+      stock: [],
+      stockTotal: [],
+      customers: [],
+      yearlyProfit:[]
     };
   }
+ 
+  fixMyData = (data) => {
+    let sumArr = [];
+    for (var i = 1; i <= 12; i++){
+      let j = 0;
+      let sum = 0;
+      while (j < data.length) {
+        if (data[j]['month'] == i) {
+          sum += data[j]['sales'];
+        }
+       
+          j++;
+        }
+      
+      sumArr.push(sum);
+    }
+    
+    this.setState({myData:sumArr})
+  }
+  fixCustomerCount = (data) => {
+    
+    let sumArr = [];
+    let i = 0;
+    let j = 0;
+    for (var a = data[0]['month']; a < data[0]['month'] + 12; a++){
+      
+      if (a <= 12) {
+        i = a;
+      }else{i=a-12}
+      
+      let count = 0;
+    
+        if (data[j]['month'] == i) {
+    
+          count = data[j]['customerCount'];
+          if (j+1 < data.length) {
+            j++;
+          }
+        }
+        let date=new Date("2020/"+i+"/2")
+        let shortMonth = date.toLocaleString('en-us', { month: 'short' });
+      let obj = { count: count, month: shortMonth };
+     
+      
+      sumArr.push(obj);
+    }
+    this.setState({ customers: sumArr })
+
+  }
+  fixYearlyProfit(data) {
+    let sumArr = [];
+    for (var i = data[data.length-1]['year']-10; i <= data[data.length-1]['year']; i++){
+      let j = 0;
+      let sum = 0;
+      while (j < data.length) {
+        if (data[j]['year'] == i) {
+          sum += data[j]['profits'];
+          
+        }
+       
+          j++;
+        }
+      
+      sumArr.push({ sum: sum, year: i });
+    }
+    
+    this.setState({yearlyProfit:sumArr})
+  }
+  fetchSales = () => {
+    if (sessionStorage.getItem('loggedIn')) {
+      apiClient.get('../api/getSales')
+          .then(response => {
+            this.fixMyData(response.data);
+          })
+          .catch(error => console.error(error))
+  
+    }
+    
+  }
+  fetchProfits = () => {
+    if (sessionStorage.getItem('loggedIn')) {
+      apiClient.get('../api/getProfit')
+          .then(response => {
+            this.fixMyData(response.data);
+          })
+          .catch(error => console.error(error))
+  
+    }
+    
+  }
+  fetchYearlyProfits = () => {
+    if (sessionStorage.getItem('loggedIn')) {
+      apiClient.get('../api/getYearlyProfit')
+          .then(response => {
+            this.fixYearlyProfit(response.data);
+          })
+          .catch(error => console.error(error))
+  
+    }
+    
+  }
+
+  fetchStockValue = () => {
+    if (sessionStorage.getItem('loggedIn')) {
+      apiClient.get('../api/getStockValue')
+        .then(response => {
+         
+          this.setState({ stockTotal: response.data });
+          })
+          .catch(error => console.error(error))
+  
+    }
+    
+  }
+  fetchStock = () => {
+    if (sessionStorage.getItem('loggedIn')) {
+      apiClient.get('../api/getStock')
+        .then(response => {
+        //  console.log(response.data);
+          this.setState({stock:response.data})
+          })
+          .catch(error => console.error(error))
+  
+    }
+    
+  }
+  fetchCustomersCount = () => {
+    if (sessionStorage.getItem('loggedIn')) {
+      apiClient.get('../api/getCustomersCount')
+        .then(response => {
+        //  console.log(response.data);
+          this.fixCustomerCount(response.data)
+          })
+          .catch(error => console.error(error))
+  
+    }
+    
+  }
+  componentDidMount() {
+    this.fetchSales();
+    this.fetchStockValue();
+    this.fetchStock();
+    this.fetchCustomersCount();
+    this.fetchYearlyProfits();
+}
   setBgChartData = name => {
     this.setState({
       bigChartData: name
     });
   };
   render() {
+   
     return (
       <>
         <div className="content">
@@ -88,7 +241,7 @@ class Dashboard extends React.Component {
                           color="info"
                           id="0"
                           size="sm"
-                          onClick={() => this.setBgChartData("data1")}
+                          onClick={() => { this.setBgChartData("data1");this.fetchSales()}}
                         >
                           <input
                             defaultChecked
@@ -97,7 +250,7 @@ class Dashboard extends React.Component {
                             type="radio"
                           />
                           <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                            Accounts
+                            Sales
                           </span>
                           <span className="d-block d-sm-none">
                             <i className="tim-icons icon-single-02" />
@@ -111,7 +264,7 @@ class Dashboard extends React.Component {
                           className={classNames("btn-simple", {
                             active: this.state.bigChartData === "data2"
                           })}
-                          onClick={() => this.setBgChartData("data2")}
+                          onClick={() => { this.setBgChartData("data2");this.fetchProfits() }}
                         >
                           <input
                             className="d-none"
@@ -119,45 +272,62 @@ class Dashboard extends React.Component {
                             type="radio"
                           />
                           <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                            Purchases
+                            Profits
                           </span>
                           <span className="d-block d-sm-none">
                             <i className="tim-icons icon-gift-2" />
                           </span>
                         </Button>
-                        <Button
-                          color="info"
-                          id="2"
-                          size="sm"
-                          tag="label"
-                          className={classNames("btn-simple", {
-                            active: this.state.bigChartData === "data3"
-                          })}
-                          onClick={() => this.setBgChartData("data3")}
-                        >
-                          <input
-                            className="d-none"
-                            name="options"
-                            type="radio"
-                          />
-                          <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                            Sessions
-                          </span>
-                          <span className="d-block d-sm-none">
-                            <i className="tim-icons icon-tap-02" />
-                          </span>
-                        </Button>
+                       
                       </ButtonGroup>
                     </Col>
                   </Row>
                 </CardHeader>
                 <CardBody>
-                  <div className="chart-area">
+                   <div className="chart-area">
                     <Line
-                      data={chartExample1[this.state.bigChartData]}
-                      options={chartExample1.options}
+                      data={{
+                        labels: [
+                          "JAN",
+                          "FEB",
+                          "MAR",
+                          "APR",
+                          "MAY",
+                          "JUN",
+                          "JUL",
+                          "AUG",
+                          "SEP",
+                          "OCT",
+                          "NOV",
+                          "DEC"
+                        ],
+                        datasets: [
+                          {
+                            label: "My First dataset",
+                            fill: true,
+                            backgroundColor: "powderblue",
+                            borderColor: "#1f8ef1",
+                            borderWidth: 2,
+                            borderDash: [],
+                            borderDashOffset: 0.0,
+                            pointBackgroundColor: "#1f8ef1",
+                            pointBorderColor: "rgba(255,255,255,0)",
+                            pointHoverBackgroundColor: "#1f8ef1",
+                            pointBorderWidth: 20,
+                            pointHoverRadius: 4,
+                            pointHoverBorderWidth: 15,
+                            pointRadius: 4,
+                            data: this.state.myData
+                          }
+                        ]
+                      }
+                    }
+                       options={chartExample1.options}
+                    
                     />
-                  </div>
+                     
+                  </div> 
+                 
                 </CardBody>
               </Card>
             </Col>
@@ -166,7 +336,7 @@ class Dashboard extends React.Component {
             <Col lg="4">
               <Card className="card-chart">
                 <CardHeader>
-                  <h5 className="card-category">Total Shipments</h5>
+                  <h5 className="card-category">Customers sold /month</h5>
                   <CardTitle tag="h3">
                     <i className="tim-icons icon-bell-55 text-info" />{" "}
                     763,215
@@ -175,7 +345,28 @@ class Dashboard extends React.Component {
                 <CardBody>
                   <div className="chart-area">
                     <Line
-                      data={chartExample2.data}
+                      data={{
+                        labels: this.state.customers.map((data2) => { return data2.month }) ,
+                        datasets: [
+                          {
+                            label: "Data",
+                            fill: true,
+                            backgroundColor: "powderblue",
+                            borderColor: "#1f8ef1",
+                            borderWidth: 2,
+                            borderDash: [],
+                            borderDashOffset: 0.0,
+                            pointBackgroundColor: "#1f8ef1",
+                            pointBorderColor: "rgba(255,255,255,0)",
+                            pointHoverBackgroundColor: "#1f8ef1",
+                            pointBorderWidth: 20,
+                            pointHoverRadius: 4,
+                            pointHoverBorderWidth: 15,
+                            pointRadius: 4,
+                            data: this.state.customers.map((data2) => { return data2.count })
+                          }
+                        ]
+                      }}
                       options={chartExample2.options}
                     />
                   </div>
@@ -185,16 +376,33 @@ class Dashboard extends React.Component {
             <Col lg="4">
               <Card className="card-chart">
                 <CardHeader>
-                  <h5 className="card-category">Daily Sales</h5>
-                  <CardTitle tag="h3">
-                    <i className="tim-icons icon-delivery-fast text-primary" />{" "}
-                    3,500€
+                  <h3 className="card-category">Stock Content</h3>
+                  <CardTitle tag="h4">
+                    {/* <i className="tim-icons icon-delivery-fast text-primary" />{" "} */}
+                   <p> Selling value: {this.state.stockTotal.saleValue} L.L</p>
+                   <p> Cost value: {this.state.stockTotal.costValue} L.L</p>
+                    
                   </CardTitle>
                 </CardHeader>
                 <CardBody>
                   <div className="chart-area">
                     <Bar
-                      data={chartExample3.data}
+                      data={{
+                        labels:this.state.stock.map((data2) => { return data2.products.map((d)=>{return d.name})}) ,//["USA", "GER", "AUS", "UK", "RO", "BR"],
+                        datasets: [
+                          {
+                            label: "Products",
+                            fill: true,
+                            backgroundColor: "violete",
+                            hoverBackgroundColor: "purple",
+                            borderColor: "#d048b6",
+                            borderWidth: 2,
+                            borderDash: [],
+                            borderDashOffset: 0.0,
+                            data: this.state.stock.map((data2) => { return data2.qty })
+                          }
+                        ]
+                      }}
                       options={chartExample3.options}
                     />
                   </div>
@@ -204,15 +412,36 @@ class Dashboard extends React.Component {
             <Col lg="4">
               <Card className="card-chart">
                 <CardHeader>
-                  <h5 className="card-category">Completed Tasks</h5>
+                  <h5 className="card-category">Yearly Profits</h5>
                   <CardTitle tag="h3">
-                    <i className="tim-icons icon-send text-success" /> 12,100K
+                    <i className="tim-icons icon-send text-success" />
                   </CardTitle>
                 </CardHeader>
                 <CardBody>
                   <div className="chart-area">
                     <Line
-                      data={chartExample4.data}
+                      data={{
+                        labels: this.state.yearlyProfit.map((data2) => { return data2.year}),
+                        datasets: [
+                          {
+                            label: "year",
+                            fill: true,
+                            backgroundColor: "powderblue",
+                            borderColor: "#00d6b4",
+                            borderWidth: 2,
+                            borderDash: [],
+                            borderDashOffset: 0.0,
+                            pointBackgroundColor: "#00d6b4",
+                            pointBorderColor: "rgba(255,255,255,0)",
+                            pointHoverBackgroundColor: "#00d6b4",
+                            pointBorderWidth: 20,
+                            pointHoverRadius: 4,
+                            pointHoverBorderWidth: 15,
+                            pointRadius: 4,
+                            data:  this.state.yearlyProfit.map((data2) => { return data2.sum})
+                          }
+                        ]
+                      }}
                       options={chartExample4.options}
                     />
                   </div>

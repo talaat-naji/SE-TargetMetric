@@ -16,7 +16,7 @@
 
 */
 import Dashboard from "views/Dashboard.js";
-import Icons from "views/Icons.js";
+import Products from "views/Products.js";
 import Map from "views/Map.js";
 import Notifications from "views/Notifications.js";
 import Rtl from "views/Rtl.js";
@@ -35,10 +35,10 @@ var routes = [
   },
   {
     path: "/icons",
-    name: "Icons",
+    name: "Products",
     rtlName: "الرموز",
     icon: "tim-icons icon-atom",
-    component: Icons,
+    component: Products,
     layout: "/admin"
   },
   {

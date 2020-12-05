@@ -16,7 +16,10 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('shop_id')->constrained()->cascadeOnDelete();
+
+            $table->unsignedBigInteger('shop_id');
+            $table->foreign('shop_id')->references('id')->on('users')->cascadeOnDelete();
+
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->double('qty_sold');
             $table->timestamps();

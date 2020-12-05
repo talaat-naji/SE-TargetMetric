@@ -17,10 +17,11 @@
 */
 import React from "react";
 import apiClient from "../services/api";
+import ViewProd from "./EditProd";
 // reactstrap components
 import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
 
-class Icons extends React.Component {
+class Products extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
@@ -35,13 +36,19 @@ class Icons extends React.Component {
           })
           .catch(error => console.error(error))
 
+    }
+    
   }
-  }
+  
   componentDidMount() {
+    this.fetchProducts();
+    
+  }
+  handleEditProduct = () => {
     this.fetchProducts();
   }
   render() {
-    console.log(this.state.products);
+   
     return (
       <>
         <div className="content">
@@ -49,28 +56,21 @@ class Icons extends React.Component {
             <Col md="12">
               <Card>
                 <CardHeader>
-                  <h5 className="title">100 Awesome Nucleo Icons</h5>
-                  <p className="category">
-                    Handcrafted by our friends from{" "}
-                    <a href="">NucleoApp</a>
-                  </p>
+                  <h5 className="title">My Products</h5>
+                 
                 </CardHeader>
                 <CardBody className="all-icons">
                   <Row>
                     {this.state.products.map((product) => {
                       return (
-                        <Col
+                        <Col 
                         className="font-icon-list col-xs-6 col-xs-6"
                         lg="2"
                         md="3"
                         sm="4"
                         >
-                           <div className="font-icon-detail">
-                        <i className="tim-icons icon-alert-circle-exc" />
-                            <p>{product.product.name}</p>
-                            <p>{product.price}</p>
-                      </div>
-                    </Col>
+                          <ViewProd product={product} onEditProduct={this.handleEditProduct}/>
+                          </Col>
                       );
                     })}
                    
@@ -90,4 +90,4 @@ class Icons extends React.Component {
   }
 }
 
-export default Icons;
+export default Products;
