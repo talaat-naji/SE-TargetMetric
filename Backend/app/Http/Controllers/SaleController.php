@@ -53,4 +53,21 @@ class SaleController extends Controller
  
          return $result1;
      }
+
+     public function getCustomerSales(Request $request){
+        $result= DB::select(
+                DB::raw("select SUM(test.subTotal) as total ,test.month as month
+                             FROM (select SUM(s2.qty_sold*p.price) as subTotal ,MONTH(s2.created_at) as month
+                                     FROM sales as s2
+                                      left Join prices as p on s2.product_id = p.product_id
+                                     where s2.user_id =".Auth::id()." and p.user_id =".Auth::id()." and s2.shop_id =".$request->id." and
+                                     s2.created_at BETWEEN '".Carbon::now()->startOfYear()."' and '".Carbon::now()->endOfYear()."'
+                                    group By s2.product_id,MONTH(s2.created_at)
+                                )as test
+                        group By month
+                        order by month"));
+        
+ 
+         return $result;
+     }
 }

@@ -42,7 +42,7 @@ import {
   Col,
   UncontrolledTooltip
 } from "reactstrap";
-
+import CustomersTable from "./CustomerTable";
 // core components
 import {
   chartExample1,
@@ -61,53 +61,54 @@ class Dashboard extends React.Component {
       stock: [],
       stockTotal: [],
       customers: [],
-      yearlyProfit:[]
+      customersTable:[],
+      yearlyProfit: []
     };
   }
- 
+
   fixMyData = (data) => {
     let sumArr = [];
-    for (var i = 1; i <= 12; i++){
+    for (var i = 1; i <= 12; i++) {
       let j = 0;
       let sum = 0;
       while (j < data.length) {
         if (data[j]['month'] == i) {
           sum += data[j]['sales'];
         }
-       
-          j++;
-        }
-      
+
+        j++;
+      }
+
       sumArr.push(sum);
     }
-    
-    this.setState({myData:sumArr})
+
+    this.setState({ myData: sumArr })
   }
   fixCustomerCount = (data) => {
-    
+
     let sumArr = [];
     let i = 0;
     let j = 0;
-    for (var a = data[0]['month']; a < data[0]['month'] + 12; a++){
-      
+    for (var a = data[0]['month']; a < data[0]['month'] + 12; a++) {
+
       if (a <= 12) {
         i = a;
-      }else{i=a-12}
-      
+      } else { i = a - 12 }
+
       let count = 0;
-    
-        if (data[j]['month'] == i) {
-    
-          count = data[j]['customerCount'];
-          if (j+1 < data.length) {
-            j++;
-          }
+
+      if (data[j]['month'] == i) {
+
+        count = data[j]['customerCount'];
+        if (j + 1 < data.length) {
+          j++;
         }
-        let date=new Date("2020/"+i+"/2")
-        let shortMonth = date.toLocaleString('en-us', { month: 'short' });
+      }
+      let date = new Date("2020/" + i + "/2")
+      let shortMonth = date.toLocaleString('en-us', { month: 'short' });
       let obj = { count: count, month: shortMonth };
-     
-      
+
+
       sumArr.push(obj);
     }
     this.setState({ customers: sumArr })
@@ -115,92 +116,104 @@ class Dashboard extends React.Component {
   }
   fixYearlyProfit(data) {
     let sumArr = [];
-    for (var i = data[data.length-1]['year']-10; i <= data[data.length-1]['year']; i++){
+    for (var i = data[data.length - 1]['year'] - 10; i <= data[data.length - 1]['year']; i++) {
       let j = 0;
       let sum = 0;
       while (j < data.length) {
         if (data[j]['year'] == i) {
           sum += data[j]['profits'];
-          
+
         }
-       
-          j++;
-        }
-      
+
+        j++;
+      }
+
       sumArr.push({ sum: sum, year: i });
     }
-    
-    this.setState({yearlyProfit:sumArr})
+
+    this.setState({ yearlyProfit: sumArr })
   }
   fetchSales = () => {
     if (sessionStorage.getItem('loggedIn')) {
       apiClient.get('../api/getSales')
-          .then(response => {
-            this.fixMyData(response.data);
-          })
-          .catch(error => console.error(error))
-  
+        .then(response => {
+          this.fixMyData(response.data);
+        })
+        .catch(error => console.error(error))
+
     }
-    
+
   }
   fetchProfits = () => {
     if (sessionStorage.getItem('loggedIn')) {
       apiClient.get('../api/getProfit')
-          .then(response => {
-            this.fixMyData(response.data);
-          })
-          .catch(error => console.error(error))
-  
+        .then(response => {
+          this.fixMyData(response.data);
+        })
+        .catch(error => console.error(error))
+
     }
-    
+
   }
   fetchYearlyProfits = () => {
     if (sessionStorage.getItem('loggedIn')) {
       apiClient.get('../api/getYearlyProfit')
-          .then(response => {
-            this.fixYearlyProfit(response.data);
-          })
-          .catch(error => console.error(error))
-  
+        .then(response => {
+          this.fixYearlyProfit(response.data);
+        })
+        .catch(error => console.error(error))
+
     }
-    
+
   }
 
   fetchStockValue = () => {
     if (sessionStorage.getItem('loggedIn')) {
       apiClient.get('../api/getStockValue')
         .then(response => {
-         
+
           this.setState({ stockTotal: response.data });
-          })
-          .catch(error => console.error(error))
-  
+        })
+        .catch(error => console.error(error))
+
     }
-    
+
   }
   fetchStock = () => {
     if (sessionStorage.getItem('loggedIn')) {
       apiClient.get('../api/getStock')
         .then(response => {
-        //  console.log(response.data);
-          this.setState({stock:response.data})
-          })
-          .catch(error => console.error(error))
-  
+          //  console.log(response.data);
+          this.setState({ stock: response.data })
+        })
+        .catch(error => console.error(error))
+
     }
-    
+
   }
   fetchCustomersCount = () => {
     if (sessionStorage.getItem('loggedIn')) {
       apiClient.get('../api/getCustomersCount')
         .then(response => {
-        //  console.log(response.data);
+          //  console.log(response.data);
           this.fixCustomerCount(response.data)
-          })
-          .catch(error => console.error(error))
-  
+        })
+        .catch(error => console.error(error))
+
     }
-    
+
+  }
+  fetchCustomersTable = () => {
+    if (sessionStorage.getItem('loggedIn')) {
+      apiClient.get('../api/getCustomersTable')
+        .then(response => {
+           //console.log(response.data);
+       this.setState({ customersTable: response.data })
+        })
+        .catch(error => console.error(error))
+
+    }
+
   }
   componentDidMount() {
     this.fetchSales();
@@ -208,14 +221,15 @@ class Dashboard extends React.Component {
     this.fetchStock();
     this.fetchCustomersCount();
     this.fetchYearlyProfits();
-}
+    this.fetchCustomersTable();
+  }
   setBgChartData = name => {
     this.setState({
       bigChartData: name
     });
   };
   render() {
-   
+
     return (
       <>
         <div className="content">
@@ -241,7 +255,7 @@ class Dashboard extends React.Component {
                           color="info"
                           id="0"
                           size="sm"
-                          onClick={() => { this.setBgChartData("data1");this.fetchSales()}}
+                          onClick={() => { this.setBgChartData("data1"); this.fetchSales() }}
                         >
                           <input
                             defaultChecked
@@ -264,7 +278,7 @@ class Dashboard extends React.Component {
                           className={classNames("btn-simple", {
                             active: this.state.bigChartData === "data2"
                           })}
-                          onClick={() => { this.setBgChartData("data2");this.fetchProfits() }}
+                          onClick={() => { this.setBgChartData("data2"); this.fetchProfits() }}
                         >
                           <input
                             className="d-none"
@@ -278,28 +292,17 @@ class Dashboard extends React.Component {
                             <i className="tim-icons icon-gift-2" />
                           </span>
                         </Button>
-                       
+
                       </ButtonGroup>
                     </Col>
                   </Row>
                 </CardHeader>
                 <CardBody>
-                   <div className="chart-area">
+                  <div className="chart-area">
                     <Line
                       data={{
                         labels: [
-                          "JAN",
-                          "FEB",
-                          "MAR",
-                          "APR",
-                          "MAY",
-                          "JUN",
-                          "JUL",
-                          "AUG",
-                          "SEP",
-                          "OCT",
-                          "NOV",
-                          "DEC"
+                          "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
                         ],
                         datasets: [
                           {
@@ -321,13 +324,13 @@ class Dashboard extends React.Component {
                           }
                         ]
                       }
-                    }
-                       options={chartExample1.options}
-                    
+                      }
+                      options={chartExample1.options}
+
                     />
-                     
-                  </div> 
-                 
+
+                  </div>
+
                 </CardBody>
               </Card>
             </Col>
@@ -346,7 +349,7 @@ class Dashboard extends React.Component {
                   <div className="chart-area">
                     <Line
                       data={{
-                        labels: this.state.customers.map((data2) => { return data2.month }) ,
+                        labels: this.state.customers.map((data2) => { return data2.month }),
                         datasets: [
                           {
                             label: "Data",
@@ -379,16 +382,16 @@ class Dashboard extends React.Component {
                   <h3 className="card-category">Stock Content</h3>
                   <CardTitle tag="h4">
                     {/* <i className="tim-icons icon-delivery-fast text-primary" />{" "} */}
-                   <p> Selling value: {this.state.stockTotal.saleValue} L.L</p>
-                   <p> Cost value: {this.state.stockTotal.costValue} L.L</p>
-                    
+                    <p> Selling value: {this.state.stockTotal.saleValue} L.L</p>
+                    <p> Cost value: {this.state.stockTotal.costValue} L.L</p>
+
                   </CardTitle>
                 </CardHeader>
                 <CardBody>
                   <div className="chart-area">
                     <Bar
                       data={{
-                        labels:this.state.stock.map((data2) => { return data2.products.map((d)=>{return d.name})}) ,//["USA", "GER", "AUS", "UK", "RO", "BR"],
+                        labels: this.state.stock.map((data2) => { return data2.products.map((d) => { return d.name }) }),
                         datasets: [
                           {
                             label: "Products",
@@ -421,7 +424,7 @@ class Dashboard extends React.Component {
                   <div className="chart-area">
                     <Line
                       data={{
-                        labels: this.state.yearlyProfit.map((data2) => { return data2.year}),
+                        labels: this.state.yearlyProfit.map((data2) => { return data2.year }),
                         datasets: [
                           {
                             label: "year",
@@ -438,7 +441,7 @@ class Dashboard extends React.Component {
                             pointHoverRadius: 4,
                             pointHoverBorderWidth: 15,
                             pointRadius: 4,
-                            data:  this.state.yearlyProfit.map((data2) => { return data2.sum})
+                            data: this.state.yearlyProfit.map((data2) => { return data2.sum })
                           }
                         ]
                       }}
@@ -450,7 +453,27 @@ class Dashboard extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col lg="6" md="12">
+           
+            {/* <Col lg="6" md="12"> */}
+            <Card>
+              <CardHeader>
+                <CardTitle tag="h4">Customers Table</CardTitle>
+              </CardHeader>
+              <CardBody>
+               <CustomersTable customersData={this.state.customersTable}/>
+              </CardBody>
+            </Card>
+            {/* </Col> */}
+          </Row>
+        </div>
+      </>
+    );
+  }
+}
+
+export default Dashboard;
+
+ {/* <Col lg="6" md="12">
               <Card className="card-tasks">
                 <CardHeader>
                   <h6 className="title d-inline">Tasks(5)</h6>
@@ -716,75 +739,4 @@ class Dashboard extends React.Component {
                   </div>
                 </CardBody>
               </Card>
-            </Col>
-            <Col lg="6" md="12">
-              <Card>
-                <CardHeader>
-                  <CardTitle tag="h4">Simple Table</CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <Table className="tablesorter" responsive>
-                    <thead className="text-primary">
-                      <tr>
-                        <th>Name</th>
-                        <th>Country</th>
-                        <th>City</th>
-                        <th className="text-center">Salary</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Dakota Rice</td>
-                        <td>Niger</td>
-                        <td>Oud-Turnhout</td>
-                        <td className="text-center">$36,738</td>
-                      </tr>
-                      <tr>
-                        <td>Minerva Hooper</td>
-                        <td>Curaçao</td>
-                        <td>Sinaai-Waas</td>
-                        <td className="text-center">$23,789</td>
-                      </tr>
-                      <tr>
-                        <td>Sage Rodriguez</td>
-                        <td>Netherlands</td>
-                        <td>Baileux</td>
-                        <td className="text-center">$56,142</td>
-                      </tr>
-                      <tr>
-                        <td>Philip Chaney</td>
-                        <td>Korea, South</td>
-                        <td>Overland Park</td>
-                        <td className="text-center">$38,735</td>
-                      </tr>
-                      <tr>
-                        <td>Doris Greene</td>
-                        <td>Malawi</td>
-                        <td>Feldkirchen in Kärnten</td>
-                        <td className="text-center">$63,542</td>
-                      </tr>
-                      <tr>
-                        <td>Mason Porter</td>
-                        <td>Chile</td>
-                        <td>Gloucester</td>
-                        <td className="text-center">$78,615</td>
-                      </tr>
-                      <tr>
-                        <td>Jon Porter</td>
-                        <td>Portugal</td>
-                        <td>Gloucester</td>
-                        <td className="text-center">$98,615</td>
-                      </tr>
-                    </tbody>
-                  </Table>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </div>
-      </>
-    );
-  }
-}
-
-export default Dashboard;
+            </Col> */}

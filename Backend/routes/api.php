@@ -38,6 +38,9 @@ Route::middleware('auth:sanctum')->get('/getYearlyProfit',[SaleController::class
 Route::middleware('auth:sanctum')->get('/getStockValue',[StockController::class,"getStockValue"]);
 Route::middleware('auth:sanctum')->get('/getStock',[StockController::class,"getStock"]);
 Route::middleware('auth:sanctum')->get('/getCustomersCount',[ShopController::class,"getCustomersCount"]);
+Route::middleware('auth:sanctum')->get('/getCustomersTable',[ShopController::class,"getCustomersTable"]);
+
+Route::middleware('auth:sanctum')->post('/getCustomerSales',[SaleController::class,"getCustomerSales"]);
 /*
 |--------------------------------------------------------------------------
 | Location
