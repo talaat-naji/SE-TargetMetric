@@ -56,7 +56,7 @@ const Login = (props) => {
            props.history.push('/admin/dashboard');
         } else if (userType === "shop") {
             console.log("testshop");
-            props.history.push('/shop');
+            props.history.push('/shop/dashboard');
         }
     }
     return (

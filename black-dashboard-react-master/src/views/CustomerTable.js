@@ -54,7 +54,7 @@ export default function CustomerTable(props) {
                 </Table>    
             
     
-          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullScreen={true}fullWidth={true}>
+          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullScreen={true} >
               <DialogTitle id="form-dialog-title"></DialogTitle>
         <DialogContent>
                   <VerticalTabs shopId={customerId}/>

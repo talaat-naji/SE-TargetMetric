@@ -5,11 +5,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DistrictController;
-use App\Http\Controllers\GovernorateController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\GovernorateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,8 @@ Route::middleware('auth:sanctum')->get('/getCustomersCount',[ShopController::cla
 Route::middleware('auth:sanctum')->get('/getCustomersTable',[ShopController::class,"getCustomersTable"]);
 
 Route::middleware('auth:sanctum')->post('/getCustomerSales',[SaleController::class,"getCustomerSales"]);
+Route::middleware('auth:sanctum')->post('/getCustomerProfits',[SaleController::class,"getCustomerProfits"]);
+Route::middleware('auth:sanctum')->post('/getCustomerProducts',[SaleController::class,"getCustomerProducts"]);
 /*
 |--------------------------------------------------------------------------
 | Location
@@ -55,3 +58,10 @@ Route::middleware('auth:sanctum')->post('/getDistrict',[DistrictController::clas
 |*/
 Route::middleware('auth:sanctum')->get('/getProfile',[LocationController::class,"getProfile"]);
 Route::middleware('auth:sanctum')->post('/updateRetailerProfile',[LocationController::class,"updateRetailerProfile"]);
+/*
+|--------------------------------------------------------------------------
+| GET CUSTOMER ORDERS
+|--------------------------------------------------------------------------
+|*/
+Route::middleware('auth:sanctum')->get('/getOrders',[OrderController::class,"getOrders"]);
+Route::middleware('auth:sanctum')->post('/deliverOrder',[OrderController::class,"deliverOrder"]);

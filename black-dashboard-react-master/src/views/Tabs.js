@@ -14,6 +14,7 @@ import {
     CardHeader,
     CardBody,
     CardTitle,
+    Input,
     Row,
     Col,
 
@@ -25,6 +26,7 @@ import {
     chartExample3,
     chartExample4
 } from "variables/charts.js";
+import { setScrollbarWidth } from 'reactstrap/lib/utils';
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -74,7 +76,10 @@ export default function VerticalTabs(props) {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
     const [sales, setSales] = React.useState();
-
+    const [bigChartData, setBgChartData] = React.useState('data1');
+    const [from, setFrom] = React.useState(0);
+    const [to, setTo] = React.useState();
+    const [products, setProducts] = React.useState([]);
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -109,8 +114,30 @@ export default function VerticalTabs(props) {
 
         }
     }
+    const fetchProfits = () => {
+        if (sessionStorage.getItem('loggedIn')) {
+            apiClient.post('../api/getCustomerProfits', { id: props.shopId })
+                .then(response => {
+                    fixSales(response.data);
+                })
+                .catch(error => console.error(error))
 
+        }
+    }
+    const fetchProducts = () => {
+        if (sessionStorage.getItem('loggedIn')) {
+            apiClient.post('../api/getCustomerProducts', {
+                id: props.shopId,
+                from: from,
+                to: to
+            })
+                .then(response => {
+                    setProducts(response.data)
+                })
+                .catch(error => console.error(error))
 
+        }
+    }
     React.useEffect(() => {
         fetchSales();
     }, [])
@@ -148,12 +175,12 @@ export default function VerticalTabs(props) {
                                     <Button
                                         tag="label"
                                         className={classNames("btn-simple", {
-                                            active: true//this.state.bigChartData === "data1"
+                                            active:bigChartData === "data1"
                                         })}
                                         color="info"
                                         id="0"
                                         size="sm"
-                                    //   onClick={() => { this.setBgChartData("data1"); this.fetchSales() }}
+                                       onClick={() => { setBgChartData("data1"); fetchSales() }}
                                     >
                                         <input
                                             defaultChecked
@@ -174,9 +201,9 @@ export default function VerticalTabs(props) {
                                         size="sm"
                                         tag="label"
                                         className={classNames("btn-simple", {
-                                            active: false//this.state.bigChartData === "data2"
+                                            active: bigChartData === "data2"
                                         })}
-                                    //onClick={() => { this.setBgChartData("data2"); this.fetchProfits() }}
+                                    onClick={() => { setBgChartData("data2"); fetchProfits() }}
                                     >
                                         <input
                                             className="d-none"
@@ -234,12 +261,53 @@ export default function VerticalTabs(props) {
                 {/* </Col> */}
                 {/* </Row> */}
             </TabPanel>
-            <TabPanel value={value} index={1}>
-                Product quantity sold
+            <TabPanel value={value} index={1} style={{ width: "80%", hieght: "80%" }}>
+            <Card className="card-chart">
+                    <Row>
+                        <Col>from:<Input value={from} type="date" name="from" onChange={(e) => { setFrom(e.target.value) }}/></Col>
+                        <Col>to:<Input value={to} type="date" name="to" onChange={(e) => { setTo(e.target.value)}}/></Col>
+                        
+                    </Row>
+                    <Row><Col><Input type="submit" onClick={fetchProducts} value="show results"/></Col></Row>
+                </Card>
+                <Card className="card-chart">
+               
+                    <CardHeader>
+                      
+                  <h3 className="card-category">Stock Content</h3>
+                  <CardTitle tag="h4">
+{/*                    
+                    <p> Selling value: {this.state.stockTotal.saleValue} L.L</p>
+                    <p> Cost value: {this.state.stockTotal.costValue} L.L</p> */}
+
+                  </CardTitle>
+                </CardHeader>
+                <CardBody>
+                  <div className="chart-area">
+                    <Bar
+                      data={{
+                        labels:products.map((data2) => { return data2.name }),
+                        datasets: [
+                          {
+                            label: "Qty",
+                            fill: true,
+                            backgroundColor: "violete",
+                            hoverBackgroundColor: "purple",
+                            borderColor: "#d048b6",
+                            borderWidth: 2,
+                            borderDash: [],
+                            borderDashOffset: 0.0,
+                            data:products.map((data2) => { return data2.qty }),
+                          }
+                        ]
+                      }}
+                      options={chartExample3.options}
+                    />
+                  </div>
+                </CardBody>
+              </Card>
       </TabPanel>
-            {/* <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel> */}
+            
 
         </div>
     );

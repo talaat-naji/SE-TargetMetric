@@ -2,6 +2,7 @@ import { createBrowserHistory } from "history";
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import AdminLayout from "layouts/Admin/Admin.js";
+import ShopLayout from "layouts/Shop/Shop.js";
 import RTLLayout from "layouts/RTL/RTL.js";
 import Register from "layouts/Register/Register";
 import Login from "layouts/Register/Login";
@@ -44,7 +45,9 @@ const App = () => {
       <Route path="/rtl" render={props => <RTLLayout {...props} loggedIn={loggedIn} logout={logout}/>} />
       <Route path="/login" render={props => <Login {...props} login={login}/>} />
       <Route path="/register" render={props => <Register {...props} login={login}/>} />
-      <Redirect from="/" to="/admin/dashboard" />
+                {/* <Redirect from="/" to="/admin/dashboard" /> */}
+                
+                <Route path="/shop" render={props => <ShopLayout {...props} loggedIn={loggedIn} logout={logout}/>} />
     </Switch>
   </Router>
     );

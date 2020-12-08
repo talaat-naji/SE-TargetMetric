@@ -14,11 +14,13 @@ class Order extends Model
     }
 
     public function shop(){
-        return $this->belongsTo(Shop::class);
+        return $this->belongsTo(User::class);
     }
 
     public function product(){
-        return $this->hasOne(Product::class);
+        return $this->hasOne(Product::class,"id","product_id");
     }
-
+    public function stock(){
+        return $this->hasOne(Stock::class,"product_id","product_id");
+    }
 }
