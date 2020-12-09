@@ -29,6 +29,8 @@ import apiClient from "../services/api";
 export default function OrderDialog(props) {
   const [open, setOpen] = React.useState(false);
   const [qty, setQty] = React.useState(props.order.qty_ordered);
+  const [open2, setOpen2] = React.useState(false);
+  const [orderQty, setOrderQty] = React.useState();
   const [alert, setAlert] = React.useState('');
 
   const handleClickOpen = () => {
@@ -45,17 +47,41 @@ export default function OrderDialog(props) {
         oId: props.order.id,
         shop_id: props.order.shop_id,
         product_id: props.order.product.id
+      }).then((response) => {
+        
+        if (response.data === "deficiet") {
+          setOpen2(true);
+        } else {
+          setQty(props.order.qty_ordered)
+          props.onDeliver();
+        }
       })
           
           .catch(error => console.error(error))
   }
 }
-
+const handleOrder = () => {
+  if (sessionStorage.getItem('loggedIn')) {
+    apiClient.post('../api/orderSupplier', {
+      qty: orderQty,
+      product_id: props.order.product.id,
+      product_name: props.order.product.name,
+      supplier_email:props.order.product.supplier_email,
+    }).then(() => {
+      setQty(props.order.qty_ordered)
+      props.onDeliver();
+    }).catch(error => console.error(error))
+}
+}
   const handleClose = () => {
     setOpen(false);
   
   };
-  
+  const handleClose2 = () => {
+    setOpen2(false);
+    setQty(props.order.qty_ordered)
+    props.onDeliver();
+  };
   const handleDeliver = () => {
     if (props.order.stock.qty - qty <= 0) {
       setAlert(<Alert color='danger'>you dont have enough qty of this product</Alert>)
@@ -63,8 +89,7 @@ export default function OrderDialog(props) {
       setAlert('');
       Deliver();
       setOpen(false);
-      setQty(props.order.qty_ordered)
-      props.onDeliver();
+      
     }
   }
 
@@ -97,6 +122,27 @@ export default function OrderDialog(props) {
 
           <Button onClick={handleDeliver} color="primary">
             Deliver
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={open2} onClose={handleClose2} aria-labelledby="form-dialog-title" >
+        <DialogTitle id="form-dialog-title"></DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            You Have a deficiet in product: {props.order.product.name} 
+            specify the quantity you want to order from {props.order.product.supplier_email} or just click cancel.
+          </DialogContentText>
+          <Input style={{ color: 'black' }} type="number"  onChange={(e) => { setOrderQty(e.target.value) }} />
+          {alert}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose2} color="primary">
+            Cancel
+          </Button>
+
+          <Button onClick={handleOrder} color="primary">
+            Order
           </Button>
         </DialogActions>
       </Dialog>

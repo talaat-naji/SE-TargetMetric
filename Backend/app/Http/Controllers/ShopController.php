@@ -47,7 +47,7 @@ class ShopController extends Controller
                 DB::raw("(select SUM(test.subTotal) 
                 from (select sum(s2.qty_sold*p.price) as subTotal 
                         from sales as s2
-                           left Join prices as p on s2.product_id = p.product_id
+                           left Join products as p on s2.product_id = p.id
                            where s2.user_id =".Auth::id()." and s2.shop_id =s.shop_id 
                            group By s2.product_id
                       )as test

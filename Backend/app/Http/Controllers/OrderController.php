@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Sale;
 use App\Models\Order;
 use App\Models\Stock;
 use App\Models\Product;
-use Carbon\Carbon;
+use App\Notifications\StockDeficiet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class OrderController extends Controller
 {
@@ -27,7 +29,6 @@ class OrderController extends Controller
 
     $stockQty = Stock::where("user_id", Auth::id())
       ->where("product_id", $request->product_id)->get();
-
 
     Order::where("id", $request->oId)->update(['status' => true]);
 
@@ -53,5 +54,16 @@ class OrderController extends Controller
     Stock::where("user_id", Auth::id())
       ->where("product_id", $request->product_id)
       ->update(['qty' => $stockQty[0]['qty'] - $request->qty]);
+
+      if($stockQty[0]['qty']-$request->qty<=$stockQty[0]['min_qty']){
+        $data['message']="deficiet";
+        return $data['message'];
+      }
+  }
+
+  public function orderSupplier(Request $request){
+    Notification::route('mail', $request->supplier_email)
+   
+    ->notify(new StockDeficiet($request));
   }
 }

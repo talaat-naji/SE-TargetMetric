@@ -1,6 +1,6 @@
 import Dashboard from "views/Dashboard.js";
 import Products from "views/Products.js";
-import Map from "views/Map.js";
+import Suppliers from "views/supplierOrders.js";
 import Notifications from "views/Notifications.js";
 import TableList from "views/TableList.js";
 import Typography from "views/Typography.js";
@@ -25,10 +25,10 @@ var shopRoutes = [
     },
     {
       path: "/map",
-      name: "Map",
+      name: "Suppliers",
       rtlName: "خرائط",
       icon: "tim-icons icon-pin",
-      component: Map,
+      component: Suppliers,
       layout: "/shop"
     },
     {

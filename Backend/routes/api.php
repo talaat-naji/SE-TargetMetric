@@ -10,6 +10,7 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\GovernorateController;
 
 /*
@@ -65,3 +66,13 @@ Route::middleware('auth:sanctum')->post('/updateRetailerProfile',[LocationContro
 |*/
 Route::middleware('auth:sanctum')->get('/getOrders',[OrderController::class,"getOrders"]);
 Route::middleware('auth:sanctum')->post('/deliverOrder',[OrderController::class,"deliverOrder"]);
+Route::middleware('auth:sanctum')->post('/orderSupplier',[OrderController::class,"orderSupplier"]);
+/*
+|--------------------------------------------------------------------------
+| GET Suppliers and their products and orders
+|--------------------------------------------------------------------------
+|*/
+Route::middleware('auth:sanctum')->get('/getSuppliers',[SupplierController::class,"getSuppliers"]);
+Route::middleware('auth:sanctum')->post('/addSupplier',[SupplierController::class,"addSupplier"]);
+Route::middleware('auth:sanctum')->post('/getSupplierProducts',[SupplierController::class,"getSupplierProducts"]);
+Route::middleware('auth:sanctum')->post('/addSupplierProduct',[SupplierController::class,"addSupplierProduct"]);

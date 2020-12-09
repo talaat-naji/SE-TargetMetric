@@ -17,7 +17,7 @@
 */
 import Dashboard from "views/Dashboard.js";
 import Products from "views/Products.js";
-import Map from "views/Map.js";
+import Suppliers from "views/supplierOrders.js";
 import Notifications from "views/Notifications.js";
 import Rtl from "views/Rtl.js";
 import TableList from "views/TableList.js";
@@ -43,10 +43,10 @@ var routes = [
   },
   {
     path: "/map",
-    name: "Map",
+    name: "Suppliers",
     rtlName: "خرائط",
     icon: "tim-icons icon-pin",
-    component: Map,
+    component: Suppliers,
     layout: "/admin"
   },
   {

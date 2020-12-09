@@ -12,9 +12,8 @@ class StockController extends Controller
     public function getStockValue(){
         $data= DB::table("stocks as s")
          ->select(DB::raw('sum(s.qty*p.price) as Salevalue'),DB::raw('sum(s.qty*p.cost) as costvalue'),'s.product_id as pId')
-         ->leftJoin("prices as p","s.product_id","=","p.product_id")
+         ->leftJoin("products as p","s.product_id","=","p.id")
          ->where('s.user_id',Auth::id())
-         ->where('p.user_id',Auth::id())
          ->groupBy('s.product_id')       
          ->get();
 

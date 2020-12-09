@@ -4,23 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\Price;
 use App\Models\Product;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
     public function getProductsByUser(){
-     $products= Price::where('user_id',Auth::id())->with('product')->get();
+     $products= Supplier::where('user_id',Auth::id())->with('products')->get();
      return $products;
     }
 
     public function editProduct(Request $request){
-        Price::where('product_id', $request->productId)
-        ->where('user_id', Auth::id())
-        ->update(['price' => $request->price]);
-
         Product::where('id', $request->productId)
-        ->update(['description' => $request->productDesc]);
+        // ->where('supplier_id', $request->supplier_id)
+        ->update([
+            'price' => $request->price,
+            'cost'=>$request->cost,
+        'description' => $request->productDesc
+        ]);
 
     }
 }
