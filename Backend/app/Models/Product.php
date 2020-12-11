@@ -9,19 +9,30 @@ class Product extends Model
 {
     use HasFactory;
 
-    public function shop(){
+    protected $fillable = [
+        'barcode', 'name', 'description', 'supplier_id',
+        'cost',
+        'price',
+        'pic_path'
+    ];
+
+    public function shop()
+    {
         return $this->belongsTo(Shop::class);
     }
 
-    public function retailer(){
+    public function retailer()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function shopPrice(){
-        return $this->hasOneThrough(Price::class,Shop::class);
+    public function shopPrice()
+    {
+        return $this->hasOneThrough(Price::class, Shop::class);
     }
 
-    public function retailerPrice(){
-        return $this->hasOneThrough(Price::class,User::class);
+    public function retailerPrice()
+    {
+        return $this->hasOneThrough(Price::class, User::class);
     }
 }

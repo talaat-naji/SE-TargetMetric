@@ -13,4 +13,8 @@ class Supplier extends Model
     public function products(){
         return $this->hasMany(Product::class);
     }
+    public function stock(){
+        return $this->hasOneThrough(Stock::class,Product::class);
+    }
+    
 }

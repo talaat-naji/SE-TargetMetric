@@ -28,6 +28,7 @@ import {
     chartExample4
 } from "variables/charts.js";
 import { setScrollbarWidth } from 'reactstrap/lib/utils';
+import AutoOrder from "./AutoOrder";
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -80,9 +81,12 @@ export default function VerticalTabs(props) {
     const [name, setName] = React.useState('data1');
     const [description, setDescription] = React.useState(0);
     const [product_id, setProduct_id] = React.useState();
-    const [price, setPrice] = React.useState([]);
-    const [cost, setCost] = React.useState([]);
+    const [price, setPrice] = React.useState();
+    const [cost, setCost] = React.useState();
 
+
+    const [Order, setOrder] = React.useState();
+    const [editId, setEditId] = React.useState();
     const fetchProducts = () => {
         if (sessionStorage.getItem('loggedIn')) {
             apiClient.post('../api/getSupplierProducts', { id: props.supplier.id })
@@ -93,7 +97,36 @@ export default function VerticalTabs(props) {
 
         }
     }
+    const fetchOrders = () => {
+        if (sessionStorage.getItem('loggedIn')) {
+            apiClient.post('../api/autoGenerateOrder',
+                { id: props.supplier.id })
+                .then(response => {
+                    setOrder(response.data);
+                })
+                .catch(error => console.error(error))
 
+        }
+    }
+    const editProduct = (id) => {
+        if (sessionStorage.getItem('loggedIn')) {
+            apiClient.post('../api/EditSupplierProduct', {
+                product_id: id,
+                name: name,
+                desc: description,
+                cost: cost,
+                price: price,
+            }).then(() => {
+                setName('');
+                setDescription('');
+                setCost();
+                setPrice();
+            })
+
+                .catch(error => console.error(error))
+
+        }
+    }
     const addProduct = () => {
         if (sessionStorage.getItem('loggedIn')) {
             apiClient.post('../api/addSupplierProduct', {
@@ -102,7 +135,7 @@ export default function VerticalTabs(props) {
                 name: name,
                 desc: description,
                 cost: cost,
-                price:price,
+                price: price,
             })
 
                 .catch(error => console.error(error))
@@ -117,9 +150,9 @@ export default function VerticalTabs(props) {
         }
     };
 
-    // React.useEffect(() => {
-
-    // }, [])
+    React.useEffect(() => {
+        fetchOrders();
+    }, [])
     return (
 
         <div className={classes.root}>
@@ -148,7 +181,7 @@ export default function VerticalTabs(props) {
                     <thead className="text-primary">
 
                         <tr>
-                            <th>#ID</th>
+                            <th>#Barcode</th>
                             <th>Product Name</th>
                             <th>Description</th>
                             <th>Cost</th>
@@ -171,15 +204,18 @@ export default function VerticalTabs(props) {
                             return (
 
                                 product.products.map((prod) => {
+                                    const editing = prod.id !== editId;
+                                    
+                                    
                                     return (
                                         <tr >
-                                            <td>{prod.id}</td>
-                                            <td>{prod.name}</td>
-                                            <td>{prod.description}</td>
-                                            <td>{prod.cost}</td>
-                                            <td>{prod.price}</td>
-                                            <td >Edit</td>
-                                            {/* <td className="text-center">{supplier.phone}</td> */}
+                                            <td>{editing ? prod.barcode : <Input value={prod.barcode} style={{ color: "black" }} type="number" disabled={true}/>}</td>
+                                            <td>{editing ? prod.name    : <Input defaultValue={prod.name}    style={{ color: "black" }} type="text"   onChange={(e) => { setName(e.target.value) }} />}</td>
+                                            <td>{editing ? prod.description : <Input defaultValue={prod.description} style={{ color: "black" }} type="text" onChange={(e) => { setDescription(e.target.value) }} />}</td>
+                                            <td>{editing ? prod.cost    : <Input defaultValue={prod.cost}    style={{ color: "black" }} type="number" onChange={(e) => { setCost(e.target.value) }} />}</td>
+                                            <td>{editing ? prod.price   : <Input defaultValue={prod.price}   style={{ color: "black" }} type="number" onChange={(e) => { setPrice(e.target.value) }} />}</td>
+                                            <td>{editing ? <Button onClick={() => { { setEditId(prod.id); } }}>Edit</Button> : <Button onClick={() => { { editProduct(editId); setEditId(0); } }}>submit</Button>}</td>
+                                          
                                         </tr>
                                     );
                                 })
@@ -195,6 +231,9 @@ export default function VerticalTabs(props) {
             </TabPanel>
 
             <TabPanel value={value} index={2} style={{ width: "80%", hieght: "80%" }}>
+            
+             
+                {Order != [] ? <AutoOrder orders={Order} supplier={props.supplier}/> : <></>}
 
             </TabPanel>
 

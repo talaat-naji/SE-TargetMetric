@@ -12,6 +12,7 @@ use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\GovernorateController;
+use App\Http\Controllers\SupplierOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,3 +77,6 @@ Route::middleware('auth:sanctum')->get('/getSuppliers',[SupplierController::clas
 Route::middleware('auth:sanctum')->post('/addSupplier',[SupplierController::class,"addSupplier"]);
 Route::middleware('auth:sanctum')->post('/getSupplierProducts',[SupplierController::class,"getSupplierProducts"]);
 Route::middleware('auth:sanctum')->post('/addSupplierProduct',[SupplierController::class,"addSupplierProduct"]);
+Route::middleware('auth:sanctum')->post('/EditSupplierProduct',[SupplierController::class,"EditSupplierProduct"]);
+Route::middleware('auth:sanctum')->post('/autoGenerateOrder',[SupplierController::class,"autoGenerateOrder"]);
+Route::middleware('auth:sanctum')->post('/issueOrder',[SupplierOrderController::class,"issueOrder"]);

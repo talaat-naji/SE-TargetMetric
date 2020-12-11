@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSupplierOrdersTable extends Migration
+class CreateOrderContentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateSupplierOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('supplier_orders', function (Blueprint $table) {
+        Schema::create('order_contents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('supplier_id')->constrained()->cascadeOnDelete();
-            $table->boolean('status');
+            $table->foreignId('supplier_order_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->integer('qty');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateSupplierOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('supplier_orders');
+        Schema::dropIfExists('order_contents');
     }
 }

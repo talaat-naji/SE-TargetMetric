@@ -33,7 +33,8 @@ export default function ViewProd(props) {
     }
   const handleClickOpen = () => {
       setOpen(true);
-      setProductId(props.product.product.id)
+    setProductId(props.product.products[0].id)
+    console.log(props.product.products[0]);
   };
 
   const handleClose = () => {
@@ -65,28 +66,28 @@ const HtmlTooltip = withStyles((theme) => ({
               <HtmlTooltip
         title={
           <React.Fragment>
-            <Typography color="inherit">{props.product.product.description}</Typography>
+            <Typography color="inherit">{props.product.products[0].description}</Typography>
                      
           </React.Fragment>
         }
       >
         <div className="font-icon-detail" onClick={handleClickOpen}>
                         <i className="tim-icons icon-alert-circle-exc" />
-                            <p>{props.product.product.name}</p>
-                            <p>{props.product.price}</p>
+                            <p>{props.product.products[0].name}</p>
+                            <p>{props.product.products[0].price}</p>
               </div>
       </HtmlTooltip>     
             
     
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">{props.product.product.name}</DialogTitle>
+        <DialogTitle id="form-dialog-title">{props.product.products.name}</DialogTitle>
         <DialogContent>
           <DialogContentText >
                      
           </DialogContentText>
                   <TextField
-                      defaultValue={props.product.product.description}
-                      placeholder={props.product.product.description}
+                      defaultValue={props.product.products[0].description}
+                      placeholder={props.product.products[0].description}
                       onChange={(e)=>setDesc(e.target.value)}
             autoFocus
             margin="dense"
@@ -96,8 +97,8 @@ const HtmlTooltip = withStyles((theme) => ({
             fullWidth
           />
                   <TextField
-                      defaultValue={props.product.price}
-                     placeholder={props.product.price}
+                      defaultValue={props.product.products[0].price}
+                     placeholder={props.product.products[0].price}
                       onChange={(e)=>setPrice(e.target.value)}
             autoFocus
             margin="dense"

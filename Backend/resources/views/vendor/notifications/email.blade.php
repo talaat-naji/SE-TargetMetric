@@ -11,8 +11,9 @@
 @endif
 
 {{-- Intro Lines --}}
+
 @foreach ($introLines as $line)
-{{ $line }}
+<td>{{$line}}</td>
 
 @endforeach
 
@@ -35,9 +36,10 @@
 
 {{-- Outro Lines --}}
 @foreach ($outroLines as $line)
-{{ $line }}
+{{$line}}
 
 @endforeach
+
 
 {{-- Salutation --}}
 @if (! empty($salutation))

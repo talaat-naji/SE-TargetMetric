@@ -18,7 +18,8 @@ class CreateStocksTable extends Migration
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->integer('qty')->default(0);
-            $table->integer('min_qty')->nullable();
+            $table->integer('min_qty');
+            $table->integer('max_orderQty');
             $table->timestamps();
         });
     }
