@@ -15,6 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import { Button } from "@material-ui/core";
 import React from "react";
 
 // reactstrap components
@@ -25,11 +26,131 @@ import {
   CardTitle,
   Table,
   Row,
-  Col
+  Col,
+  Input
 } from "reactstrap";
-
+//import Alert from "reactstrap/lib/Alert";
+import apiClient from "../services/api";
 class Tables extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      supplierName: "",
+      supplier_id: 0,
+      supplier_email: 0,
+      order_id: 0,
+      orderState: false,
+      orderList: [],
+
+    };
+    this.products = [];
+    this.sum = 0;
+  }
+
+  fetchSupplier = (id) => {
+    if (sessionStorage.getItem('loggedIn')) {
+      apiClient.post('../api/getSupplierById', { supplier_id: id })
+        .then(response => {
+          //  console.log(response.data);
+          this.setState({ supplierName: "supplier not found" });
+          if (response !== null) {
+            this.setState({
+              supplierName: response.data[0].name,
+              supplier_id: response.data[0].id,
+              supplier_email: response.data[0].email
+            })
+          }
+
+        })
+        .catch(error => console.error(error))
+
+    }
+
+  }
+  fetchOrder = (id) => {
+    if (sessionStorage.getItem('loggedIn')) {
+
+      apiClient.post('../api/getOrderById', {
+        supplier_id: this.state.supplier_id,
+        order_id: id
+      })
+        .then((response) => {
+
+          this.sum = 0;
+          this.products = [];
+
+          this.setState({
+            orderList: [],
+            order_id: id,
+            OrderState: false
+          });
+
+          if (response.data.id !== null) {
+
+            this.setState({ OrderState: true });
+
+            response.data.map((order) => {
+
+              this.sum += order.product.cost * order.qty;
+
+              this.products.push({
+                pId: order.product.id,
+                barcode: order.product.barcode,
+                description: order.product.description,
+                qty: order.qty,
+                qtyRecieved: order.qty,
+                cost: order.product.cost,
+                total: order.product.cost * order.qty
+              });
+            });
+            this.setState({ orderList: this.products })
+          }
+
+        })
+        .catch(error => console.error(error))
+
+    }
+
+  }
+  editQty = (barcode, newValue) => {
+    this.sum = 0;
+    this.products.forEach(element => {
+      if (element.barcode === barcode) {
+        if (element.qty >= newValue) {
+          element.qtyRecieved = newValue;
+          element.total = element.cost * newValue;
+        }
+      }
+      this.sum += element.total;
+    });
+    console.log(this.products);
+    this.setState({ orderList: this.products });
+  }
+  sendInvoice = () => {
+    if (sessionStorage.getItem('loggedIn')) {
+      apiClient.post('../api/sendInvoice', {
+        invoice: this.state.orderList,
+        sum: this.sum,
+        order_id: this.state.order_id,
+        supplier_id: this.state.supplier_id,
+        supplier_email: this.state.supplier_email,
+      })
+        .then(response => {
+          if (response) {
+            this.sum = 0;
+            this.products = [];
+            this.setState({
+              orderList: [],
+              order_id: 0,
+              OrderState: false
+            });
+            
+          }
+        }).catch(error => console.error(error))
+    }
+  }
   render() {
+
     return (
       <>
         <div className="content">
@@ -37,130 +158,81 @@ class Tables extends React.Component {
             <Col md="12">
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h4">Simple Table</CardTitle>
+                  {/* <CardTitle tag="h4">Simple Table</CardTitle> */}
                 </CardHeader>
                 <CardBody>
                   <Table className="tablesorter" responsive>
                     <thead className="text-primary">
                       <tr>
-                        <th>Name</th>
-                        <th>Country</th>
-                        <th>City</th>
-                        <th className="text-center">Salary</th>
+                        <th colSpan="3" className="text-center"><h3>RECIEVE PRODUCTS</h3></th>
+
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>Dakota Rice</td>
-                        <td>Niger</td>
-                        <td>Oud-Turnhout</td>
-                        <td className="text-center">$36,738</td>
+                        <td>Supplier ID:</td>
+                        <td><Input type="number" onChange={(e) => { this.fetchSupplier(e.target.value) }} /></td>
+                        <td>{this.state.supplierName}</td>
                       </tr>
                       <tr>
-                        <td>Minerva Hooper</td>
-                        <td>Curaçao</td>
-                        <td>Sinaai-Waas</td>
-                        <td className="text-center">$23,789</td>
+                        <td>Order ID:</td>
+                        <td><Input type="number" onChange={(e) => { this.fetchOrder(e.target.value) }} /></td>
+                        <td>List Orders</td>
+                      </tr>
+                    </tbody>
+                  </Table>
+                </CardBody>
+              </Card>
+              <Card>
+                <CardBody>
+                  <Table className="tablesorter" responsive>
+                    <thead>
+                      <tr>
+                        <td>Barcode</td>
+                        <td>Description</td>
+                        <td>Qty Ordered</td>
+                        <td>Qty Recieved</td>
+                        <td>U.price</td>
+                        <td>Tot.Price</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* {this.products.forEach(order => {console.log(order,"order") })} */}
+                      {
+                        this.state.OrderState ?
+                          //console.log(this.products)
+                          this.state.orderList.map(order => {
+                            console.log(order, order.barcode, "kiiii");
+                            return (
+                              <tr>
+                                <td>{order.barcode}</td>
+                                <td>{order.description}</td>
+                                <td>{order.qty}</td>
+                                <td><Input defaultValue={order.qtyRecieved} type='number' onChange={(e) => { if (e.target.value > order.qty) { e.target.value = order.qty; alert("Qty recieved cant exeed qty ordered") } this.editQty(order.barcode, e.target.value); }}></Input></td>
+                                <td>{order.cost}</td>
+                                <td>{order.total}</td>
+
+                              </tr>)
+
+
+                          }) :
+                          <tr><td colSpan="6" className="text-center">enter a valid Purchase Order Id</td></tr>
+
+                      }
+                      <tr>
+                        <td colSpan="5" className="text-right">total</td>
+                        <td >{this.sum}</td>
                       </tr>
                       <tr>
-                        <td>Sage Rodriguez</td>
-                        <td>Netherlands</td>
-                        <td>Baileux</td>
-                        <td className="text-center">$56,142</td>
-                      </tr>
-                      <tr>
-                        <td>Philip Chaney</td>
-                        <td>Korea, South</td>
-                        <td>Overland Park</td>
-                        <td className="text-center">$38,735</td>
-                      </tr>
-                      <tr>
-                        <td>Doris Greene</td>
-                        <td>Malawi</td>
-                        <td>Feldkirchen in Kärnten</td>
-                        <td className="text-center">$63,542</td>
-                      </tr>
-                      <tr>
-                        <td>Mason Porter</td>
-                        <td>Chile</td>
-                        <td>Gloucester</td>
-                        <td className="text-center">$78,615</td>
-                      </tr>
-                      <tr>
-                        <td>Jon Porter</td>
-                        <td>Portugal</td>
-                        <td>Gloucester</td>
-                        <td className="text-center">$98,615</td>
+                        <td colSpan="6" className="text-center"><Button onClick={this.sendInvoice}>RECIECVE</Button></td>
+
                       </tr>
                     </tbody>
                   </Table>
                 </CardBody>
               </Card>
             </Col>
-            <Col md="12">
-              <Card className="card-plain">
-                <CardHeader>
-                  <CardTitle tag="h4">Table on Plain Background</CardTitle>
-                  <p className="category">Here is a subtitle for this table</p>
-                </CardHeader>
-                <CardBody>
-                  <Table className="tablesorter" responsive>
-                    <thead className="text-primary">
-                      <tr>
-                        <th>Name</th>
-                        <th>Country</th>
-                        <th>City</th>
-                        <th className="text-center">Salary</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Dakota Rice</td>
-                        <td>Niger</td>
-                        <td>Oud-Turnhout</td>
-                        <td className="text-center">$36,738</td>
-                      </tr>
-                      <tr>
-                        <td>Minerva Hooper</td>
-                        <td>Curaçao</td>
-                        <td>Sinaai-Waas</td>
-                        <td className="text-center">$23,789</td>
-                      </tr>
-                      <tr>
-                        <td>Sage Rodriguez</td>
-                        <td>Netherlands</td>
-                        <td>Baileux</td>
-                        <td className="text-center">$56,142</td>
-                      </tr>
-                      <tr>
-                        <td>Philip Chaney</td>
-                        <td>Korea, South</td>
-                        <td>Overland Park</td>
-                        <td className="text-center">$38,735</td>
-                      </tr>
-                      <tr>
-                        <td>Doris Greene</td>
-                        <td>Malawi</td>
-                        <td>Feldkirchen in Kärnten</td>
-                        <td className="text-center">$63,542</td>
-                      </tr>
-                      <tr>
-                        <td>Mason Porter</td>
-                        <td>Chile</td>
-                        <td>Gloucester</td>
-                        <td className="text-center">$78,615</td>
-                      </tr>
-                      <tr>
-                        <td>Jon Porter</td>
-                        <td>Portugal</td>
-                        <td>Gloucester</td>
-                        <td className="text-center">$98,615</td>
-                      </tr>
-                    </tbody>
-                  </Table>
-                </CardBody>
-              </Card>
-            </Col>
+
           </Row>
         </div>
       </>

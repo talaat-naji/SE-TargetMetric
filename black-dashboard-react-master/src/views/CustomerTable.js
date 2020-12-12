@@ -18,7 +18,7 @@ export default function CustomerTable(props) {
   const handleClickOpen = (id) => {
       setOpen(true);
       setCustomerId(id);
-      console.log(customerId,"kkkkk");
+      
   };
 
   const handleClose = () => {
@@ -42,7 +42,7 @@ export default function CustomerTable(props) {
                   <tbody>
                     {props.customersData.map((customer) => {
                       return (<tr>
-                          <td onClick={() => { handleClickOpen(customer.id) }}>{customer.name}</td>
+                          <td onClick={() => { handleClickOpen(customer.shop_id) }}>{customer.name}</td>
                         <td>{customer.govName}</td>
                         <td>{customer.distName}</td>
                         <td className="text-center">{customer.total} L.L</td>

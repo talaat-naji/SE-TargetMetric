@@ -35,9 +35,9 @@ var routes = [
   },
   {
     path: "/icons",
-    name: "Products",
+    name: "WareHouse",
     rtlName: "الرموز",
-    icon: "tim-icons icon-atom",
+    icon: "tim-icons icon-istanbul",
     component: Products,
     layout: "/admin"
   },
@@ -45,7 +45,7 @@ var routes = [
     path: "/map",
     name: "Suppliers",
     rtlName: "خرائط",
-    icon: "tim-icons icon-pin",
+    icon: "tim-icons icon-delivery-fast",//<i className="tim-icons icon-delivery-fast text-primary" />
     component: Suppliers,
     layout: "/admin"
   },
@@ -67,9 +67,9 @@ var routes = [
   },
   {
     path: "/tables",
-    name: "Table List",
+    name: "Recieve Orders",
     rtlName: "قائمة الجدول",
-    icon: "tim-icons icon-puzzle-10",
+    icon: "tim-icons icon-check-2",
     component: TableList,
     layout: "/admin"
   },

@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class RecieveOrder extends Model
 {
     use HasFactory;
+
+    protected $fillable=["supplier_order_id","product_id","qty"];
 }

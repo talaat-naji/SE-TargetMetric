@@ -25,11 +25,12 @@ import classNames from "classnames";
 export default function AutoOrder(props) {
     
     const orderList = [];
+    const [max_orderQty, setQtyMax] = React.useState();
 
-    const editQty=(barcode,newQty)=>{
+    const editQty=(barcode)=>{
         orderList.forEach(element => {
             if (element.barcode === barcode) {
-                element.qty = newQty;
+                element.qty = max_orderQty;
                 
             }
         });
@@ -58,8 +59,8 @@ export default function AutoOrder(props) {
                     <th>#Barcode</th>
                     <th>Description</th>
                     <th>Qty</th>
-                    <th>U.Cost</th>
-                    <th>T.cost</th>
+                    <th>U.Price</th>
+                    <th>T.Price</th>
                     {/* <th className="text-center">Phone</th> */}
                 </tr>
             </thead>
@@ -74,6 +75,7 @@ export default function AutoOrder(props) {
                 </tr> */}
                 {props.orders.map((order) => {
                     {
+                       // setQtyMax(order.max_orderQty);
                         orderList.push({
                          pId:order.product_id,
                         barcode: order.barcode,
@@ -87,9 +89,9 @@ export default function AutoOrder(props) {
                                 <tr >
                                     <td>{order.barcode} </td>
                                     <td>{order.description}</td>
-                                    <td><Input defaultValue={order.max_orderQty} onChange={(e)=>editQty(order.barcode,e.target.value)}/></td>
+                                    <td><Input defaultValue={order.max_orderQty} onChange={(e) => { editQty(order.barcode);setQtyMax(e.target.value)}}/></td>
                                     <td>{order.cost}</td>
-                                    <td>{ order.cost*order.qty }</td>
+                                    <td>{ order.cost*order.max_orderQty }</td>
                                    
                                    
                                 </tr>

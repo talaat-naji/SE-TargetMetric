@@ -31,6 +31,7 @@ import {
   CardHeader,
   CardBody,
   CardTitle,
+  Input,
   Table,
   Row,
   Col
@@ -42,6 +43,7 @@ class Suppliers extends React.Component {
     super(props);
     this.state = {
       suppliers: [],
+      suppliersFiltered: [],
       open: false,
       name: '',
       email: '',
@@ -52,7 +54,10 @@ class Suppliers extends React.Component {
     if (sessionStorage.getItem('loggedIn')) {
       apiClient.get('../api/getSuppliers')
         .then(response => {
-          this.setState({ suppliers: response.data });
+          this.setState({
+            suppliers: response.data,
+            suppliersFiltered: response.data
+          });
         })
         .catch(error => console.error(error))
 
@@ -71,6 +76,16 @@ class Suppliers extends React.Component {
 
     }
 
+  }
+  filterResults = (value) => {
+    if (value === null) {
+      this.setState({ suppliersFiltered: this.state.suppliers });
+    } else {
+     let filter = this.state.suppliers.filter(supplier => supplier.name.toLowerCase().includes(value));
+      this.setState({ suppliersFiltered: filter });
+      console.log(filter);
+    }
+    
   }
 
   handleClickOpen = () => {
@@ -102,11 +117,19 @@ handleSubmit = () => {
             <Col md="12">
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h4">My Suppliers  <button onClick={this.handleClickOpen} style={{ marginRight: "1em", float: "right" }}>NEW Supplier</button></CardTitle>
+                  <CardTitle tag="h4">My Suppliers
+                  <button onClick={this.handleClickOpen}
+                      style={{ marginRight: "1em", float: "right" }}>NEW Supplier</button>
+                  <Input
+                      type="text"
+                      placeholder="search By Name"
+                      onChange={(e) => this.filterResults(e.target.value)} />
+                    
+                  </CardTitle>
                   
                 </CardHeader>
                 <CardBody>
-                  <SupplierTable suppliers={this.state.suppliers}/>
+                  <SupplierTable suppliers={this.state.suppliersFiltered}/>
                 </CardBody>
               </Card>
             </Col>

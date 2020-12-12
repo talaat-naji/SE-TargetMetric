@@ -83,7 +83,8 @@ export default function VerticalTabs(props) {
     const [product_id, setProduct_id] = React.useState();
     const [price, setPrice] = React.useState();
     const [cost, setCost] = React.useState();
-
+    const [min_qty, setQtyMin] = React.useState();
+    const [max_orderQty, setQtyMax] = React.useState();
 
     const [Order, setOrder] = React.useState();
     const [editId, setEditId] = React.useState();
@@ -116,11 +117,14 @@ export default function VerticalTabs(props) {
                 desc: description,
                 cost: cost,
                 price: price,
+                min_qty: min_qty,
+                max_orderQty:max_orderQty
             }).then(() => {
                 setName('');
                 setDescription('');
                 setCost();
                 setPrice();
+                fetchProducts();
             })
 
                 .catch(error => console.error(error))
@@ -136,6 +140,8 @@ export default function VerticalTabs(props) {
                 desc: description,
                 cost: cost,
                 price: price,
+                min_qty: min_qty,
+                max_orderQty:max_orderQty
             })
 
                 .catch(error => console.error(error))
@@ -186,6 +192,8 @@ export default function VerticalTabs(props) {
                             <th>Description</th>
                             <th>Cost</th>
                             <th>Selling Price</th>
+                            <th>Min.Qty</th>
+                            <th>Max.Qty</th>
                             <th>Action</th>
                             {/* <th className="text-center">Phone</th> */}
                         </tr>
@@ -197,6 +205,8 @@ export default function VerticalTabs(props) {
                             <td><Input style={{ color: "black" }} type="text" onChange={(e) => { setDescription(e.target.value) }} /></td>
                             <td><Input style={{ color: "black" }} type="text" onChange={(e) => { setCost(e.target.value) }} /></td>
                             <td><Input style={{ color: "black" }} type="text" onChange={(e) => { setPrice(e.target.value) }} /></td>
+                            <td><Input style={{ color: "black" }} type="number" onChange={(e) => { setQtyMax(e.target.value) }} /></td>
+                            <td><Input style={{ color: "black" }} type="number" onChange={(e) => { setQtyMin(e.target.value) }} /></td>
                             <td><Button onClick={() => { addProduct(); fetchProducts() }}>ADD</Button></td>
                         </tr>
                         {products.map((product) => {
@@ -207,14 +217,28 @@ export default function VerticalTabs(props) {
                                     const editing = prod.id !== editId;
                                     
                                     
+                                      const test= () => {
+                                            setName(prod.name);
+                                            setDescription(prod.description);
+                                            setCost(prod.cost);
+                                            setPrice(prod.price);
+                                            setQtyMin(prod.stock.min_qty);
+                                            setQtyMax(prod.stock.max_orderQty);
+                                       }
+                                        
+                                       
+                                   
+                                    
                                     return (
                                         <tr >
                                             <td>{editing ? prod.barcode : <Input value={prod.barcode} style={{ color: "black" }} type="number" disabled={true}/>}</td>
                                             <td>{editing ? prod.name    : <Input defaultValue={prod.name}    style={{ color: "black" }} type="text"   onChange={(e) => { setName(e.target.value) }} />}</td>
                                             <td>{editing ? prod.description : <Input defaultValue={prod.description} style={{ color: "black" }} type="text" onChange={(e) => { setDescription(e.target.value) }} />}</td>
                                             <td>{editing ? prod.cost    : <Input defaultValue={prod.cost}    style={{ color: "black" }} type="number" onChange={(e) => { setCost(e.target.value) }} />}</td>
-                                            <td>{editing ? prod.price   : <Input defaultValue={prod.price}   style={{ color: "black" }} type="number" onChange={(e) => { setPrice(e.target.value) }} />}</td>
-                                            <td>{editing ? <Button onClick={() => { { setEditId(prod.id); } }}>Edit</Button> : <Button onClick={() => { { editProduct(editId); setEditId(0); } }}>submit</Button>}</td>
+                                            <td>{editing ? prod.price : <Input defaultValue={prod.price} style={{ color: "black" }} type="number" onChange={(e) => { setPrice(e.target.value) }} />}</td>
+                                            <td>{editing ? prod.stock.min_qty    : <Input defaultValue={prod.stock.min_qty}    style={{ color: "black" }} type="number" onChange={(e) => { setQtyMin(e.target.value) }} />}</td>
+                                            <td>{editing ? prod.stock.max_orderQty  : <Input defaultValue={prod.stock.max_orderQty }   style={{ color: "black" }} type="number" onChange={(e) => { setQtyMax(e.target.value) }} />}</td>
+                                            <td>{editing ? <Button onClick={() => { { setEditId(prod.id); test()} }}>Edit</Button> : <Button onClick={() => { { editProduct(editId); setEditId(0); } }}>submit</Button>}</td>
                                           
                                         </tr>
                                     );

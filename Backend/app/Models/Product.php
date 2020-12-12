@@ -35,4 +35,9 @@ class Product extends Model
     {
         return $this->hasOneThrough(Price::class, User::class);
     }
+
+    public function stock()
+    {
+        return $this->hasOne(Stock::class);
+    }
 }

@@ -10,4 +10,8 @@ class OrderContent extends Model
     use HasFactory;
 
     protected $fillable=["supplier_order_id","product_id","qty"];
+
+    public function product(){
+        return $this->belongsTo(Product::class);
+    }
 }

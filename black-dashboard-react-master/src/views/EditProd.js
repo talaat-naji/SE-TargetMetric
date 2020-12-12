@@ -1,53 +1,53 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import apiClient from '../services/api';
+// import Button from '@material-ui/core/Button';
+// import TextField from '@material-ui/core/TextField';
+// import Dialog from '@material-ui/core/Dialog';
+// import DialogActions from '@material-ui/core/DialogActions';
+// import DialogContent from '@material-ui/core/DialogContent';
+// import DialogContentText from '@material-ui/core/DialogContentText';
+// import DialogTitle from '@material-ui/core/DialogTitle';
+// import apiClient from '../services/api';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 
 export default function ViewProd(props) {
-    const [open, setOpen] = React.useState(false);
-    const [productDesc, setDesc] = React.useState();
-    const [price, setPrice] = React.useState();
-    const [productId, setProductId] = React.useState();
+    // const [open, setOpen] = React.useState(false);
+    // const [productDesc, setDesc] = React.useState();
+    // const [price, setPrice] = React.useState();
+    // const [productId, setProductId] = React.useState();
 
-    const editProduct = () => {
-        if (sessionStorage.getItem('loggedIn')) {
-            apiClient.post('/api/editProduct',
-                {
-                        productId:productId,
-                        productDesc: productDesc,
-                        price: price
-                    })
+    // const editProduct = () => {
+    //     if (sessionStorage.getItem('loggedIn')) {
+    //         apiClient.post('/api/editProduct',
+    //             {
+    //                     productId:productId,
+    //                     productDesc: productDesc,
+    //                     price: price
+    //                 })
                
-                    .catch(error => console.error(error)
-                    )
+    //                 .catch(error => console.error(error)
+    //                 )
 
-        }
-    }
-  const handleClickOpen = () => {
-      setOpen(true);
-    setProductId(props.product.products[0].id)
-    console.log(props.product.products[0]);
-  };
+    //     }
+    // }
+  // const handleClickOpen = () => {
+  //     setOpen(true);
+  //   setProductId(props.product.id)
+  //   //console.log(props.product);
+  // };
 
-  const handleClose = () => {
-      setOpen(false);
-     // setName(null);
-     // setDeadline(null);
-  };
-  const handleSubmit = () => {
-      setOpen(false);
-      editProduct();
-      props.onEditProduct();
+  // const handleClose = () => {
+  //     setOpen(false);
+  //    // setName(null);
+  //    // setDeadline(null);
+  // };
+  // const handleSubmit = () => {
+  //     setOpen(false);
+  //     editProduct();
+  //     props.onEditProduct();
       
-  };
+  // };
     
     
 const HtmlTooltip = withStyles((theme) => ({
@@ -66,28 +66,28 @@ const HtmlTooltip = withStyles((theme) => ({
               <HtmlTooltip
         title={
           <React.Fragment>
-            <Typography color="inherit">{props.product.products[0].description}</Typography>
+            <Typography color="inherit">{props.product.description}</Typography>
                      
           </React.Fragment>
         }
       >
-        <div className="font-icon-detail" onClick={handleClickOpen}>
+        <div className="font-icon-detail" >
                         <i className="tim-icons icon-alert-circle-exc" />
-                            <p>{props.product.products[0].name}</p>
-                            <p>{props.product.products[0].price}</p>
+                            <p>{props.product.name}</p>
+                            <p>{props.product.price}</p>
               </div>
       </HtmlTooltip>     
             
     
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">{props.product.products.name}</DialogTitle>
+      {/* <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">{props.product.name}</DialogTitle>
         <DialogContent>
           <DialogContentText >
                      
           </DialogContentText>
                   <TextField
-                      defaultValue={props.product.products[0].description}
-                      placeholder={props.product.products[0].description}
+                      defaultValue={props.product.description}
+                      placeholder={props.product.description}
                       onChange={(e)=>setDesc(e.target.value)}
             autoFocus
             margin="dense"
@@ -97,8 +97,8 @@ const HtmlTooltip = withStyles((theme) => ({
             fullWidth
           />
                   <TextField
-                      defaultValue={props.product.products[0].price}
-                     placeholder={props.product.products[0].price}
+                      defaultValue={props.product.price}
+                     placeholder={props.product.price}
                       onChange={(e)=>setPrice(e.target.value)}
             autoFocus
             margin="dense"
@@ -116,7 +116,7 @@ const HtmlTooltip = withStyles((theme) => ({
             Submit Changes
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 }

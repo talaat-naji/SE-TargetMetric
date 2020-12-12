@@ -32,7 +32,7 @@ class SupplierController extends Controller
     {
         return Supplier::where('user_id', Auth::id())
             ->where("id", $request->id)
-            ->with("products")->with('stock')->get();
+            ->with("products")->with('products.stock')->get();
     }
 
     public function addSupplierProduct(Request $request)
@@ -66,7 +66,7 @@ class SupplierController extends Controller
             "price" => $request->price,
             "pic_path" => "/image/test",
         ]);
-        Stock::where("id", $request->product_id)
+        Stock::where("product_id", $request->product_id)
             ->update([
                 "min_qty" => $request->min_qty,
                 "max_orderQty" => $request->max_orderQty
