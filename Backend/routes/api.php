@@ -89,3 +89,11 @@ Route::middleware('auth:sanctum')->post('/issueOrder',[SupplierOrderController::
 Route::middleware('auth:sanctum')->post('/getSupplierById',[RecieveOrderController::class,"getSupplierById"]);
 Route::middleware('auth:sanctum')->post('/getOrderById',[RecieveOrderController::class,"getOrderById"]);
 Route::middleware('auth:sanctum')->post('/sendInvoice',[RecieveOrderController::class,"sendInvoice"]);
+
+/*SHOP USER!!!!!
+|--------------------------------------------------------------------------
+| retailers
+|--------------------------------------------------------------------------
+|*/
+Route::middleware('auth:sanctum')->get('/getRetailers',[ShopController::class,"getRetailers"]);
+Route::middleware('auth:sanctum')->post('/getRetailerProducts',[ShopController::class,"getRetailersProducts"]);

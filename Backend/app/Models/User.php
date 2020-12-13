@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\District;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -48,5 +49,20 @@ class User extends Authenticatable
 
     public function products(){
         return $this->hasManyThrough(Price::class,Product::class);
+    }
+    public function location(){
+       
+        
+        return $this->hasOne(Location::class);
+    }
+    public function governorate(){
+       
+        
+        return $this->hasOneThrough(Governorate::class,Location::class,"id","id","id","governorate_id");
+    }
+
+    public function district(){
+        
+        return $this->hasOneThrough(District::class,Location::class,"id","id","id","district_id");
     }
 }

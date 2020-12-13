@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use App\Models\Supplier;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -60,5 +63,19 @@ class ShopController extends Controller
   
 
         return $result;
+    }
+
+    public function getRetailers(){
+
+     return   User::where("userType","=","retailer")->with('governorate')->with("district")->get();
+    }
+
+    public function getRetailersProducts(){
+
+      return  Product::join('suppliers', function ($join) {
+        $join->on('suppliers.id', '=', 'products.supplier_id');
+        $join->where("suppliers.user_id", '=', request("retailer_id"));
+    })->select('suppliers.id',"products.*")->paginate(12);
+
     }
 }
