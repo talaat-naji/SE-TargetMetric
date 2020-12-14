@@ -10,14 +10,12 @@ import { Table } from "reactstrap";
 import RetailerTabs  from "./RetailerTabs";
 export default function RetailerRow(props) {
     const [open, setOpen] = React.useState(false);
-    const [retailerId, setRetailerId] = React.useState();
-    // React.useEffect(() => {
-    //     console.log(props, "hyyyyyy");
-    // }, [])
+    const [retailer, setRetailer] = React.useState('');
+    
    
-    const handleClickOpen = (id) => {
+    const handleClickOpen = (retailer) => {
         setOpen(true);
-        setRetailerId(id);
+        setRetailer(retailer);
       
     };
 
@@ -29,7 +27,7 @@ export default function RetailerRow(props) {
     
 
     return (<>
-        <tr onClick={()=>handleClickOpen(props.retailer.id)}>
+        <tr onClick={()=>handleClickOpen(props.retailer)}>
             <td>{props.retailer.name}</td>
             <td>{props.retailer.email}</td>
             <td>{props.retailer.governorate !== null ? props.retailer.governorate.gov_name : null}</td>
@@ -37,9 +35,10 @@ export default function RetailerRow(props) {
         </tr>
       
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullScreen={true} >
-            <DialogTitle id="form-dialog-title"></DialogTitle>
+            <DialogTitle id="form-dialog-title" ><h3 style={{ color: "black" }}>{retailer.name}</h3></DialogTitle>
             <DialogContent>
-                <RetailerTabs retailer_id={retailerId} />
+                {/* <RetailerTabs retailer_id={retailerId} /> */}
+                <RetailerTabs retailer={retailer} />
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">

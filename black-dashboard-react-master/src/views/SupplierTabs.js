@@ -154,6 +154,10 @@ export default function VerticalTabs(props) {
         if (newValue === 1) {
             fetchProducts();
         }
+        if (newValue === 2) {
+            fetchOrders();
+        }
+
     };
 
     React.useEffect(() => {

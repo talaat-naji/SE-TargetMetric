@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\User;
@@ -77,5 +78,23 @@ class ShopController extends Controller
         $join->where("suppliers.user_id", '=', request("retailer_id"));
     })->select('suppliers.id',"products.*")->paginate(12);
 
+    }
+
+    public function orderProduct(Request $request){
+        $order=new Order();
+
+        $order->shop_id=Auth::id();
+        $order->user_id=$request->retailer_id;
+        $order->product_id=$request->product_id;
+        $order->qty_ordered=$request->qty;
+        $order->status=false;
+        $order->lat=$request->lat;
+        $order->lng=$request->lng;
+        $order->save();
+    }
+
+    public function getProductsByBarcode(Request $request){
+
+      return  Product::where('barcode',$request->barcode)->with('retailer')->get();
     }
 }

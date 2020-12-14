@@ -9,6 +9,14 @@ const Login = (props) => {
     const [userType, setUserType] = React.useState('');
     const [authError, setAuthError] = React.useState(false);
     const [unknownError, setUnknownError] = React.useState(false);
+
+    React.useEffect(() => {
+        if (sessionStorage.getItem('userType') === "retailer") {
+            props.history.push('/admin/dashboard');
+        } else if (sessionStorage.getItem('userType') === "shop") {
+            props.history.push('/shop');
+        }
+    }, []);
     const handleSubmit = (e) => {
         e.preventDefault();
         setAuthError(false);

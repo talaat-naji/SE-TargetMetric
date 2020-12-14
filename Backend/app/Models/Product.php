@@ -23,7 +23,7 @@ class Product extends Model
 
     public function retailer()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOneThrough(User::class,Supplier::class,"id","id","supplier_id","user_id");
     }
 
     public function shopPrice()

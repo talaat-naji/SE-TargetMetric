@@ -26,11 +26,13 @@ import {
 } from "reactstrap";
 
 import apiClient from "../services/api";
+import { Link, Redirect } from 'react-router-dom';
+import MapLocation from './ShopViews/MapLocation';
 export default function OrderDialog(props) {
   const [open, setOpen] = React.useState(false);
   const [qty, setQty] = React.useState(props.order.qty_ordered);
   const [open2, setOpen2] = React.useState(false);
-  const [orderQty, setOrderQty] = React.useState();
+  
   const [alert, setAlert] = React.useState('');
 
   const handleClickOpen = () => {
@@ -38,7 +40,6 @@ export default function OrderDialog(props) {
    
   };
 
-   React.useEffect(() => {console.log(open,"2") }, [open]);
   const Deliver = () => {
     if (sessionStorage.getItem('loggedIn')) {
       apiClient.post('../api/deliverOrder', {
@@ -60,19 +61,7 @@ export default function OrderDialog(props) {
           .catch(error => console.error(error))
   }
 }
-const handleOrder = () => {
-  if (sessionStorage.getItem('loggedIn')) {
-    apiClient.post('../api/orderSupplier', {
-      qty: orderQty,
-      product_id: props.order.product.id,
-      product_name: props.order.product.name,
-      supplier_email:props.order.product.supplier_email,
-    }).then(() => {
-      setQty(props.order.qty_ordered)
-      props.onDeliver();
-    }).catch(error => console.error(error))
-}
-}
+
   const handleClose = () => {
     setOpen(false);
   
@@ -83,7 +72,8 @@ const handleOrder = () => {
     props.onDeliver();
   };
   const handleDeliver = () => {
-    if (props.order.stock.qty - qty <= 0) {
+    if (qty <= 0) { setAlert(<Alert color='danger'>you Cant deliver an empty order !!!</Alert>) }
+    else if (props.order.stock.qty - qty < 0) {
       setAlert(<Alert color='danger'>you dont have enough qty of this product</Alert>)
     } else {
       setAlert('');
@@ -112,8 +102,10 @@ const handleOrder = () => {
             You Have {props.order.stock.qty} Pcs Of {props.order.product.name} In your Stock.
             if you deliver this qty {props.order.stock.qty - qty} pcs will remain.
           </DialogContentText>
-          <Input Max={props.order.qty_ordered} style={{ color: 'black' }} type="number" value={qty} onChange={(e) => { setQty(e.target.value) }} />
+          <Input max={props.order.qty_ordered} style={{ color: 'black' }} type="number" value={qty} onChange={(e) => { setQty(e.target.value) }} />
           {alert}
+
+          <MapLocation xValue={props.order.lat} yValue={props.order.lng}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
@@ -131,9 +123,9 @@ const handleOrder = () => {
         <DialogContent>
           <DialogContentText>
             You Have a deficiet in product: {props.order.product.name} 
-            specify the quantity you want to order from {props.order.product.supplier_email} or just click cancel.
+            {/* specify the quantity you want to order from {props.order.product.supplier_email} or just click cancel. */}
           </DialogContentText>
-          <Input style={{ color: 'black' }} type="number"  onChange={(e) => { setOrderQty(e.target.value) }} />
+          {/* <Input style={{ color: 'black' }} type="number"  onChange={(e) => { setOrderQty(e.target.value) }} /> */}
           {alert}
         </DialogContent>
         <DialogActions>
@@ -141,8 +133,8 @@ const handleOrder = () => {
             Cancel
           </Button>
 
-          <Button onClick={handleOrder} color="primary">
-            Order
+          <Button onClick={()=>setOpen2(false)}color="primary">
+           <Link to="/admin/suppliers"> Go to suppliers</Link>
           </Button>
         </DialogActions>
       </Dialog>

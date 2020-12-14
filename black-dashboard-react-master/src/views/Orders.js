@@ -105,7 +105,7 @@ class Orders extends React.Component {
                      {this.state.orders.map((order) => {
                             return (
                                 
-                                <OrderDialog order={order}  onDeliver={() => { this.fetchOrders() }}/> 
+                                <OrderDialog key={order.id} order={order}  onDeliver={() => { this.fetchOrders() }}/> 
                             )
                         })
                         }

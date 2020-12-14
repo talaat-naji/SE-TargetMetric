@@ -21,12 +21,13 @@ import {
 
 } from "reactstrap";
 import classNames from "classnames";
+import Alert from 'reactstrap/lib/Alert';
 
 export default function AutoOrder(props) {
-    
+    const [alert, setAlert] = React.useState('');
     const orderList = [];
     const [max_orderQty, setQtyMax] = React.useState();
-
+    
     const editQty=(barcode)=>{
         orderList.forEach(element => {
             if (element.barcode === barcode) {
@@ -43,6 +44,12 @@ export default function AutoOrder(props) {
                 orderList: orderList,
                 supplier_id: props.supplier.id,
                 supplier_email:props.supplier.email
+            }).then((response) => {
+               
+                if (response.status === 200) {
+                    
+                   setAlert(<Alert onClick={()=>{setAlert('')}}>your order was sent succesfully</Alert>)
+                }
             })
 
                 .catch(error => console.error(error))
@@ -51,6 +58,7 @@ export default function AutoOrder(props) {
     }
 
     return (<>
+        {alert}
         <Button onClick={() => { issueOrder() }}>Issue Order</Button>
         <Table className="tablesorter" responsive style={{ backgroundColor: "#525f7f" }}>
             <thead className="text-primary">

@@ -30,7 +30,7 @@ const App = () => {
 
             }
             if (!loggedIn) {
-                console.log("test"); 
+                console.log("test");
                 hist.push('/login');
                 setLoggedIn(false);
             }
@@ -40,16 +40,16 @@ const App = () => {
     return (
 
         <Router history={hist}>
-    <Switch>
-                <Route path="/admin" render={props => <AdminLayout {...props} loggedIn={loggedIn} logout={logout}/>} />
-      <Route path="/rtl" render={props => <RTLLayout {...props} loggedIn={loggedIn} logout={logout}/>} />
-      <Route path="/login" render={props => <Login {...props} login={login}/>} />
-      <Route path="/register" render={props => <Register {...props} login={login}/>} />
+            <Switch>
+                <Route path="/admin" render={props => <AdminLayout {...props} loggedIn={loggedIn} logout={logout} />} />
+                <Route path="/rtl" render={props => <RTLLayout {...props} loggedIn={loggedIn} logout={logout} />} />
+                <Route path="/login" render={props => <Login {...props} login={login} />} />
+                <Route path="/register" render={props => <Register {...props} login={login} />} />
                 {/* <Redirect from="/" to="/admin/dashboard" /> */}
-                
-                <Route path="/shop" render={props => <ShopLayout {...props} loggedIn={loggedIn} logout={logout}/>} />
-    </Switch>
-  </Router>
+
+                <Route path="/shop" render={props => <ShopLayout {...props} loggedIn={loggedIn} logout={logout} />} />
+            </Switch>
+        </Router>
     );
 };
 

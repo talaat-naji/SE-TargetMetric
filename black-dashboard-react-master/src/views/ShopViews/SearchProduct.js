@@ -32,44 +32,48 @@ import {
 //import Alert from "reactstrap/lib/Alert";
 import apiClient from "../../services/api";
 import RetailerRow from "./RetailerRow";
-class RetailersList extends React.Component {
+import ProductOrder from "./ProductOrder";
+class ProductList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-    
-      retailers: [],
-      retailersFilter:[]
+
+      products: [],
+      sortedProducts: [],
+      sortWay:"dsc",
 
     };
-   
+
   }
 
-  fetchRetailers = () => {
+  fetchProducts = (value) => {
     if (sessionStorage.getItem('loggedIn')) {
-      apiClient.get('../api/getRetailers')
+      apiClient.post('../api/getProductsByBarcode',{barcode:value})
         .then(response => {
-          
-          this.setState({ retailers: response.data,retailersFilter: response.data })
+
+          this.setState({ products: response.data,sortedProducts: response.data })
          
         })
         .catch(error => console.error(error))
 
     }
   }
-  filterResults = (value) => {
-    
-    if (value === null) {
-      this.setState({ retailersFilter: this.state.retailers });
-    } else {
-      let filter = this.state.retailers.filter(retailer => retailer.name.toLowerCase().includes(value));
+  sortResults = () => {
 
-      this.setState({ retailersFilter: filter });
-    
+    if (this.state.sortWay === "dsc") {
+      let filter = this.state.products.sort((a, b) => a.price > b.price ? 1 : -1);
+      this.setState({ sortedProducts: filter,sortWay:"asc" });
+
+    } else {
+      let filter = this.state.products.sort((a, b) => a.price < b.price ? 1 : -1);
+
+      this.setState({ sortedProducts: filter,sortWay:"dsc" });
+
     }
   }
   componentDidMount() {
-    this.fetchRetailers();
- }
+    // this.fetchRetailers();
+  }
   render() {
 
     return (
@@ -79,17 +83,17 @@ class RetailersList extends React.Component {
             <Col md="12">
               <Card>
                 <CardHeader>
-               
+
                 </CardHeader>
                 <CardBody>
                   <Table className="tablesorter" responsive>
                     <thead className="text-primary">
-                  <tr><h3>Retailers</h3></tr>
+                      <tr><h3>Products</h3></tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td><Input onChange={(e)=>this.filterResults(e.target.value)} type="text" placeholder="search by name"/></td>
-                       
+                        <td><Input onChange={(e) => this.fetchProducts(e.target.value)} type="text" placeholder="search product by barcode" /></td>
+
                       </tr>
                     </tbody>
                   </Table>
@@ -101,26 +105,32 @@ class RetailersList extends React.Component {
                     <thead>
                       <tr>
                         <th>Name</th>
-                        <th>email</th>
-                        <th>Governorate</th>
-                        <th>District</th>
-                        
+                        <th>description</th>
+                        <th>Retailer</th>
+                        <th onClick={this.sortResults}>price <i  className={this.state.sortWay=="dsc"?"tim-icons icon-minimal-down bold":"tim-icons icon-minimal-up"}/></th>
+                        <th>action</th>
                       </tr>
                     </thead>
                     <tbody>
                       {
-                        this.state.retailersFilter.map(retailer => {
-                        
+                        this.state.sortedProducts.map(product => {
+
                           return (
                             <>
-                           
-                            <RetailerRow retailer={retailer} />
+                              <tr>
+                                <td>{product.name}</td>
+                                <td>{product.description}</td>
+                                <td>{product.retailer.name}</td>
+                                <td>{product.price}</td>
+                                <td><ProductOrder product={product} retailer_id={product.retailer.id}/></td>
+
+                              </tr>
                             </>
                           );
-                          })
-                          
+                        })
+
                       }
-                     
+
                     </tbody>
                   </Table>
                 </CardBody>
@@ -134,4 +144,4 @@ class RetailersList extends React.Component {
   }
 }
 
-export default RetailersList;
+export default ProductList;

@@ -97,3 +97,5 @@ Route::middleware('auth:sanctum')->post('/sendInvoice',[RecieveOrderController::
 |*/
 Route::middleware('auth:sanctum')->get('/getRetailers',[ShopController::class,"getRetailers"]);
 Route::middleware('auth:sanctum')->post('/getRetailerProducts',[ShopController::class,"getRetailersProducts"]);
+Route::middleware('auth:sanctum')->post('/orderProduct',[ShopController::class,"orderProduct"]);
+Route::middleware('auth:sanctum')->post('/getProductsByBarcode',[ShopController::class,"getProductsByBarcode"]);

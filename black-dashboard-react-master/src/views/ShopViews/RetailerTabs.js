@@ -95,7 +95,7 @@ export default function RetailerTabs(props) {
     const fetchProducts = (nb) => {
         if (sessionStorage.getItem('loggedIn')) {
             apiClient.post('../api/getRetailerProducts?page=' + nb, {
-                retailer_id: props.retailer_id,
+                retailer_id: props.retailer.id,
 
             })
                 .then(response => {
@@ -180,7 +180,7 @@ export default function RetailerTabs(props) {
                                                                     <i className="tim-icons icon-alert-circle-exc" />
                                                                     <p>{prod.name}</p>
                                                                     <p>U.price: {prod.price}</p>
-                                                                    <ProductOrder product={prod}/>
+                                                            <ProductOrder product={prod} retailer_id={props.retailer.id}/>
                                                                 </div>
                                                             </HtmlTooltip>
                                                             {/* <ViewProd product={prod} onEditProduct={this.handleEditProduct} /> */}

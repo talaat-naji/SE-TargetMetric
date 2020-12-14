@@ -12,25 +12,25 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 
 export default function ViewProd(props) {
-    // const [open, setOpen] = React.useState(false);
-    // const [productDesc, setDesc] = React.useState();
-    // const [price, setPrice] = React.useState();
-    // const [productId, setProductId] = React.useState();
+  // const [open, setOpen] = React.useState(false);
+  // const [productDesc, setDesc] = React.useState();
+  // const [price, setPrice] = React.useState();
+  // const [productId, setProductId] = React.useState();
 
-    // const editProduct = () => {
-    //     if (sessionStorage.getItem('loggedIn')) {
-    //         apiClient.post('/api/editProduct',
-    //             {
-    //                     productId:productId,
-    //                     productDesc: productDesc,
-    //                     price: price
-    //                 })
-               
-    //                 .catch(error => console.error(error)
-    //                 )
+  // const editProduct = () => {
+  //     if (sessionStorage.getItem('loggedIn')) {
+  //         apiClient.post('/api/editProduct',
+  //             {
+  //                     productId:productId,
+  //                     productDesc: productDesc,
+  //                     price: price
+  //                 })
 
-    //     }
-    // }
+  //                 .catch(error => console.error(error)
+  //                 )
+
+  //     }
+  // }
   // const handleClickOpen = () => {
   //     setOpen(true);
   //   setProductId(props.product.id)
@@ -46,11 +46,11 @@ export default function ViewProd(props) {
   //     setOpen(false);
   //     editProduct();
   //     props.onEditProduct();
-      
+
   // };
-    
-    
-const HtmlTooltip = withStyles((theme) => ({
+
+
+  const HtmlTooltip = withStyles((theme) => ({
     tooltip: {
       backgroundColor: '#f5f5f9',
       color: 'rgba(0, 0, 0, 0.87)',
@@ -60,25 +60,26 @@ const HtmlTooltip = withStyles((theme) => ({
     },
   }))(Tooltip);
   return (
-      <div>
-         
-       
-              <HtmlTooltip
+    <div>
+
+
+      <HtmlTooltip
         title={
           <React.Fragment>
             <Typography color="inherit">{props.product.description}</Typography>
-                     
+
           </React.Fragment>
         }
       >
         <div className="font-icon-detail" >
-                        <i className="tim-icons icon-alert-circle-exc" />
-                            <p>{props.product.name}</p>
-                            <p>{props.product.price}</p>
-              </div>
-      </HtmlTooltip>     
-            
-    
+          {/* <i className="tim-icons icon-alert-circle-exc" /> */}
+          <p>Product Name: {props.product.name}</p>
+          <p>selling Price: {props.product.price}</p>
+          <p>Available Qty: {props.product.qty}</p>
+        </div>
+      </HtmlTooltip>
+
+
       {/* <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">{props.product.name}</DialogTitle>
         <DialogContent>

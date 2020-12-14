@@ -7,8 +7,9 @@ use App\Models\Sale;
 use App\Models\Order;
 use App\Models\Stock;
 use App\Models\Product;
-use App\Notifications\StockDeficiet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Notifications\StockDeficiet;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 
@@ -30,17 +31,12 @@ class OrderController extends Controller
     $stockQty = Stock::where("user_id", Auth::id())
       ->where("product_id", $request->product_id)->get();
 
-    Order::where("id", $request->oId)->update(['status' => true]);
+    
 
     if ($request->qty < $request->qty_ordered) {
-      Order::insert([
-        'product_id' => $request->product_id,
-        'user_id' => Auth::id(),
-        'shop_id' => $request->shop_id,
-        'qty_ordered' => $request->qty_ordered - $request->qty,
-        'status' => false,
-        'created_at' => Carbon::now()
-      ]);
+      Order::where("id", $request->oId)->update(['qty_ordered' => $request->qty_ordered - $request->qty]);
+    }elseif ($request->qty === $request->qty_ordered) {
+      Order::where("id", $request->oId)->update(['status' => true]);
     }
 
     Sale::insert([
@@ -51,14 +47,17 @@ class OrderController extends Controller
       'qty_sold' => $request->qty,
       'created_at' => Carbon::now()
     ]);
+
     Stock::where("user_id", Auth::id())
       ->where("product_id", $request->product_id)
-      ->update(['qty' => $stockQty[0]['qty'] - $request->qty]);
+      ->update(['qty' => DB::raw("qty - ".$request->qty)]);
 
       if($stockQty[0]['qty']-$request->qty<=$stockQty[0]['min_qty']){
         $data['message']="deficiet";
         return $data['message'];
       }
+
+     
   }
 
   public function orderSupplier(Request $request){

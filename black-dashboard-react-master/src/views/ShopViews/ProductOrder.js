@@ -15,23 +15,28 @@ import MapLocation from "./MapLocation";
 export default function ProductOrder(props) {
     const [open, setOpen] = React.useState(false);
     const [qtyToOrder, setQtyToOrder] = React.useState();
-   // const [price, setPrice] = React.useState();
-    const [productId, setProductId] = React.useState();
+  const [x, setX] = React.useState();
+  const [y, setY] = React.useState();
+    //const [productId, setProductId] = React.useState();
 
-    // const editProduct = () => {
-    //     if (sessionStorage.getItem('loggedIn')) {
-    //         apiClient.post('/api/editProduct',
-    //             {
-    //                     productId:productId,
-    //                     productDesc: productDesc,
-    //                     price: price
-    //                 })
+    const orderProduct = () => {
+        if (sessionStorage.getItem('loggedIn')) {
+            apiClient.post('/api/orderProduct',
+                {
+                  product_id: props.product.id,
+                  retailer_id:props.retailer_id,
+                  qty: qtyToOrder,
+                  lat: x,
+                  lng: y,
+                        
+                        
+                    })
                
-    //                 .catch(error => console.error(error)
-    //                 )
+                    .catch(error => console.error(error)
+                    )
 
-    //     }
-    // }
+        }
+    }
   const handleClickOpen = () => {
       setOpen(true);
    // setProductId(props.product.id)
@@ -40,11 +45,11 @@ export default function ProductOrder(props) {
 
   const handleClose = () => {
       setOpen(false);
-   
+ 
   };
   const handleSubmit = () => {
       setOpen(false);
-    //   editProduct();
+       orderProduct();
     //   props.onEditProduct();
       
   };
@@ -57,7 +62,7 @@ export default function ProductOrder(props) {
         <Button onClick={handleClickOpen}>Order Now</Button>  
             
     
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth={true}>
         <DialogTitle id="form-dialog-title"></DialogTitle>
         <DialogContent>
           <DialogContentText >
@@ -73,15 +78,16 @@ export default function ProductOrder(props) {
             label="Quantity needed"
             type="number"
             fullWidth
-                  />
-                  <MapLocation/>
+          />
+          Pin your Location
+          <MapLocation x={(e)=>setX(e)} y={(e)=>setY(e)}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
           <Button onClick={handleSubmit} color="primary">
-            Submit Changes
+            Send Order
           </Button>
         </DialogActions>
       </Dialog>

@@ -63,9 +63,9 @@ class Products extends React.Component {
                   <Row>
                     {this.state.products.map((product) => {
                       return (
-                        product.products.map((prod) => {
+                        // product.products.map((prod) => {
                         
-                          return (
+                        //   return (
                             <Col
                               className="font-icon-list col-xs-6 col-xs-6"
                               lg="2"
@@ -73,10 +73,10 @@ class Products extends React.Component {
                               sm="4"
                             >
                              
-                              <ViewProd product={prod} onEditProduct={this.handleEditProduct} />
+                              <ViewProd product={product} onEditProduct={this.handleEditProduct} />
                             </Col>
                           );
-                        }));
+                        // }));
                     })}
                    
                      

@@ -34,7 +34,7 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/icons",
+    path: "/wareHouse",
     name: "WareHouse",
     rtlName: "الرموز",
     icon: "tim-icons icon-istanbul",
@@ -42,7 +42,7 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/map",
+    path: "/suppliers",
     name: "Suppliers",
     rtlName: "خرائط",
     icon: "tim-icons icon-delivery-fast",//<i className="tim-icons icon-delivery-fast text-primary" />
@@ -66,28 +66,28 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/tables",
+    path: "/recieveOrders",
     name: "Recieve Orders",
     rtlName: "قائمة الجدول",
     icon: "tim-icons icon-check-2",
     component: TableList,
     layout: "/admin"
   },
-  {
-    path: "/typography",
-    name: "Typography",
-    rtlName: "طباعة",
-    icon: "tim-icons icon-align-center",
-    component: Typography,
-    layout: "/admin"
-  },
-  {
-    path: "/rtl-support",
-    name: "RTL Support",
-    rtlName: "ار تي ال",
-    icon: "tim-icons icon-world",
-    component: Rtl,
-    layout: "/rtl"
-  }
+  // {
+  //   path: "/typography",
+  //   name: "Typography",
+  //   rtlName: "طباعة",
+  //   icon: "tim-icons icon-align-center",
+  //   component: Typography,
+  //   layout: "/admin"
+  // },
+  // {
+  //   path: "/rtl-support",
+  //   name: "RTL Support",
+  //   rtlName: "ار تي ال",
+  //   icon: "tim-icons icon-world",
+  //   component: Rtl,
+  //   layout: "/rtl"
+  // }
 ];
 export default routes;

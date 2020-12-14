@@ -27,6 +27,7 @@ const Register = (props) => {
 
                 }).then(response => {
                     if (response.status === 201) {
+                        sessionStorage.setItem('userType', userType);
                         props.login();
                         setToHome(true);
                         sessionStorage.setItem('loggedIn', true);
@@ -35,7 +36,7 @@ const Register = (props) => {
 
                             sessionStorage.setItem('userId', response.data.id);
 
-                            sessionStorage.setItem('userType', userType);
+                            
                         });
                     }
                 });

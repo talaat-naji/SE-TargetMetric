@@ -7,6 +7,7 @@ import Typography from "views/Typography.js";
 import UserProfile from "views/UserProfile.js";
 import RetailersList from "views/ShopViews/RetailerList";
 import MapLocation from "views/ShopViews/MapLocation";
+import ProductList from "views/ShopViews/SearchProduct";
 
 var shopRoutes = [
     {
@@ -17,14 +18,14 @@ var shopRoutes = [
       component: Dashboard,
       layout: "/shop"
     },
-    // {
-    //   path: "/icons",
-    //   name: "Products",
-    //   rtlName: "الرموز",
-    //   icon: "tim-icons icon-atom",
-    //   component: Products,
-    //   layout: "/shop"
-    // },
+    {
+      path: "/icons",
+      name: "Products",
+      rtlName: "الرموز",
+      icon: "tim-icons icon-atom",
+      component: ProductList,
+      layout: "/shop"
+    },
     {
       path: "/map",
       name: "Map",
@@ -51,7 +52,7 @@ var shopRoutes = [
     // },
     {
       path: "/tables",
-      name: "Table List",
+      name: "Retailers",
       rtlName: "قائمة الجدول",
       icon: "tim-icons icon-puzzle-10",
       component: RetailersList,
