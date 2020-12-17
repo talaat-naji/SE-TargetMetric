@@ -7,7 +7,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Table } from "reactstrap";
-import SupplierVerticalTabs  from "./SupplierTabs";
+import SupplierVerticalTabs from "./SupplierTabs";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+
 export default function SupplierTable(props) {
     const [open, setOpen] = React.useState(false);
     const [supplier, setSupplier] = React.useState([]);
@@ -15,6 +17,8 @@ export default function SupplierTable(props) {
 //     console.log(props, "hyyyyyy");
 // }, [])
    
+  
+  
   const handleClickOpen = (sup) => {
       setOpen(true);
       setSupplier(sup);
@@ -56,12 +60,12 @@ export default function SupplierTable(props) {
                     </tbody>
           </Table>
       
-          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullScreen={true} style={{backgroundColor:"#525f7f"}}>
-              <DialogTitle id="form-dialog-title"></DialogTitle>
-        <DialogContent>
-                  <SupplierVerticalTabs style={{backgroundColor:"#525f7f"}} supplier={supplier}/>
+          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullScreen={true}>
+        <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#1e1e2e" }}>{supplier.name}</DialogTitle>
+        <DialogContent style={{ backgroundColor: "#252537" }}>
+                  <SupplierVerticalTabs style={{backgroundColor:"#252537"}} supplier={supplier}/>
         </DialogContent>
-        <DialogActions>
+        <DialogActions style={{ backgroundColor: "#252537" }}>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>

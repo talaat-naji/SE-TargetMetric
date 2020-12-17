@@ -55,7 +55,7 @@ function a11yProps(index) {
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: "#1e1e2e",
         width: 500,
     },
 }));
@@ -94,15 +94,16 @@ export default function ProductsTabs() {
         <div className="content">
             <AppBar position="static" color="default">
                 <Tabs
+                    style={{ backgroundColor: "#2b6af5",  color: "white" }}
                     value={value}
                     onChange={handleChange}
-                    indicatorColor="primary"
+                    indicatorColor="secondary"
                     textColor="primary"
                     variant="fullWidth"
                     aria-label="full width tabs example"
                 >
-                    <Tab label="search a product among all retailers" {...a11yProps(0)} />
-                    <Tab label="Demanded products @ur district" {...a11yProps(1)} />
+                    <Tab style={{  color: "white" }} label="search a product among all retailers" {...a11yProps(0)} />
+                    <Tab style={{  color: "white" }} label="Demanded products @ur district" {...a11yProps(1)} />
 
                 </Tabs>
             </AppBar>
@@ -137,7 +138,7 @@ export default function ProductsTabs() {
                                                             <tr>
                                                                 <td>{product.barcode}</td>
                                                                 <td>{product.qtySold}</td>
-                                                                <td><Button onClick={(e) => { setBarcode(product.barcode); handleChange(e, 0) }}>Get Product</Button></td>
+                                                                <td><Button variant="contained" color="primary" onClick={(e) => { setBarcode(product.barcode); handleChange(e, 0) }}>Get Product</Button></td>
 
                                                             </tr>
                                                         </>

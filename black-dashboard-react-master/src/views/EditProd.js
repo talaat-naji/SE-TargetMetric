@@ -1,53 +1,64 @@
 import React from 'react';
 // import Button from '@material-ui/core/Button';
-// import TextField from '@material-ui/core/TextField';
-// import Dialog from '@material-ui/core/Dialog';
-// import DialogActions from '@material-ui/core/DialogActions';
-// import DialogContent from '@material-ui/core/DialogContent';
-// import DialogContentText from '@material-ui/core/DialogContentText';
-// import DialogTitle from '@material-ui/core/DialogTitle';
-// import apiClient from '../services/api';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import apiClient from '../services/api';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
+import {
+  Table,
+  Button,
+  ButtonGroup,
+  Card,
+  CardHeader,
+  CardBody,
+  CardTitle,
+  Input,
+  Row,
+  Col,
 
+} from "reactstrap";
+import CardImg from 'reactstrap/lib/CardImg';
 export default function ViewProd(props) {
-  // const [open, setOpen] = React.useState(false);
-  // const [productDesc, setDesc] = React.useState();
+  const [open, setOpen] = React.useState(false);
+  const [image, setImage] = React.useState();
   // const [price, setPrice] = React.useState();
   // const [productId, setProductId] = React.useState();
 
-  // const editProduct = () => {
-  //     if (sessionStorage.getItem('loggedIn')) {
-  //         apiClient.post('/api/editProduct',
-  //             {
-  //                     productId:productId,
-  //                     productDesc: productDesc,
-  //                     price: price
-  //                 })
+  const editProductPic = () => {
+      if (sessionStorage.getItem('loggedIn')) {
+          apiClient.post('/api/editProductPic',
+              {
+                      image:image,
+                    
+                  })
 
-  //                 .catch(error => console.error(error)
-  //                 )
+                  .catch(error => console.error(error)
+                  )
 
-  //     }
-  // }
-  // const handleClickOpen = () => {
-  //     setOpen(true);
-  //   setProductId(props.product.id)
-  //   //console.log(props.product);
-  // };
+      }
+  }
+  const handleClickOpen = () => {
+      setOpen(true);
+       //console.log(props.product);
+  };
 
-  // const handleClose = () => {
-  //     setOpen(false);
-  //    // setName(null);
-  //    // setDeadline(null);
-  // };
-  // const handleSubmit = () => {
-  //     setOpen(false);
-  //     editProduct();
-  //     props.onEditProduct();
+  const handleClose = () => {
+      setOpen(false);
+     // setName(null);
+     // setDeadline(null);
+  };
+  const handleSubmit = () => {
+      setOpen(false);
+      editProductPic();
+     
 
-  // };
+  };
 
 
   const HtmlTooltip = withStyles((theme) => ({
@@ -71,53 +82,46 @@ export default function ViewProd(props) {
           </React.Fragment>
         }
       >
-        <div className="font-icon-detail" >
-          {/* <i className="tim-icons icon-alert-circle-exc" /> */}
-          <p>Product Name: {props.product.name}</p>
-          <p>selling Price: {props.product.price}</p>
-          <p>Available Qty: {props.product.qty}</p>
-        </div>
+        <Card>
+    
+         
+          {props.product.pic_path != "" ? <CardImg top src={require("assets/img/mike.jpg")} /> :<Button onClick={handleClickOpen}><i className="tim-icons icon-cloud-upload-94"/> upload an image</Button> }
+           
+         
+          <CardHeader tag="h4">
+            {props.product.name}
+          </CardHeader>
+          <CardBody>
+            <Row>
+
+              <Col>
+                <p>selling Price: {props.product.price}</p>
+              </Col>
+              <Col>
+                <p>Available Qty: {props.product.qty}</p>
+              </Col>
+            </Row>
+          </CardBody>
+        </Card>
+
       </HtmlTooltip>
 
 
-      {/* <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">{props.product.name}</DialogTitle>
         <DialogContent>
-          <DialogContentText >
-                     
-          </DialogContentText>
-                  <TextField
-                      defaultValue={props.product.description}
-                      placeholder={props.product.description}
-                      onChange={(e)=>setDesc(e.target.value)}
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Product Description"
-            type="text"
-            fullWidth
-          />
-                  <TextField
-                      defaultValue={props.product.price}
-                     placeholder={props.product.price}
-                      onChange={(e)=>setPrice(e.target.value)}
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Price"
-            type="number"
-            fullWidth
-          />
+          <Input type="file" onChange={(e)=>{setImage(e.target.value)}}/>
+                
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
           <Button onClick={handleSubmit} color="primary">
-            Submit Changes
+            Upload image
           </Button>
         </DialogActions>
-      </Dialog> */}
+      </Dialog> 
     </div>
   );
 }

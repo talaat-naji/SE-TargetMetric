@@ -94,8 +94,18 @@ class ProductList extends React.Component {
                     </thead>
                     <tbody>
                       <tr>
-                        <td><Input onChange={(e) => this.fetchProducts(e.target.value)} type="text" placeholder="search product by barcode" /></td>
-
+                      <td>
+                      <Row>
+                      <Col xs="auto">
+                        
+                          <i className="tim-icons icon-zoom-split" />
+                         
+                        </Col>
+                        <Col>
+                        <Input onChange={(e) => this.fetchProducts(e.target.value)} type="text" placeholder="search product by barcode" />
+                        </Col>
+                        </Row>
+                        </td>
                       </tr>
                     </tbody>
                   </Table>

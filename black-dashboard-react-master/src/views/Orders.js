@@ -42,46 +42,7 @@ class Orders extends React.Component {
             orders: [],
             anchorEl: null
         };
-
-    //     window.Pusher = require("pusher-js");
-        
-    //     window.Echo = new Echo({
-    //         broadcaster: "pusher",
-    //         cluster: "eu",
-    //         encrypted: false,
-    //         key: "c33af439d6721e7c10a7",
-    //         authEndpoint:'http://localhost:8000/broadcasting/auth',
-    //         authorizer: (channel, options) => {
-    //             return {
-    //                 authorize: (socketId, callback) => {
-    //                     console.log("jk", socketId);
-    //                     apiClient.post('/api/broadcasting/auth', {
-    //                         socket_id: socketId,
-    //                         channel_name: channel.name
-    //                     })
-    //                         .then(response => {
-    //                         console.log(response,"testtt")
-    //                         callback(false, response.data);
-    //                     })
-    //                     .catch(error => {
-    //                         callback(true, error);
-    //                     });
-    //                 }
-    //             };
-    //         },
-    //     })
-    //     console.log("tytyt", window.Echo);
-         // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
-
-    var pusher = new Pusher('c33af439d6721e7c10a7', {
-      cluster: 'eu'
-    });
-
-    var channel = pusher.subscribe('private-shopOrder');
-    channel.bind('App/Events/shopOrderedRetailer', function(data) {
-      alert(JSON.stringify(data));
-    });
+     
     }
 
     

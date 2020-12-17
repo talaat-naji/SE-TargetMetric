@@ -38,6 +38,7 @@ import {
 } from "reactstrap";
 import apiClient from "../services/api";
 import SupplierTable from "./SupplierTable";
+import { Typography } from "@material-ui/core";
 class Suppliers extends React.Component {
   constructor(props) {
     super(props);
@@ -47,8 +48,10 @@ class Suppliers extends React.Component {
       open: false,
       name: '',
       email: '',
-      phone:'',
+      phone: '',
+
     };
+    
   }
   fetchSuppliers = () => {
     if (sessionStorage.getItem('loggedIn')) {
@@ -69,9 +72,9 @@ class Suppliers extends React.Component {
       apiClient.post('../api/addSupplier', {
         name: this.state.name,
         email: this.state.email,
-        phone:this.state.phone,
+        phone: this.state.phone,
       })
-        
+
         .catch(error => console.error(error))
 
     }
@@ -81,30 +84,30 @@ class Suppliers extends React.Component {
     if (value === null) {
       this.setState({ suppliersFiltered: this.state.suppliers });
     } else {
-     let filter = this.state.suppliers.filter(supplier => supplier.name.toLowerCase().includes(value));
+      let filter = this.state.suppliers.filter(supplier => supplier.name.toLowerCase().includes(value));
       this.setState({ suppliersFiltered: filter });
       console.log(filter);
     }
-    
+
   }
 
   handleClickOpen = () => {
     this.setState({ open: true });
-   
-};
 
-handleClose = () => {
-  this.setState({ open: false });
-   // setName(null);
-   // setDeadline(null);
-};
-handleSubmit = () => {
-  this.setState({ open: false });
-  this.addSupplier();
-  this.fetchSuppliers();
-   // props.onEditProduct();
-    
-};
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+    // setName(null);
+    // setDeadline(null);
+  };
+  handleSubmit = () => {
+    this.setState({ open: false });
+    this.addSupplier();
+    this.fetchSuppliers();
+    // props.onEditProduct();
+
+  };
 
   componentDidMount() {
     this.fetchSuppliers();
@@ -117,73 +120,86 @@ handleSubmit = () => {
             <Col md="12">
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h4">My Suppliers
-                  <button onClick={this.handleClickOpen}
-                      style={{ marginRight: "1em", float: "right" }}>NEW Supplier</button>
-                  <Input
-                      type="text"
-                      placeholder="search By Name"
-                      onChange={(e) => this.filterResults(e.target.value)} />
+                  <CardTitle tag="h4"><Row><Col>
+                    <Typography variant="h5" component="h5"> My Suppliers </Typography></Col>
+                    <Col><Button
+                      variant="contained" color="primary"
+                      onClick={this.handleClickOpen}
+                      style={{ marginRight: "1em", float: "right"}}>NEW Supplier</Button>
+                    </Col>
                     
+                  </Row>
+                    <Row>
+                      <Col xs="auto"><br />
+                        
+                          <i className="tim-icons icon-zoom-split" />
+                         
+                        </Col>
+                        <Col><br />
+                    <Input
+                          style={{ marginRight: "1em", float: "right"}}
+                          type="text"
+                          placeholder="Search By Name"
+                          onChange={(e) => this.filterResults(e.target.value)} />
+                        </Col>
+                      </Row>
+
                   </CardTitle>
-                  
+
                 </CardHeader>
                 <CardBody>
-                  <SupplierTable suppliers={this.state.suppliersFiltered}/>
+                  <SupplierTable suppliers={this.state.suppliersFiltered} />
                 </CardBody>
               </Card>
             </Col>
-            
+
           </Row>
           <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Add Supplier</DialogTitle>
-        <DialogContent>
-          <DialogContentText >
-                     
-          </DialogContentText>
-                  <TextField
-                     
-                      placeholder="Supplier Name"
-                onChange={(e) => this.setState({name: e.target.value })}
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Name"
-            type="text"
-            fullWidth
-          />
-                  <TextField
-                   
-                     placeholder="Email"
-                onChange={(e) => this.setState({ email:e.target.value })}
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Email"
-            type="email"
-            fullWidth
+            <DialogTitle id="form-dialog-title" ><Typography variant="h5" component="h5" style={{color:"black",fontWeight:"bolder"}}>Add Supplier</Typography></DialogTitle>
+            <DialogContent>
+              <TextField
+
+                placeholder="Supplier Name"
+                onChange={(e) => this.setState({ name: e.target.value })}
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Name"
+                type="text"
+                fullWidth
               />
-                        <TextField
-                   
-                   placeholder="Phone"
-              onChange={(e) => this.setState({ phone:e.target.value })}
-          autoFocus
-          margin="dense"
-          id="name"
-          label="phone"
-          type="text"
-          fullWidth
-        />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={this.handleClose} color="primary">
-            Cancel
+              <TextField
+
+                placeholder="Email"
+                onChange={(e) => this.setState({ email: e.target.value })}
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Email"
+                type="email"
+                fullWidth
+              />
+              <TextField
+
+                placeholder="Phone"
+                onChange={(e) => this.setState({ phone: e.target.value })}
+                autoFocus
+                margin="dense"
+                id="name"
+                label="phone"
+                type="text"
+                fullWidth
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary">
+                Cancel
           </Button>
-          <Button onClick={this.handleSubmit} color="primary">
-            Add Supplier
+              <Button onClick={this.handleSubmit} color="primary">
+                Add Supplier
           </Button>
-        </DialogActions>
-      </Dialog>
+            </DialogActions>
+          </Dialog>
         </div>
       </>
     );

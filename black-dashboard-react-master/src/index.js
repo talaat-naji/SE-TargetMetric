@@ -51,8 +51,8 @@ const config = {
 };
 
 ReactDOM.render(
-  <PusherProvider {...config}>
-    <App />
-     </PusherProvider>,
+  // <PusherProvider {...config}>
+    <App />,
+   // <PusherProvider />
   document.getElementById("root")
 );

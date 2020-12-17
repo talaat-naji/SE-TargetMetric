@@ -25,22 +25,22 @@ import Alert from 'reactstrap/lib/Alert';
 
 export default function AutoOrder(props) {
     const [alert, setAlert] = React.useState('');
-    const [orderList, setOrderList] =React.useState([]);
+    const [orderList, setOrderList] = React.useState([]);
     const [max_orderQty, setQtyMax] = React.useState();
-    
+
     const editQty = (barcode, newQty) => {
-        
-        
-       orderList.forEach(element => {
+
+
+        orderList.forEach(element => {
             if (element.barcode === barcode) {
                 element.qty = newQty;
                 element.total = newQty * element.cost;
-                
-              
+
+
             }
         });
         setQtyMax(newQty);
-       
+
     }
 
     const issueOrder = () => {
@@ -48,14 +48,14 @@ export default function AutoOrder(props) {
             apiClient.post('../api/issueOrder', {
                 orderList: orderList,
                 supplier_id: props.supplier.id,
-                supplier_email:props.supplier.email
+                supplier_email: props.supplier.email
             }).then((response) => {
-               
+
                 if (response.status === 200) {
-                    
-                   setAlert(<Alert onClick={()=>{setAlert('')}}>your order was sent succesfully</Alert>)
+
+                    setAlert(<Alert onClick={() => { setAlert('') }}>your order was sent succesfully</Alert>)
                 } else {
-                    setAlert(<Alert className="danger" onClick={()=>{setAlert('')}}>Thier was an issue in sending your order</Alert>)
+                    setAlert(<Alert className="danger" onClick={() => { setAlert('') }}>Thier was an issue in sending your order</Alert>)
                 }
             })
 
@@ -64,9 +64,9 @@ export default function AutoOrder(props) {
         }
     }
     React.useEffect(() => {
-        const temp=[]
+        const temp = []
         props.orders.map((order) => {
-         
+
             // setQtyMax(order.max_orderQty);
             temp.push({
                 pId: order.product_id,
@@ -76,29 +76,40 @@ export default function AutoOrder(props) {
                 cost: order.cost,
                 total: order.cost * order.max_orderQty
             })
-           
+
         })
-        
+
         setOrderList(temp);
     }, [])
-    
-    return (<>
-        {alert}
-        <Button onClick={() => { issueOrder() }}>Issue Order</Button>
-        <Table className="tablesorter" responsive style={{ backgroundColor: "#525f7f" }}>
-            <thead className="text-primary">
 
-                <tr>
-                    <th>#Barcode</th>
-                    <th>Description</th>
-                    <th>Qty</th>
-                    <th>U.Price</th>
-                    <th>T.Price</th>
-                    {/* <th className="text-center">Phone</th> */}
-                </tr>
-            </thead>
-            <tbody>
-                {/* <tr>
+    return (<>
+
+        <Card>
+            <CardHeader>
+                <Row><Col xs="auto">
+                    <Button onClick={() => { issueOrder() }}>Issue Order</Button>
+                </Col>
+                    <Col>
+                        {alert}
+                    </Col>
+                </Row>
+            </CardHeader>
+            <CardBody>
+                
+                <Table className="tablesorter" responsive style={{ backgroundColor: "#27293d" }}>
+                    <thead className="text-primary">
+
+                        <tr>
+                            <th>#Barcode</th>
+                            <th>Description</th>
+                            <th>Qty</th>
+                            <th>U.Price</th>
+                            <th>T.Price</th>
+                            {/* <th className="text-center">Phone</th> */}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {/* <tr>
                     <td><Input style={{ color: "black" }} type="number" onChange={(e) => { setProduct_id(e.target.value) }} /></td>
                     <td><Input style={{ color: "black" }} type="text" onChange={(e) => { setName(e.target.value) }} /></td>
                     <td><Input style={{ color: "black" }} type="text" onChange={(e) => { setDescription(e.target.value) }} /></td>
@@ -106,26 +117,28 @@ export default function AutoOrder(props) {
                     <td><Input style={{ color: "black" }} type="text" onChange={(e) => { setPrice(e.target.value) }} /></td>
                     <td><Button onClick={() => { addProduct(); fetchProducts() }}>ADD</Button></td>
                 </tr> */}
-                {
-                    orderList.map((order) => {
-                   
-                    
-                            return (
-                                <tr >
-                                    <td>{order.barcode} </td>
-                                    <td>{order.description}</td>
-                                    <td><Input defaultValue={order.qty} onChange={(e) => { editQty(order.barcode,e.target.value);}}/></td>
-                                    <td>{order.cost}</td>
-                                    <td>{ order.total }</td>
-                                   
-                                   
-                                </tr>
-                            );
-                }
-                )}
+                        {
+                            orderList.map((order) => {
 
 
-            </tbody>
-        </Table>
+                                return (
+                                    <tr >
+                                        <td>{order.barcode} </td>
+                                        <td>{order.description}</td>
+                                        <td><Input defaultValue={order.qty} onChange={(e) => { editQty(order.barcode, e.target.value); }} /></td>
+                                        <td>{order.cost}</td>
+                                        <td>{order.total}</td>
+
+
+                                    </tr>
+                                );
+                            }
+                            )}
+
+
+                    </tbody>
+                </Table>
+            </CardBody>
+        </Card>
     </>);
 }

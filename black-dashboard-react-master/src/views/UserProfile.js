@@ -114,7 +114,7 @@ class UserProfile extends React.Component {
       <>
         <div className="content">
           <Row>
-            {/* <Col md="8"> */}
+            <Col md="8">
               <Card>
                 <CardHeader>
                   <h5 className="title">Edit Profile</h5>
@@ -200,8 +200,10 @@ class UserProfile extends React.Component {
                   </Button>
                 </CardFooter>
               </Card>
-            {/* </Col> */}
-            {/* <Col md="4">
+            </Col>
+            
+            
+            <Col md="4">
               <Card className="card-user">
                 <CardBody>
                   <CardText />
@@ -216,14 +218,12 @@ class UserProfile extends React.Component {
                         className="avatar"
                         src={require("assets/img/emilyz.jpg")}
                       />
-                      <h5 className="title">Mike Andrew</h5>
+                      <h5 className="title">{this.state.name}</h5>
                     </a>
-                    <p className="description">Ceo/Co-Founder</p>
+                    <p className="description">{this.state.email}</p>
                   </div>
                   <div className="card-description">
-                    Do not be scared of the truth because we need to restart the
-                    human foundation in truth And I love you like Kanye loves
-                    Kanye I love Rick Owens’ bed design but the back is...
+                   ...
                   </div>
                 </CardBody>
                 <CardFooter>
@@ -240,7 +240,7 @@ class UserProfile extends React.Component {
                   </div>
                 </CardFooter>
               </Card>
-            </Col> */}
+            </Col> 
           </Row>
         </div>
       </>

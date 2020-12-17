@@ -64,7 +64,9 @@ const Register = (props) => {
                 <div className="card-body p-0">
 
                     <div className="row">
-                        <div className="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                        <div className="col-lg-5 d-none d-lg-block bg-register-image">
+                        <img width="100%" height="100%" src={require("assets/img/register.jpg")}/>
+                        </div>
                         <div className="col-lg-7">
                             <div className="p-5">
                                 <div className="text-center">

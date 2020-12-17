@@ -10,14 +10,16 @@ import { Table } from "reactstrap";
 import VerticalTabs  from "./Tabs";
 export default function CustomerTable(props) {
     const [open, setOpen] = React.useState(false);
-    const [customerId, setCustomerId] = React.useState();
+  const [customerId, setCustomerId] = React.useState();
+  const [customerName, setCustomerName] = React.useState();
 // React.useEffect(() => {
 //     console.log(props, "hyyyyyy");
 // }, [])
    
-  const handleClickOpen = (id) => {
+  const handleClickOpen = (id,name) => {
       setOpen(true);
-      setCustomerId(id);
+    setCustomerId(id);
+    setCustomerName(name);
       
   };
 
@@ -41,8 +43,8 @@ export default function CustomerTable(props) {
                   </thead>
                   <tbody>
                     {props.customersData.map((customer) => {
-                      return (<tr>
-                          <td onClick={() => { handleClickOpen(customer.shop_id) }}>{customer.name}</td>
+                      return (<tr onClick={() => { handleClickOpen(customer.shop_id,customer.name) }}>
+                          <td >{customer.name}</td>
                         <td>{customer.govName}</td>
                         <td>{customer.distName}</td>
                         <td className="text-center">{customer.total} L.L</td>
@@ -55,11 +57,11 @@ export default function CustomerTable(props) {
             
     
           <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullScreen={true} >
-              <DialogTitle id="form-dialog-title"></DialogTitle>
-        <DialogContent>
+              <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#1e1e2e" }}>{customerName}</DialogTitle>
+        <DialogContent style={{ backgroundColor: "#252537" }}>
                   <VerticalTabs shopId={customerId}/>
         </DialogContent>
-        <DialogActions>
+        <DialogActions style={{ backgroundColor: "#252537" }}>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>

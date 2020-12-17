@@ -59,7 +59,7 @@ export default function ProductOrder(props) {
       <>
          
        
-        <Button onClick={handleClickOpen}>Order Now</Button>  
+        <Button variant="contained" color="primary" onClick={handleClickOpen}>Order Now</Button>  
             
     
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth={true}>

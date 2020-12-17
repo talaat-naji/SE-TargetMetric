@@ -21,12 +21,7 @@ import {
 
 } from "reactstrap";
 import classNames from "classnames";
-import {
-    chartExample1,
-    chartExample2,
-    chartExample3,
-    chartExample4
-} from "variables/charts.js";
+
 import { setScrollbarWidth } from 'reactstrap/lib/utils';
 import AutoOrder from "./AutoOrder";
 function TabPanel(props) {
@@ -65,7 +60,7 @@ function a11yProps(index) {
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: "#252537",
         display: 'flex',
         height: 224,
     },
@@ -118,7 +113,7 @@ export default function VerticalTabs(props) {
                 cost: cost,
                 price: price,
                 min_qty: min_qty,
-                max_orderQty:max_orderQty
+                max_orderQty: max_orderQty
             }).then(() => {
                 setName('');
                 setDescription('');
@@ -141,7 +136,7 @@ export default function VerticalTabs(props) {
                 cost: cost,
                 price: price,
                 min_qty: min_qty,
-                max_orderQty:max_orderQty
+                max_orderQty: max_orderQty
             })
 
                 .catch(error => console.error(error))
@@ -165,8 +160,10 @@ export default function VerticalTabs(props) {
     }, [])
     return (
 
-        <div className={classes.root}>
+        <div className={classes.root} >
+
             <Tabs
+                style={{ backgroundColor: "#2b6af5", borderRadius: "15px", color: "white" }}
                 orientation="vertical"
                 variant="standard"
                 value={value}
@@ -181,91 +178,105 @@ export default function VerticalTabs(props) {
 
             </Tabs>
             <TabPanel value={value} index={0} style={{ width: "80%", hieght: "80%" }}>
-                <Input style={{ color: "black" }} defaultValue={props.supplier.name} />
-                <Input style={{ color: "black" }} defaultValue={props.supplier.email} />
-                <Input style={{ color: "black" }} defaultValue={props.supplier.phone} />
+                <Card>
+                    <CardBody>
+                        <Table className="tablesorter striped" responsive style={{ backgroundColor: "#27293d" }}>
+                            <tbody>
+
+                               <tr><td>Supplier Name :</td><td> {props.supplier.name}  </td> </tr>  {/**<Input defaultValue={ */}
+                               <tr><td>Supplier Email :</td><td> {props.supplier.email}  </td> </tr>  {/**<Input defaultValue={ */}
+                               <tr><td>Supplier Phone :</td><td> {props.supplier.phone}  </td> </tr>  {/**<Input defaultValue={ */}
+                            </tbody>
+                        </Table>
+                    </CardBody>
+                </Card>
             </TabPanel>
 
             <TabPanel value={value} index={1} style={{ width: "80%", hieght: "80%" }}>
-                <Table className="tablesorter" responsive style={{ backgroundColor: "#525f7f" }}>
-                    <thead className="text-primary">
+                <Card>
+                    <CardBody>
 
-                        <tr>
-                            <th>#Barcode</th>
-                            <th>Product Name</th>
-                            <th>Description</th>
-                            <th>Cost</th>
-                            <th>Selling Price</th>
-                            <th>Min.Qty</th>
-                            <th>Max.Qty</th>
-                            <th>Action</th>
-                            {/* <th className="text-center">Phone</th> */}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><Input style={{ color: "black" }} type="number" onChange={(e) => { setProduct_id(e.target.value) }} /></td>
-                            <td><Input style={{ color: "black" }} type="text" onChange={(e) => { setName(e.target.value) }} /></td>
-                            <td><Input style={{ color: "black" }} type="text" onChange={(e) => { setDescription(e.target.value) }} /></td>
-                            <td><Input style={{ color: "black" }} type="text" onChange={(e) => { setCost(e.target.value) }} /></td>
-                            <td><Input style={{ color: "black" }} type="text" onChange={(e) => { setPrice(e.target.value) }} /></td>
-                            <td><Input style={{ color: "black" }} type="number" onChange={(e) => { setQtyMax(e.target.value) }} /></td>
-                            <td><Input style={{ color: "black" }} type="number" onChange={(e) => { setQtyMin(e.target.value) }} /></td>
-                            <td><Button onClick={() => { addProduct(); fetchProducts() }}>ADD</Button></td>
-                        </tr>
-                        {products.map((product) => {
 
-                            return (
+                        <Table className="tablesorter" responsive style={{ backgroundColor: "#27293d" }}>
+                            <thead className="text-primary">
 
-                                product.products.map((prod) => {
-                                    const editing = prod.id !== editId;
-                                    
-                                    
-                                      const test= () => {
-                                            setName(prod.name);
-                                            setDescription(prod.description);
-                                            setCost(prod.cost);
-                                            setPrice(prod.price);
-                                            setQtyMin(prod.stock.min_qty);
-                                            setQtyMax(prod.stock.max_orderQty);
-                                       }
-                                        
-                                       
-                                   
-                                    
+                                <tr>
+                                    <th>#Barcode</th>
+                                    <th>Product Name</th>
+                                    <th>Description</th>
+                                    <th>Cost</th>
+                                    <th>Selling Price</th>
+                                    <th>Min.Qty</th>
+                                    <th>Max.Qty</th>
+                                    <th>Action</th>
+                                    {/* <th className="text-center">Phone</th> */}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><Input type="number" onChange={(e) => { setProduct_id(e.target.value) }} /></td>
+                                    <td><Input type="text" onChange={(e) => { setName(e.target.value) }} /></td>
+                                    <td><Input type="text" onChange={(e) => { setDescription(e.target.value) }} /></td>
+                                    <td><Input type="text" onChange={(e) => { setCost(e.target.value) }} /></td>
+                                    <td><Input type="text" onChange={(e) => { setPrice(e.target.value) }} /></td>
+                                    <td><Input type="number" onChange={(e) => { setQtyMax(e.target.value) }} /></td>
+                                    <td><Input type="number" onChange={(e) => { setQtyMin(e.target.value) }} /></td>
+                                    <td><Button onClick={() => { addProduct(); fetchProducts() }}>ADD</Button></td>
+                                </tr>
+                                {products.map((product) => {
+
                                     return (
-                                        <tr >
-                                            <td>{editing ? prod.barcode : <Input value={prod.barcode} style={{ color: "black" }} type="number" disabled={true}/>}</td>
-                                            <td>{editing ? prod.name    : <Input defaultValue={prod.name}    style={{ color: "black" }} type="text"   onChange={(e) => { setName(e.target.value) }} />}</td>
-                                            <td>{editing ? prod.description : <Input defaultValue={prod.description} style={{ color: "black" }} type="text" onChange={(e) => { setDescription(e.target.value) }} />}</td>
-                                            <td>{editing ? prod.cost    : <Input defaultValue={prod.cost}    style={{ color: "black" }} type="number" onChange={(e) => { setCost(e.target.value) }} />}</td>
-                                            <td>{editing ? prod.price : <Input defaultValue={prod.price} style={{ color: "black" }} type="number" onChange={(e) => { setPrice(e.target.value) }} />}</td>
-                                            <td>{editing ? prod.stock.min_qty    : <Input defaultValue={prod.stock.min_qty}    style={{ color: "black" }} type="number" onChange={(e) => { setQtyMin(e.target.value) }} />}</td>
-                                            <td>{editing ? prod.stock.max_orderQty  : <Input defaultValue={prod.stock.max_orderQty }   style={{ color: "black" }} type="number" onChange={(e) => { setQtyMax(e.target.value) }} />}</td>
-                                            <td>{editing ? <Button onClick={() => { { setEditId(prod.id); test()} }}>Edit</Button> : <Button onClick={() => { { editProduct(editId); setEditId(0); } }}>submit</Button>}</td>
-                                          
-                                        </tr>
+
+                                        product.products.map((prod) => {
+                                            const editing = prod.id !== editId;
+
+
+                                            const test = () => {
+                                                setName(prod.name);
+                                                setDescription(prod.description);
+                                                setCost(prod.cost);
+                                                setPrice(prod.price);
+                                                setQtyMin(prod.stock.min_qty);
+                                                setQtyMax(prod.stock.max_orderQty);
+                                            }
+
+
+
+
+                                            return (
+                                                <tr >
+                                                    <td>{editing ? prod.barcode : <Input value={prod.barcode} type="number" disabled={true} />}</td>
+                                                    <td>{editing ? prod.name : <Input defaultValue={prod.name} type="text" onChange={(e) => { setName(e.target.value) }} />}</td>
+                                                    <td>{editing ? prod.description : <Input defaultValue={prod.description} type="text" onChange={(e) => { setDescription(e.target.value) }} />}</td>
+                                                    <td>{editing ? prod.cost : <Input defaultValue={prod.cost} type="number" onChange={(e) => { setCost(e.target.value) }} />}</td>
+                                                    <td>{editing ? prod.price : <Input defaultValue={prod.price} type="number" onChange={(e) => { setPrice(e.target.value) }} />}</td>
+                                                    <td>{editing ? prod.stock.min_qty : <Input defaultValue={prod.stock.min_qty} type="number" onChange={(e) => { setQtyMin(e.target.value) }} />}</td>
+                                                    <td>{editing ? prod.stock.max_orderQty : <Input defaultValue={prod.stock.max_orderQty} type="number" onChange={(e) => { setQtyMax(e.target.value) }} />}</td>
+                                                    <td>{editing ? <Button onClick={() => { { setEditId(prod.id); test() } }}>Edit</Button> : <Button onClick={() => { { editProduct(editId); setEditId(0); } }}>submit</Button>}</td>
+
+                                                </tr>
+                                            );
+                                        })
+
+
                                     );
-                                })
-
-
-                            );
-                        }
-                        )}
-
-
-                    </tbody>
-                </Table>
+                                }
+                                )}
+                            </tbody>
+                        </Table>
+                    </CardBody>
+                </Card>
             </TabPanel>
 
             <TabPanel value={value} index={2} style={{ width: "80%", hieght: "80%" }}>
-            
-             
-                {Order != [] ? <AutoOrder orders={Order} supplier={props.supplier}/> : <></>}
+
+
+                {Order != [] ? <AutoOrder orders={Order} supplier={props.supplier} /> : <></>}
 
             </TabPanel>
 
 
         </div>
+
     );
 }

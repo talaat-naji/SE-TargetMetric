@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { Line, Bar } from "react-chartjs-2";
 import apiClient from "../services/api";
+import Button1 from '@material-ui/core/Button';
 import {
     Button,
     ButtonGroup,
@@ -63,7 +64,7 @@ function a11yProps(index) {
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: "dark",
         display: 'flex',
         height: 224,
     },
@@ -145,6 +146,7 @@ export default function VerticalTabs(props) {
 
         <div className={classes.root}>
             <Tabs
+                style={{ backgroundColor: "#2b6af5", borderRadius: "15px", color: "white" }}
                 orientation="vertical"
                 variant="standard"
                 value={value}
@@ -157,7 +159,7 @@ export default function VerticalTabs(props) {
                 {/* <Tab label="Product quantity sold" {...a11yProps(2)} /> */}
 
             </Tabs>
-            <TabPanel value={value} index={0} style={{ width: "80%", hieght: "80%" }}>
+            <TabPanel value={value} index={0} style={{ width: "100%", hieght: "80%" }}>
                 {/* <Row> */}
                 {/* <Col xs="12"> */}
                 <Card className="card-chart" >
@@ -224,7 +226,7 @@ export default function VerticalTabs(props) {
                     </CardHeader>
                     <CardBody>
                         <div className="chart-area" width="100%">
-                            <Bar
+                            <Line
                                 data={{
                                     labels: [
                                         "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
@@ -263,18 +265,18 @@ export default function VerticalTabs(props) {
             </TabPanel>
             <TabPanel value={value} index={1} style={{ width: "80%", hieght: "80%" }}>
             <Card className="card-chart">
-                    <Row>
+                    <Row style={{ margin:"1em"}}>
                         <Col>from:<Input value={from} type="date" name="from" onChange={(e) => { setFrom(e.target.value) }}/></Col>
                         <Col>to:<Input value={to} type="date" name="to" onChange={(e) => { setTo(e.target.value)}}/></Col>
-                        
+                        <Col><br/><Button1 variant="contained" color="primary" onClick={fetchProducts} >show results</Button1></Col>
                     </Row>
-                    <Row><Col><Input type="submit" onClick={fetchProducts} value="show results"/></Col></Row>
+                    
                 </Card>
                 <Card className="card-chart">
                
                     <CardHeader>
                       
-                  <h3 className="card-category">Stock Content</h3>
+                  <h3 className="card-category">products boaught</h3>
                   <CardTitle tag="h4">
 {/*                    
                     <p> Selling value: {this.state.stockTotal.saleValue} L.L</p>

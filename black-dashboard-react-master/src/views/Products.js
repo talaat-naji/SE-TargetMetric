@@ -67,10 +67,10 @@ class Products extends React.Component {
                         
                         //   return (
                             <Col
-                              className="font-icon-list col-xs-6 col-xs-6"
-                              lg="2"
-                              md="3"
-                              sm="4"
+                              className="font-icon-list"
+                              lg="4.5"
+                              md="6"
+                              sm="9"
                             >
                              
                               <ViewProd product={product} onEditProduct={this.handleEditProduct} />
