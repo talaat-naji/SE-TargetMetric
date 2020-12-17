@@ -1,5 +1,6 @@
 <?php
 
+use Pusher\Pusher;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -7,6 +8,7 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StockController;
+use Illuminate\Support\Facades\Broadcast;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\LocationController;
@@ -25,7 +27,13 @@ use App\Http\Controllers\SupplierOrderController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Broadcast::routes(['middleware' => ['auth:sanctum']]);
 
+// Route::middleware('auth:sanctum')->post('/auth', function (Request $request) {
+//    $pusher=new Pusher("c33af439d6721e7c10a7","d88453d67eb081a0fbcb","1124080");
+//    $auth=$pusher->socket_auth($request->socket_id,$request->channel_name);
+//    return $auth;
+// });
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -99,3 +107,5 @@ Route::middleware('auth:sanctum')->get('/getRetailers',[ShopController::class,"g
 Route::middleware('auth:sanctum')->post('/getRetailerProducts',[ShopController::class,"getRetailersProducts"]);
 Route::middleware('auth:sanctum')->post('/orderProduct',[ShopController::class,"orderProduct"]);
 Route::middleware('auth:sanctum')->post('/getProductsByBarcode',[ShopController::class,"getProductsByBarcode"]);
+Route::middleware('auth:sanctum')->get('/getDemandedProductsInDistrict',[ShopController::class,"getDemandedProductsInDistrict"]);
+Route::middleware('auth:sanctum')->post('/updateShopProfile',[ShopController::class,"updateShopProfile"]);

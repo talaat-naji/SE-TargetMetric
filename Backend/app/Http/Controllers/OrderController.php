@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderProducts;
 use Carbon\Carbon;
 use App\Models\Sale;
 use App\Models\Order;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\StockDeficiet;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 
 class OrderController extends Controller
@@ -60,9 +62,10 @@ class OrderController extends Controller
      
   }
 
-  public function orderSupplier(Request $request){
-    Notification::route('mail', $request->supplier_email)
+  // public function orderSupplier(Request $request){
+  //   // Notification::route('mail', $request->supplier_email)
    
-    ->notify(new StockDeficiet($request));
-  }
+  //   // ->notify(new StockDeficiet($request));
+  //   Mail::to($request->supplier_email)->send(new OrderProducts($request));
+  // }
 }

@@ -30,12 +30,29 @@ import App from './App';
 import "assets/scss/black-dashboard-react.scss";
 import "assets/demo/demo.css";
 import "assets/css/nucleo-icons.css";
-
+import { PusherProvider } from "@harelpls/use-pusher";
 //const hist = createBrowserHistory();
 
+const config = {
+  // required config props
+  clientKey: "c33af439d6721e7c10a7",
+  cluster: "eu",
 
+  // optional if you'd like to trigger events. BYO endpoint.
+  // see "Trigger Server" below for more info
+  triggerEndpoint: "/pusher/trigger",
+
+  // required for private/presence channels
+  // also sends auth headers to trigger endpoint
+  authEndpoint: "/api/broadcasting/auth",
+  auth: {
+    headers: { Authorization: "Bearer token" },
+  },
+};
 
 ReactDOM.render(
-  <App/>,
+  <PusherProvider {...config}>
+    <App />
+     </PusherProvider>,
   document.getElementById("root")
 );

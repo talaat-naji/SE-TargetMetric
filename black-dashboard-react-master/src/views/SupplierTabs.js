@@ -181,9 +181,9 @@ export default function VerticalTabs(props) {
 
             </Tabs>
             <TabPanel value={value} index={0} style={{ width: "80%", hieght: "80%" }}>
-                <Input style={{ color: "black" }} value={props.supplier.name} />
-                <Input style={{ color: "black" }} value={props.supplier.email} />
-                <Input style={{ color: "black" }} value={props.supplier.phone} />
+                <Input style={{ color: "black" }} defaultValue={props.supplier.name} />
+                <Input style={{ color: "black" }} defaultValue={props.supplier.email} />
+                <Input style={{ color: "black" }} defaultValue={props.supplier.phone} />
             </TabPanel>
 
             <TabPanel value={value} index={1} style={{ width: "80%", hieght: "80%" }}>

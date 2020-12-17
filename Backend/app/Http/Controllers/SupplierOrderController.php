@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Mail\OrderProducts;
 use App\Models\OrderContent;
 use Illuminate\Http\Request;
 use App\Models\supplierOrder;
+use Illuminate\Support\Facades\Mail;
 use App\Notifications\SupplierOrders;
 use Illuminate\Support\Facades\Notification;
 
@@ -43,8 +45,10 @@ class SupplierOrderController extends Controller
     }
 
     public function orderSupplier(Request $request,$order_Id){
-        Notification::route('mail', $request->supplier_email)
+    //     Notification::route('mail', $request->supplier_email)
        
-        ->notify(new SupplierOrders($request,$order_Id));
-      }
+    //     ->notify(new SupplierOrders($request,$order_Id));
+    //   }
+    Mail::to($request->supplier_email)->send(new OrderProducts($request,$order_Id));
+    }
 }

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\shopOrderedRetailer;
+use App\Models\Sale;
+use App\Models\User;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Location;
 use App\Models\Supplier;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -81,6 +84,7 @@ class ShopController extends Controller
     }
 
     public function orderProduct(Request $request){
+        event(new shopOrderedRetailer($request->retailer_id));
         $order=new Order();
 
         $order->shop_id=Auth::id();
@@ -91,10 +95,54 @@ class ShopController extends Controller
         $order->lat=$request->lat;
         $order->lng=$request->lng;
         $order->save();
+
+        
     }
 
     public function getProductsByBarcode(Request $request){
 
       return  Product::where('barcode',$request->barcode)->with('retailer')->get();
     }
+
+    public function getDemandedProductsInDistrict(){
+
+        $dateS = Carbon::now()->startOfMonth()->subMonth(12);
+        $dateE = Carbon::now()->startOfMonth();
+
+        return Sale::select(DB::raw("SUM(sales.qty_sold) as qtySold"),"products.barcode")
+        
+        ->leftJoin("products","products.id","sales.product_id")
+        ->Join("locations",function ($join) {
+            $join->on('locations.user_id', '=', 'sales.shop_id');
+            $join->where("locations.district_id", '=', DB::raw("locations.district_id where locations.user_id =".Auth::id()));
+            $join->whereBetween("sales.created_at",[Carbon::now()->startOfMonth()->subMonth(12),Carbon::now()]);})
+        
+        ->groupBy("products.barcode")
+        ->orderBy("qtySold","desc")
+        ->get();
+    }
+
+    // public function updateShopProfile(Request $request){
+      
+    //     User::where('id', Auth::id())
+    //         ->update(['name' => $request->name,'email' => $request->email]);
+            
+    //     if (Location::where('user_id', Auth::id())->count() === 0) {
+    //         Location::insert(
+    //             [
+    //                 'user_id' => Auth::id(),
+    //                 'governorate_id' => $request->GovernorateId,
+    //                 "district_id" => $request->districtId,
+    //                 "town_name" => $request->town
+    //             ]
+    //         );
+    //     } else {
+    //         Location::where('user_id', Auth::id())
+    //             ->update([
+    //                 'governorate_id' => $request->GovernorateId,
+    //                 "district_id" => $request->districtId,
+    //                 "town_name" => $request->town
+    //             ]);
+    //     }
+    // }
 }

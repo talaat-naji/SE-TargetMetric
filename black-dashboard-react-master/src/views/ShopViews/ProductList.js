@@ -72,13 +72,15 @@ class ProductList extends React.Component {
     }
   }
   componentDidMount() {
-    // this.fetchRetailers();
+    if (this.props.barcode != 0) {
+      this.fetchProducts(this.props.barcode);
+    }
   }
   render() {
 
     return (
       <>
-        <div className="content">
+        {/* <div className="content"> */}
           <Row>
             <Col md="12">
               <Card>
@@ -138,7 +140,7 @@ class ProductList extends React.Component {
             </Col>
 
           </Row>
-        </div>
+        {/* </div> */}
       </>
     );
   }

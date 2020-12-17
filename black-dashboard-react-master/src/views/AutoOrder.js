@@ -25,17 +25,22 @@ import Alert from 'reactstrap/lib/Alert';
 
 export default function AutoOrder(props) {
     const [alert, setAlert] = React.useState('');
-    const orderList = [];
+    const [orderList, setOrderList] =React.useState([]);
     const [max_orderQty, setQtyMax] = React.useState();
     
-    const editQty=(barcode)=>{
-        orderList.forEach(element => {
+    const editQty = (barcode, newQty) => {
+        
+        
+       orderList.forEach(element => {
             if (element.barcode === barcode) {
-                element.qty = max_orderQty;
+                element.qty = newQty;
+                element.total = newQty * element.cost;
                 
+              
             }
         });
-        console.log(orderList);
+        setQtyMax(newQty);
+       
     }
 
     const issueOrder = () => {
@@ -49,6 +54,8 @@ export default function AutoOrder(props) {
                 if (response.status === 200) {
                     
                    setAlert(<Alert onClick={()=>{setAlert('')}}>your order was sent succesfully</Alert>)
+                } else {
+                    setAlert(<Alert className="danger" onClick={()=>{setAlert('')}}>Thier was an issue in sending your order</Alert>)
                 }
             })
 
@@ -56,7 +63,25 @@ export default function AutoOrder(props) {
 
         }
     }
-
+    React.useEffect(() => {
+        const temp=[]
+        props.orders.map((order) => {
+         
+            // setQtyMax(order.max_orderQty);
+            temp.push({
+                pId: order.product_id,
+                barcode: order.barcode,
+                description: order.description,
+                qty: order.max_orderQty,
+                cost: order.cost,
+                total: order.cost * order.max_orderQty
+            })
+           
+        })
+        
+        setOrderList(temp);
+    }, [])
+    
     return (<>
         {alert}
         <Button onClick={() => { issueOrder() }}>Issue Order</Button>
@@ -81,25 +106,17 @@ export default function AutoOrder(props) {
                     <td><Input style={{ color: "black" }} type="text" onChange={(e) => { setPrice(e.target.value) }} /></td>
                     <td><Button onClick={() => { addProduct(); fetchProducts() }}>ADD</Button></td>
                 </tr> */}
-                {props.orders.map((order) => {
-                    {
-                       // setQtyMax(order.max_orderQty);
-                        orderList.push({
-                         pId:order.product_id,
-                        barcode: order.barcode,
-                        description: order.description,
-                        qty: order.max_orderQty,
-                        cost: order.cost,
-                        total: order.cost * order.qty
-                    })}
+                {
+                    orderList.map((order) => {
+                   
                     
                             return (
                                 <tr >
                                     <td>{order.barcode} </td>
                                     <td>{order.description}</td>
-                                    <td><Input defaultValue={order.max_orderQty} onChange={(e) => { editQty(order.barcode);setQtyMax(e.target.value)}}/></td>
+                                    <td><Input defaultValue={order.qty} onChange={(e) => { editQty(order.barcode,e.target.value);}}/></td>
                                     <td>{order.cost}</td>
-                                    <td>{ order.cost*order.max_orderQty }</td>
+                                    <td>{ order.total }</td>
                                    
                                    
                                 </tr>
