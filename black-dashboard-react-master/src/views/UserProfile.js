@@ -31,6 +31,11 @@ import {
   Row,
   Col
 } from "reactstrap";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import apiClient from "../services/api"
 class UserProfile extends React.Component {
   
@@ -44,10 +49,38 @@ class UserProfile extends React.Component {
       name: '',
       email: '',
       town: "",
+      profile: "",
+      open:false
       
     };
   }
+   handleClickOpen = () => {
+     this.setState({ open: true });
+     //console.log(props.product);
+};
+
+ handleClose = () => {
+  this.setState({ open: false });
+   // setName(null);
+   // setDeadline(null);
+};
+ handleSubmit = () => {
+  this.setState({ open: false });
+   this.changeProfile();
   
+
+};
+  changeProfile = () => {
+    const fd = new FormData();
+    fd.append('image', this.state.profile);
+      if (sessionStorage.getItem('loggedIn')) {
+        apiClient.post('/api/editProfilePic', fd)
+          .then(()=>{this.fetchUserInfo()})
+          .catch(error => console.error(error)
+                  )
+
+      }
+  }
   fetchGovernorates = () => {
     if (sessionStorage.getItem('loggedIn')) {
       apiClient.get('../api/getGovernorate')
@@ -78,7 +111,8 @@ class UserProfile extends React.Component {
               districtId: response.data[0].districtId,
               govId: response.data[0].govId,
               email: response.data[0].email,
-              town: response.data[0].town, });
+              town: response.data[0].town,
+              profile:response.data[0].profile_url});
           })
           .catch(error => console.error(error))
   
@@ -113,6 +147,21 @@ class UserProfile extends React.Component {
     return (
       <>
         <div className="content">
+        <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title"></DialogTitle>
+        <DialogContent>
+              <Input type="file" onChange={(e) => { this.setState({ profile: e.target.files[0] })}}/>
+                
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={this.handleSubmit} color="primary">
+            Upload image
+          </Button>
+        </DialogActions>
+      </Dialog> 
           <Row>
             <Col md="8">
               <Card>
@@ -213,10 +262,12 @@ class UserProfile extends React.Component {
                     <div className="block block-three" />
                     <div className="block block-four" />
                     <a href="#pablo" onClick={e => e.preventDefault()}>
+                     
                       <img
+                        onClick={this.handleClickOpen}
                         alt="..."
                         className="avatar"
-                        src={require("assets/img/emilyz.jpg")}
+                        src={this.state.profile}
                       />
                       <h5 className="title">{this.state.name}</h5>
                     </a>

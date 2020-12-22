@@ -73,7 +73,7 @@ class Products extends React.Component {
                               sm="9"
                             >
                              
-                              <ViewProd product={product} onEditProduct={this.handleEditProduct} />
+                              <ViewProd onImageUpdate={this.handleEditProduct} product={product} onEditProduct={this.handleEditProduct} />
                             </Col>
                           );
                         // }));

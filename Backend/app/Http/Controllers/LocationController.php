@@ -12,7 +12,7 @@ class LocationController extends Controller
 {
     public function getProfile()
     {
-        return  DB::table('users')->select("users.name", "users.email", "loc.town_name as town", "loc.governorate_id as govId", "loc.district_id as districtId")
+        return  DB::table('users')->select("users.name", "users.email","users.profile_url", "loc.town_name as town", "loc.governorate_id as govId", "loc.district_id as districtId")
             ->leftjoin("locations as loc", "users.id", '=', 'loc.user_id')
             ->where('users.id', Auth::id())
             ->get();
@@ -40,4 +40,18 @@ class LocationController extends Controller
                 ]);
         }
     }
+
+    public function editProfilePic(Request $request){
+        if ($request->hasFile('image'))
+        {
+              $file      = $request->file('image');
+              $filename  = $file->getClientOriginalName();
+              $extension = $file->getClientOriginalExtension();
+              $picture   = date('His').'-'.$filename;
+              //move image to public/img folder
+            $file->move(public_path('profile'), $picture);
+            
+
+              User::where("id",Auth::id())->update(["profile_url"=>'/'.'profile'.'/' . $picture]);
+    }}
 }

@@ -180,12 +180,12 @@ export default function VerticalTabs(props) {
             <TabPanel value={value} index={0} style={{ width: "80%", hieght: "80%" }}>
                 <Card>
                     <CardBody>
-                        <Table className="tablesorter striped" responsive style={{ backgroundColor: "#27293d" }}>
+                        <Table className="tablesorter" responsive>
                             <tbody>
 
-                               <tr><td>Supplier Name :</td><td> {props.supplier.name}  </td> </tr>  {/**<Input defaultValue={ */}
-                               <tr><td>Supplier Email :</td><td> {props.supplier.email}  </td> </tr>  {/**<Input defaultValue={ */}
-                               <tr><td>Supplier Phone :</td><td> {props.supplier.phone}  </td> </tr>  {/**<Input defaultValue={ */}
+                               <tr><td><Typography>Supplier Name : </Typography> </td><td> {props.supplier.name}  </td>  </tr>  {/**<Input defaultValue={ */}
+                               <tr><td><Typography>Supplier Email :</Typography> </td><td> {props.supplier.email}  </td> </tr>  {/**<Input defaultValue={ */}
+                               <tr><td><Typography>Supplier Phone :</Typography> </td><td> {props.supplier.phone}  </td> </tr>  {/**<Input defaultValue={ */}
                             </tbody>
                         </Table>
                     </CardBody>
@@ -197,7 +197,7 @@ export default function VerticalTabs(props) {
                     <CardBody>
 
 
-                        <Table className="tablesorter" responsive style={{ backgroundColor: "#27293d" }}>
+                        <Table className="tablesorter" responsive>
                             <thead className="text-primary">
 
                                 <tr>

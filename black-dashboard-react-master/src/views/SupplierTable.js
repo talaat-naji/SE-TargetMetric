@@ -8,7 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Table } from "reactstrap";
 import SupplierVerticalTabs from "./SupplierTabs";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { createMuiTheme, ThemeProvider, Typography } from "@material-ui/core";
 
 export default function SupplierTable(props) {
     const [open, setOpen] = React.useState(false);
@@ -38,10 +38,10 @@ export default function SupplierTable(props) {
 <Table className="tablesorter" responsive>
                     <thead className="text-primary">
                       <tr>
-                        <th>#ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th className="text-center">Phone</th>
+                        <th><Typography>#ID</Typography></th>
+                        <th><Typography>Name</Typography></th>
+                        <th><Typography>Email</Typography></th>
+                        <th className="text-center"><Typography>Phone</Typography></th>
                       </tr>
                     </thead>
               <tbody>

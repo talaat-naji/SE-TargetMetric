@@ -8,6 +8,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Table } from "reactstrap";
 import RetailerTabs  from "./RetailerTabs";
+import Row from 'reactstrap/lib/Row';
+import Col from 'reactstrap/lib/Col';
 export default function RetailerRow(props) {
     const [open, setOpen] = React.useState(false);
     const [retailer, setRetailer] = React.useState('');
@@ -28,10 +30,10 @@ export default function RetailerRow(props) {
 
     return (<>
         <tr onClick={()=>handleClickOpen(props.retailer)}>
-            <td>{props.retailer.name}</td>
-            <td>{props.retailer.email}</td>
-            <td>{props.retailer.governorate !== null ? props.retailer.governorate.gov_name : null}</td>
-            <td>{props.retailer.district !== null ? props.retailer.district.district_name : null}</td>
+            <td><Row><Col xs="auto"><img className="avatar" src={props.retailer.profile_url}/></Col><Col>{props.retailer.name}</Col></Row></td>
+            <td><Row><Col>{props.retailer.email}</Col></Row></td>
+            <td><Row><Col>{props.retailer.governorate !== null ? props.retailer.governorate.gov_name : null}</Col></Row></td>
+            <td><Row><Col>{props.retailer.district !== null ? props.retailer.district.district_name : null}</Col></Row></td>
         </tr>
       
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullScreen={true} >

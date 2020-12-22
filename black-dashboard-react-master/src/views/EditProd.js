@@ -10,6 +10,7 @@ import apiClient from '../services/api';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
+import Resizer from 'react-image-file-resizer';
 import {
   Table,
   Button,
@@ -27,16 +28,29 @@ import CardImg from 'reactstrap/lib/CardImg';
 export default function ViewProd(props) {
   const [open, setOpen] = React.useState(false);
   const [image, setImage] = React.useState();
-  // const [price, setPrice] = React.useState();
+  // const [img, setImg] = React.useState();
   // const [productId, setProductId] = React.useState();
-
-  const editProductPic = () => {
+//   const resizeFile = (file) => new Promise(resolve => {
+//     Resizer.imageFileResizer(file, 300, 100, 'JPEG', 100, 0,
+//     uri => {
+//       resolve(uri);
+//     },
+//       'base64',
+//       200,
+//       200
+//     );
+// });
+ function editProductPic () {
+   
+   
+  //  console.log(imageNew); 
+  
+    const fd = new FormData();
+    fd.append('image', image);
+    fd.append("prod_id",props.product.id)
       if (sessionStorage.getItem('loggedIn')) {
-          apiClient.post('/api/editProductPic',
-              {
-                      image:image,
-                    
-                  })
+        apiClient.post('/api/editProductPic', fd)
+            .then(()=>{props.onImageUpdate();})
 
                   .catch(error => console.error(error)
                   )
@@ -56,11 +70,14 @@ export default function ViewProd(props) {
   const handleSubmit = () => {
       setOpen(false);
       editProductPic();
-     
+    
 
   };
-
-
+  React.useEffect(() => {
+    // const im =resizeFile(props.product.pic_path)
+    // setImg(im);
+})
+ 
   const HtmlTooltip = withStyles((theme) => ({
     tooltip: {
       backgroundColor: '#f5f5f9',
@@ -85,7 +102,9 @@ export default function ViewProd(props) {
         <Card>
     
          
-          {props.product.pic_path != "" ? <CardImg top src={require("assets/img/mike.jpg")} /> :<Button onClick={handleClickOpen}><i className="tim-icons icon-cloud-upload-94"/> upload an image</Button> }
+          {props.product.pic_path != "" ? <CardImg onClick={handleClickOpen}
+                                                  top style={{ width: "100%", height: "40%" }}
+                                                  src={props.product.pic_path} /> : <Button onClick={handleClickOpen}><i className="tim-icons icon-cloud-upload-94" /> upload an image</Button>}
            
          
           <CardHeader tag="h4">
@@ -110,7 +129,7 @@ export default function ViewProd(props) {
        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">{props.product.name}</DialogTitle>
         <DialogContent>
-          <Input type="file" onChange={(e)=>{setImage(e.target.value)}}/>
+          <Input type="file" onChange={(e)=>{setImage(e.target.files[0])}}/>
                 
         </DialogContent>
         <DialogActions>

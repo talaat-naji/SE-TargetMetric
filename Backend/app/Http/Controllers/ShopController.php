@@ -45,6 +45,7 @@ class ShopController extends Controller
             ->select(
                 DB::raw(" DISTINCT s.shop_id"),
                 "u.name",
+                "u.profile_url",
                 "u.id",
                 "loc.id",
                 "loc.district_id",

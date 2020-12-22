@@ -8,6 +8,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Table } from "reactstrap";
 import VerticalTabs  from "./Tabs";
+import Row from 'reactstrap/lib/Row';
+import Col from 'reactstrap/lib/Col';
 export default function CustomerTable(props) {
     const [open, setOpen] = React.useState(false);
   const [customerId, setCustomerId] = React.useState();
@@ -44,7 +46,7 @@ export default function CustomerTable(props) {
                   <tbody>
                     {props.customersData.map((customer) => {
                       return (<tr onClick={() => { handleClickOpen(customer.shop_id,customer.name) }}>
-                          <td >{customer.name}</td>
+                        <td ><Row><Col xs="auto"><img className="avatar" src={customer.profile_url}/></Col><Col>{customer.name}</Col></Row></td>
                         <td>{customer.govName}</td>
                         <td>{customer.distName}</td>
                         <td className="text-center">{customer.total} L.L</td>

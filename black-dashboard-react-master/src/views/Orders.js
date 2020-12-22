@@ -25,7 +25,8 @@ import {
     NavLink,
     Nav,
     Container,
-    Modal
+    Modal,
+    ListGroup
 } from "reactstrap";
 import apiClient from "../services/api";
 import OrderDialog from "./OrderDialog"
@@ -103,18 +104,27 @@ class Orders extends React.Component {
                     </DropdownMenu>
                 </UncontrolledDropdown > */}
 
-                <Button aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}>
+                <Button style={{backgroundColor:"#ffffff"}} aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}>
                     <div className="notification d-none d-lg-block d-xl-block" />
-                    <i className="tim-icons icon-sound-wave" />
+                    <a
+            
+            className="simple-text logo-mini"
+          >
+            <div className="logo-img">
+            <i className="tim-icons icon-bell-55" />
+            </div>
+          </a>
+                    
                     <p className="d-lg-none">Notifications</p>
                 </Button>
                 <Menu
+                    
                     id="simple-menu"
                     anchorEl={this.state.anchorEl}
                     keepMounted
                     open={Boolean(this.state.anchorEl)}
                     onClose={this.handleClose}
-                >
+                > <ListGroup >
                     {this.state.orders.map((order) => {
                         return (
 
@@ -122,7 +132,7 @@ class Orders extends React.Component {
                         )
                     })
                     }
-
+                 </ListGroup>
                 </Menu>
             </>
         );

@@ -28,6 +28,8 @@ import {
 import apiClient from "../services/api";
 import { Link, Redirect } from 'react-router-dom';
 import MapLocation from './ShopViews/MapLocation';
+import ListGroupItem from 'reactstrap/lib/ListGroupItem';
+import { Typography } from '@material-ui/core';
 export default function OrderDialog(props) {
   const [open, setOpen] = React.useState(false);
   const [qty, setQty] = React.useState(props.order.qty_ordered);
@@ -86,9 +88,16 @@ export default function OrderDialog(props) {
   return (
 
     <div>
-<MenuItem onClick={handleClickOpen}>
-          {props.order.shop.name} ordered {props.order.qty_ordered} pcs of {props.order.product.name}
-         </MenuItem>
+       <ListGroupItem className="content">
+      <MenuItem onClick={handleClickOpen} >
+      
+     
+        <Typography style={{color:"#1e1e2e"}}>{props.order.shop.name} ordered {props.order.qty_ordered} pcs of {props.order.product.name}</Typography>  
+         
+     
+    
+      </MenuItem>
+      </ListGroupItem>
       {/* <li style={{ color: 'black' }} onClick={handleClickOpen}>{props.order.shop.name} ordered {props.order.qty_ordered} pcs of {props.order.product.name}</li> */}
 
 

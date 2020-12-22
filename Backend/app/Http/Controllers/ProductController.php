@@ -29,4 +29,26 @@ class ProductController extends Controller
         ]);
 
     }
+    
+    public function editProductPic(Request $request){
+
+        if ($request->hasFile('image'))
+        {
+              $file      = $request->file('image');
+              $filename  = $file->getClientOriginalName();
+              $extension = $file->getClientOriginalExtension();
+              $picture   = date('His').'-'.$filename;
+              //move image to public/img folder
+            $file->move(public_path('img'), $picture);
+              //$file_namewithExt = $request->file('path')->getClientOriginalName();
+            // $file->storeAs('/public', $picture);
+            //   $media = new Media();
+            //   $cid = $conspiracy->id;
+            //   $media->conspiracy_id = $cid;
+            //   $media->path = '/'.'img'.'/' . $picture;
+            //   $media->save();
+
+              Product::where("id",$request->prod_id)->update(["pic_path"=>'/'.'img'.'/' . $picture]);
+        }
+    }
 }

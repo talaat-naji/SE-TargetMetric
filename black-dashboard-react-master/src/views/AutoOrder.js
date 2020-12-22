@@ -96,7 +96,7 @@ export default function AutoOrder(props) {
             </CardHeader>
             <CardBody>
                 
-                <Table className="tablesorter" responsive style={{ backgroundColor: "#27293d" }}>
+                <Table className="tablesorter" responsive>
                     <thead className="text-primary">
 
                         <tr>

@@ -39,6 +39,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::middleware('auth:sanctum')->get('/myProducts',[ProductController::class,"getProductsByUser"]);
 Route::middleware('auth:sanctum')->post('/editProduct',[ProductController::class,"editProduct"]);
+Route::middleware('auth:sanctum')->post('/editProductPic',[ProductController::class,"editProductPic"]);
 /*
 |--------------------------------------------------------------------------
 | Charts Routes
@@ -69,6 +70,7 @@ Route::middleware('auth:sanctum')->post('/getDistrict',[DistrictController::clas
 |*/
 Route::middleware('auth:sanctum')->get('/getProfile',[LocationController::class,"getProfile"]);
 Route::middleware('auth:sanctum')->post('/updateRetailerProfile',[LocationController::class,"updateRetailerProfile"]);
+Route::middleware('auth:sanctum')->post('/editProfilePic',[LocationController::class,"editProfilePic"]);
 /*
 |--------------------------------------------------------------------------
 | GET CUSTOMER ORDERS
