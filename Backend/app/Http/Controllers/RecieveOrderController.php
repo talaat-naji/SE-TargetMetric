@@ -16,6 +16,19 @@ use App\Notifications\SupplierOrders;
 
 class RecieveOrderController extends Controller
 {
+  public function getContent(Request $request){
+    $orderId= supplierOrder::where("status",false)
+    ->where("supplier_id",$request->supplier_id)
+    ->where("id",$request->order_id)
+    ->count();
+
+if($orderId===0)  {
+  return  OrderContent::where("supplier_order_id",$request->order_id)->with('product')->with("recieved")->get();
+
+}   
+else{return  OrderContent::where("supplier_order_id",$request->order_id)->with('product')->get();}                  
+}
+
    public function getSupplierById(Request $request){
      return Supplier::where("user_id",Auth::id())->where("id",$request->supplier_id)->get();
    }
@@ -28,6 +41,7 @@ class RecieveOrderController extends Controller
 
      if($orderId===0)  {
        return ["id"=>null];
+
      }   
      else{return  OrderContent::where("supplier_order_id",$request->order_id)->with('product')->get();}                  
    }

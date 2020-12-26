@@ -50,6 +50,7 @@ class ShopUserProfile extends React.Component {
             email: '',
             town: "",
             profile: "",
+            about:"",
             open:false,
 
         };
@@ -105,14 +106,15 @@ class ShopUserProfile extends React.Component {
         if (sessionStorage.getItem('loggedIn')) {
             apiClient.get('../api/getProfile')
                 .then(response => {
-                    //console.log(response.data,"i am here")
+                   console.log(response.data[0],"i am here")
                     this.setState({
                         name: response.data[0].name,
                         districtId: response.data[0].districtId,
                         govId: response.data[0].govId,
                         email: response.data[0].email,
                         town: response.data[0].town,
-                        profile:response.data[0].profile_url,
+                        profile: response.data[0].profile_url,
+                        about:response.data[0].about,
                     });
                     this.fetchDistricts(response.data[0].govId);
                 })
@@ -136,7 +138,8 @@ class ShopUserProfile extends React.Component {
                 districtId: this.state.districtId,
                 name: this.state.name,
                 town: this.state.town,
-                email: this.state.email
+                email: this.state.email,
+                about:this.state.about
                 
             })
                 .then(response => {
@@ -205,7 +208,8 @@ class ShopUserProfile extends React.Component {
                                             <FormGroup>
                                                 <label>Governorate</label>
                                                 <select value={this.state.govId} onChange={(e) => { this.setState({ districtId: "undefined"});this.handleChangeGov(e.target.value); }}>
-                                                    {this.state.Governorate.map((governorate) => {
+                                                <option value={"undefined"}>choose governorate</option>
+                                                        {this.state.Governorate.map((governorate) => {
                                                         return (
                                                             <option value={governorate.value}>{governorate.label}</option>
                                                         );
@@ -217,7 +221,7 @@ class ShopUserProfile extends React.Component {
                                         <Col className="px-md-1" md="4">
                                             <FormGroup>
                                                 <label>District</label>
-
+<br/>
                                                 <select value={this.state.districtId} onChange={(e) => {this.setState({ districtId: e.target.value }) }}>
                                                     <option value={"undefined"}>choose district</option>
                                                     {this.state.Districts.map((district) => {
@@ -244,10 +248,10 @@ class ShopUserProfile extends React.Component {
                                         <Col md="8">
                                             <FormGroup>
                                                 <label>About Me</label>
-                                                <Input
+                                                    <Input
+                                                        onChange={(e) => { this.setState({ about: e.target.value }) }}
                                                     cols="80"
-                                                    defaultValue="Lamborghini Mercy, Your chick she so thirsty, I'm in
-                            that two seat Lambo."
+                                                    defaultValue={this.state.about}
                                                     placeholder="Here can be your description"
                                                     rows="4"
                                                     type="textarea"
@@ -284,14 +288,12 @@ class ShopUserProfile extends React.Component {
                         className="avatar"
                         src={this.state.profile}
                       />
-                      <h5 className="title">Mike Andrew</h5>
+                                            <h5 className="title">{this.state.name}</h5>
                     </a>
-                    <p className="description">Ceo/Co-Founder</p>
+                    <p className="description">{this.state.email}</p>
                   </div>
                   <div className="card-description">
-                    Do not be scared of the truth because we need to restart the
-                    human foundation in truth And I love you like Kanye loves
-                    Kanye I love Rick Owens’ bed design but the back is...
+                   {this.state.about}
                   </div>
                 </CardBody>
                 <CardFooter>
@@ -303,7 +305,7 @@ class ShopUserProfile extends React.Component {
                       <i className="fab fa-twitter" />
                     </Button>
                     <Button className="btn-icon btn-round" color="google">
-                      <i className="fab fa-google-plus" />
+                                            <a href={`mailto:${this.state.email}`}> <i className="fab fa-google-plus" /></a>
                     </Button>
                   </div>
                 </CardFooter>

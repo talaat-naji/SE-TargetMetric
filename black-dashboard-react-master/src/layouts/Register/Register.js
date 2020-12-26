@@ -35,7 +35,7 @@ const Register = (props) => {
                         axios.get('../api/user', {}).then(response => {
 
                             sessionStorage.setItem('userId', response.data.id);
-
+                            sessionStorage.setItem('userProfile', response.data.profile_url);
                             
                         });
                     }

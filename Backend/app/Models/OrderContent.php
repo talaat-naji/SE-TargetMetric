@@ -14,4 +14,7 @@ class OrderContent extends Model
     public function product(){
         return $this->belongsTo(Product::class);
     }
+    public function recieved(){
+        return $this->hasOneThrough(RecieveOrder::class,supplierOrder::class,"id","supplier_order_id");
+    }
 }

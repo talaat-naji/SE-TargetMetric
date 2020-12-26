@@ -123,7 +123,7 @@ class Shop extends React.Component {
             bgColor={this.state.backgroundColor}
             logo={{
               outterLink: "https://www.creative-tim.com/",
-              text: "Sales Mills",
+              text: "Target Metric",
               imgSrc: logo
             }}
             toggleSidebar={this.toggleSidebar}

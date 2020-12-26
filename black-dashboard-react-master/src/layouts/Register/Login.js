@@ -36,6 +36,7 @@ const Login = (props) => {
                            
                            
                             sessionStorage.setItem('userType', response.data.userType);
+                            sessionStorage.setItem('userProfile', response.data.profile_url);
                             sessionStorage.setItem('userId', response.data.id);
                             sessionStorage.setItem('username', response.data.name);
                             setUserType(response.data.userType);
@@ -64,7 +65,7 @@ const Login = (props) => {
            props.history.push('/admin/dashboard');
         } else if (userType === "shop") {
             console.log("testshop");
-            props.history.push('/shop/dashboard');
+            props.history.push('/shop/user-profile');
         }
     }
     return (

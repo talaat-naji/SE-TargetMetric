@@ -34,6 +34,7 @@ import {
 
 class Notifications extends React.Component {
   notify = place => {
+    console.log("gigi",place)
     var color = Math.floor(Math.random() * 5 + 1);
     var type;
     switch (color) {
@@ -80,7 +81,7 @@ class Notifications extends React.Component {
             <NotificationAlert ref="notificationAlert" />
           </div>
           <Row>
-            <Col md="6">
+            {/* <Col md="6">
               <Card>
                 <CardHeader>
                   <CardTitle tag="h4">Notifications Style</CardTitle>
@@ -154,7 +155,7 @@ class Notifications extends React.Component {
                   </UncontrolledAlert>
                 </CardBody>
               </Card>
-            </Col>
+            </Col> */}
             <Col md="12">
               <Card>
                 <CardBody>

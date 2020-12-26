@@ -82,7 +82,7 @@ class RetailersList extends React.Component {
                
                 </CardHeader>
                 <CardBody>
-                  <Table className="tablesorter" responsive>
+                  <Table className="tablesorter">
                     <thead className="text-primary">
                   <tr><h3>Retailers</h3></tr>
                     </thead>

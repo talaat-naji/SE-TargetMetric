@@ -28,7 +28,7 @@
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="icon" sizes="76x76" type="image/png" href="%PUBLIC_URL%/favicon.png">
+    <link rel="icon" sizes="76x76" type="image/jpg" href="%PUBLIC_URL%/targetMetric.jpg">
     <link rel="apple-touch-icon" sizes="76x76" href="%PUBLIC_URL%/apple-icon.png">
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -44,23 +44,17 @@
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 
     <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDs98g2t3oMIW-E_tKUf6TWrIf25AP0JCE"></script> -->
-    <title>Black Dashboard React by Creative Tim</title>
+    <title>Target Metric</title>
+  
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="/__/firebase/8.2.1/firebase-app.js"></script>
 
-    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-     <!-- <script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="/__/firebase/8.2.1/firebase-analytics.js"></script>
 
-    // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
-
-    var pusher = new Pusher('c33af439d6721e7c10a7', {
-      cluster: 'eu'
-    });
-
-    var channel = pusher.subscribe('shopOrder');
-    channel.bind('App/Events/shopOrderedRetailer', function(data) {
-      alert(JSON.stringify(data));
-    });
-  </script> -->
+<!-- Initialize Firebase -->
+<script src="/__/firebase/init.js"></script>
   </head>
   <body>
     <noscript>

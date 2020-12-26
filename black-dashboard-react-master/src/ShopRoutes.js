@@ -13,14 +13,14 @@ import ProductsTabs from "views/ShopViews/DemandedProducts";
 import ShopUserProfile from "views/ShopViews/user-profile";
 
 var shopRoutes = [
-    {
-      path: "/dashboard",
-      name: "Dashboard",
-      rtlName: "لوحة القيادة",
-      icon: "tim-icons icon-chart-pie-36",
-      component: Dashboard,
-      layout: "/shop"
-    },
+    // {
+    //   path: "/dashboard",
+    //   name: "Dashboard",
+    //   rtlName: "لوحة القيادة",
+    //   icon: "tim-icons icon-chart-pie-36",
+    //   component: Dashboard,
+    //   layout: "/shop"
+    // },
     {
       path: "/icons",
       name: "Products",

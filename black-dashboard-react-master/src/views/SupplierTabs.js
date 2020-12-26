@@ -5,7 +5,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import { Line, Bar } from "react-chartjs-2";
+import moment from "moment";
 import apiClient from "../services/api";
 import {
     Table,
@@ -80,9 +80,12 @@ export default function VerticalTabs(props) {
     const [cost, setCost] = React.useState();
     const [min_qty, setQtyMin] = React.useState();
     const [max_orderQty, setQtyMax] = React.useState();
-
-    const [Order, setOrder] = React.useState();
+    const [orderHistory, setOrderHistory] = React.useState([]);
+    const [orderContent, setOrderContent] = React.useState([]);
+    const [order, setOrder] = React.useState([]);
     const [editId, setEditId] = React.useState();
+    const [detail, setDetail] = React.useState(false);
+    const [recieved, setRecieved] = React.useState(false);
     const fetchProducts = () => {
         if (sessionStorage.getItem('loggedIn')) {
             apiClient.post('../api/getSupplierProducts', { id: props.supplier.id })
@@ -93,12 +96,39 @@ export default function VerticalTabs(props) {
 
         }
     }
+    const fetchOrderContent = (id) => {
+        if (sessionStorage.getItem('loggedIn')) {
+    
+            apiClient.post('../api/getContent', {
+                supplier_id: props.supplier.id,
+                order_id: id
+            })
+                .then((response) => {
+                   
+                        setOrderContent(response.data)
+                   
+                })
+                .catch(error => console.error(error))
+        }
+    }
     const fetchOrders = () => {
         if (sessionStorage.getItem('loggedIn')) {
             apiClient.post('../api/autoGenerateOrder',
                 { id: props.supplier.id })
                 .then(response => {
                     setOrder(response.data);
+                    console.log(response.data);
+                })
+                .catch(error => console.error(error))
+
+        }
+    }
+    const fetchOrdersHistory = () => {
+        if (sessionStorage.getItem('loggedIn')) {
+            apiClient.post('../api/OrderHistory',
+                { id: props.supplier.id })
+                .then(response => {
+                    setOrderHistory(response.data);
                 })
                 .catch(error => console.error(error))
 
@@ -146,18 +176,22 @@ export default function VerticalTabs(props) {
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+        setDetail(false);
         if (newValue === 1) {
             fetchProducts();
         }
         if (newValue === 2) {
             fetchOrders();
         }
+        if (newValue === 3) {
+            fetchOrdersHistory();
+        }
 
     };
 
-    React.useEffect(() => {
-        fetchOrders();
-    }, [])
+    // React.useEffect(() => {
+    //     fetchOrders();
+    // }, [])
     return (
 
         <div className={classes.root} >
@@ -174,13 +208,14 @@ export default function VerticalTabs(props) {
                 <Tab label="Supplier info" {...a11yProps(0)} />
                 <Tab label="Supplier Products" {...a11yProps(1)} />
                 <Tab label="Supplier Orders" {...a11yProps(2)} />
-                {/* <Tab label="Product quantity sold" {...a11yProps(2)} /> */}
+                <Tab label="Orders History" {...a11yProps(3)} />
+                {detail ? <Tab label="order details" {...a11yProps(4)} /> : <></>}
 
             </Tabs>
             <TabPanel value={value} index={0} style={{ width: "80%", hieght: "80%" }}>
                 <Card>
                     <CardBody>
-                        <Table className="tablesorter" responsive>
+                        <Table className="tablesorter">
                             <tbody>
 
                                <tr><td><Typography>Supplier Name : </Typography> </td><td> {props.supplier.name}  </td>  </tr>  {/**<Input defaultValue={ */}
@@ -192,12 +227,12 @@ export default function VerticalTabs(props) {
                 </Card>
             </TabPanel>
 
-            <TabPanel value={value} index={1} style={{ width: "80%", hieght: "80%" }}>
+            <TabPanel  value={value} index={1} style={{ width: "90%"}}>
                 <Card>
                     <CardBody>
 
 
-                        <Table className="tablesorter" responsive>
+                        <Table className="tablesorter" style={{overflow:"auto"}}>
                             <thead className="text-primary">
 
                                 <tr>
@@ -209,19 +244,19 @@ export default function VerticalTabs(props) {
                                     <th>Min.Qty</th>
                                     <th>Max.Qty</th>
                                     <th>Action</th>
-                                    {/* <th className="text-center">Phone</th> */}
+                                   
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><Input type="number" onChange={(e) => { setProduct_id(e.target.value) }} /></td>
+                                    <td><Input type="text" onChange={(e) => { setProduct_id(e.target.value) }} /></td>
                                     <td><Input type="text" onChange={(e) => { setName(e.target.value) }} /></td>
                                     <td><Input type="text" onChange={(e) => { setDescription(e.target.value) }} /></td>
                                     <td><Input type="text" onChange={(e) => { setCost(e.target.value) }} /></td>
                                     <td><Input type="text" onChange={(e) => { setPrice(e.target.value) }} /></td>
-                                    <td><Input type="number" onChange={(e) => { setQtyMax(e.target.value) }} /></td>
                                     <td><Input type="number" onChange={(e) => { setQtyMin(e.target.value) }} /></td>
-                                    <td><Button onClick={() => { addProduct(); fetchProducts() }}>ADD</Button></td>
+                                    <td><Input type="number" onChange={(e) => { setQtyMax(e.target.value) }} /></td>
+                                    <td><Button onClick={() => { addProduct(); fetchProducts() }}><i className="tim-icons icon-simple-add"/></Button></td>
                                 </tr>
                                 {products.map((product) => {
 
@@ -245,14 +280,14 @@ export default function VerticalTabs(props) {
 
                                             return (
                                                 <tr >
-                                                    <td>{editing ? prod.barcode : <Input value={prod.barcode} type="number" disabled={true} />}</td>
+                                                    <td>{editing ? prod.barcode : <Input value={prod.barcode} type="text" disabled={true} />}</td>
                                                     <td>{editing ? prod.name : <Input defaultValue={prod.name} type="text" onChange={(e) => { setName(e.target.value) }} />}</td>
                                                     <td>{editing ? prod.description : <Input defaultValue={prod.description} type="text" onChange={(e) => { setDescription(e.target.value) }} />}</td>
                                                     <td>{editing ? prod.cost : <Input defaultValue={prod.cost} type="number" onChange={(e) => { setCost(e.target.value) }} />}</td>
                                                     <td>{editing ? prod.price : <Input defaultValue={prod.price} type="number" onChange={(e) => { setPrice(e.target.value) }} />}</td>
                                                     <td>{editing ? prod.stock.min_qty : <Input defaultValue={prod.stock.min_qty} type="number" onChange={(e) => { setQtyMin(e.target.value) }} />}</td>
                                                     <td>{editing ? prod.stock.max_orderQty : <Input defaultValue={prod.stock.max_orderQty} type="number" onChange={(e) => { setQtyMax(e.target.value) }} />}</td>
-                                                    <td>{editing ? <Button onClick={() => { { setEditId(prod.id); test() } }}>Edit</Button> : <Button onClick={() => { { editProduct(editId); setEditId(0); } }}>submit</Button>}</td>
+                                                    <td>{editing ? <Button  onClick={() => { { setEditId(prod.id); test() } }}><i className="tim-icons icon-pencil"/></Button> : <><Button  onClick={() => { { editProduct(editId); setEditId(0); } }}><i className="tim-icons icon-check-2"/></Button> <Button onClick={() => { {  setEditId(0); } }}><i className="tim-icons icon-simple-remove"/></Button></>}</td>
 
                                                 </tr>
                                             );
@@ -271,11 +306,84 @@ export default function VerticalTabs(props) {
             <TabPanel value={value} index={2} style={{ width: "80%", hieght: "80%" }}>
 
 
-                {Order != [] ? <AutoOrder orders={Order} supplier={props.supplier} /> : <></>}
+                {order.length >0 ? <AutoOrder orders={order} supplier={props.supplier} /> : <></>}
 
             </TabPanel>
+            <TabPanel value={value} index={3} style={{ width: "80%", hieght: "80%" }}>
+
+            <Card>
+                    <CardBody>
 
 
+                        <Table className="tablesorter" style={{overflow:"auto"}}>
+                            <thead className="text-primary">
+
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Status</th>
+                                    <th>Recieved at</th>
+                                    <th>Issued at</th>
+                                    
+                                    
+                                  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {orderHistory.map((order) => {
+                                    return (
+                                        <tr onClick={() => { fetchOrderContent(order.id); setDetail(true); setValue(4);setRecieved(order.status)}}>
+                                            <td>{order.id}</td>
+                                            <td>{order.status?"Recieved":"Not recieved yet!!"}</td>
+                                            <td>{order.status?moment(order.updated_at).format("LLL"):""}</td>
+                                            <td>{moment(order.created_at).format("LLL")}</td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </Table>
+                    </CardBody>
+             </Card>
+
+
+</TabPanel>
+<TabPanel value={value} index={4} style={{ width: "80%", hieght: "80%" }}>
+
+<Card>
+        <CardBody>
+
+
+            <Table className="tablesorter" style={{overflow:"auto"}}>
+                <thead className="text-primary">
+
+                    <tr>
+                        <th>Barcode</th>
+                        <th>description</th>
+                        <th>Qty ordered</th>
+                        <th>Qty recieved</th>
+                        
+                        
+                      
+                    </tr>
+                </thead>
+                <tbody>
+                    {orderContent.map((order) => {
+                        return (
+                            <tr>
+                                <td>{order.product.barcode}</td>
+                                <td>{order.product.description}</td>
+                                <td>{order.qty}</td>
+                                <td>{recieved?order.recieved!==null?order.recieved.qty:"0":""}</td>
+                             
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </Table>
+        </CardBody>
+ </Card>
+
+
+</TabPanel>
         </div>
 
     );

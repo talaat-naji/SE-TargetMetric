@@ -10,7 +10,7 @@ import apiClient from '../services/api';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import Resizer from 'react-image-file-resizer';
+
 import {
   Table,
   Button,
@@ -28,22 +28,8 @@ import CardImg from 'reactstrap/lib/CardImg';
 export default function ViewProd(props) {
   const [open, setOpen] = React.useState(false);
   const [image, setImage] = React.useState();
-  // const [img, setImg] = React.useState();
-  // const [productId, setProductId] = React.useState();
-//   const resizeFile = (file) => new Promise(resolve => {
-//     Resizer.imageFileResizer(file, 300, 100, 'JPEG', 100, 0,
-//     uri => {
-//       resolve(uri);
-//     },
-//       'base64',
-//       200,
-//       200
-//     );
-// });
+
  function editProductPic () {
-   
-   
-  //  console.log(imageNew); 
   
     const fd = new FormData();
     fd.append('image', image);
@@ -59,13 +45,12 @@ export default function ViewProd(props) {
   }
   const handleClickOpen = () => {
       setOpen(true);
-       //console.log(props.product);
+    
   };
 
   const handleClose = () => {
       setOpen(false);
-     // setName(null);
-     // setDeadline(null);
+   
   };
   const handleSubmit = () => {
       setOpen(false);
@@ -73,10 +58,7 @@ export default function ViewProd(props) {
     
 
   };
-  React.useEffect(() => {
-    // const im =resizeFile(props.product.pic_path)
-    // setImg(im);
-})
+
  
   const HtmlTooltip = withStyles((theme) => ({
     tooltip: {
@@ -98,7 +80,7 @@ export default function ViewProd(props) {
 
           </React.Fragment>
         }
-      >
+      ><div>
         <Card>
     
          
@@ -122,7 +104,7 @@ export default function ViewProd(props) {
             </Row>
           </CardBody>
         </Card>
-
+        </div>
       </HtmlTooltip>
 
 

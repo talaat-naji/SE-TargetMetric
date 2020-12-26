@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Stock;
 use App\Models\Product;
 use App\Models\Supplier;
+use App\Models\supplierOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -44,7 +45,7 @@ class SupplierController extends Controller
             "supplier_id" => $request->supplier_id,
             "cost" => $request->cost,
             "price" => $request->price,
-            "pic_path" => "/image/test",
+            "pic_path" => "/img/095333-unnamed.png",
             // "created_at" => Carbon::now()
         ])->id;
 
@@ -73,7 +74,7 @@ class SupplierController extends Controller
             ]);
     }
 
-    public function autoGenerateOrder(Request $request)
+    public function autoGenerateOrder()
     {
 
         return  Stock::where("user_id", Auth::id())
@@ -83,5 +84,9 @@ class SupplierController extends Controller
             })
             ->whereRaw("qty < min_qty OR qty=min_qty")
             ->get();
+    }
+
+    public function OrderHistory(Request $request){
+        return  supplierOrder::where("supplier_id",$request->id)->latest()->get();
     }
 }

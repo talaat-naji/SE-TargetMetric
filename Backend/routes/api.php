@@ -90,7 +90,9 @@ Route::middleware('auth:sanctum')->post('/getSupplierProducts',[SupplierControll
 Route::middleware('auth:sanctum')->post('/addSupplierProduct',[SupplierController::class,"addSupplierProduct"]);
 Route::middleware('auth:sanctum')->post('/EditSupplierProduct',[SupplierController::class,"EditSupplierProduct"]);
 Route::middleware('auth:sanctum')->post('/autoGenerateOrder',[SupplierController::class,"autoGenerateOrder"]);
+Route::middleware('auth:sanctum')->post('/OrderHistory',[SupplierController::class,"OrderHistory"]);
 Route::middleware('auth:sanctum')->post('/issueOrder',[SupplierOrderController::class,"issueOrder"]);
+Route::middleware('auth:sanctum')->post('/getContent',[RecieveOrderController::class,"getContent"]);
 /*
 |--------------------------------------------------------------------------
 | Recieve Products
@@ -110,4 +112,3 @@ Route::middleware('auth:sanctum')->post('/getRetailerProducts',[ShopController::
 Route::middleware('auth:sanctum')->post('/orderProduct',[ShopController::class,"orderProduct"]);
 Route::middleware('auth:sanctum')->post('/getProductsByBarcode',[ShopController::class,"getProductsByBarcode"]);
 Route::middleware('auth:sanctum')->get('/getDemandedProductsInDistrict',[ShopController::class,"getDemandedProductsInDistrict"]);
-Route::middleware('auth:sanctum')->post('/updateShopProfile',[ShopController::class,"updateShopProfile"]);

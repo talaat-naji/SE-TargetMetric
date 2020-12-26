@@ -12,7 +12,7 @@ class LocationController extends Controller
 {
     public function getProfile()
     {
-        return  DB::table('users')->select("users.name", "users.email","users.profile_url", "loc.town_name as town", "loc.governorate_id as govId", "loc.district_id as districtId")
+        return  DB::table('users')->select("users.name","users.about", "users.email","users.profile_url", "loc.town_name as town", "loc.governorate_id as govId", "loc.district_id as districtId")
             ->leftjoin("locations as loc", "users.id", '=', 'loc.user_id')
             ->where('users.id', Auth::id())
             ->get();
@@ -20,7 +20,7 @@ class LocationController extends Controller
     public function updateRetailerProfile(Request $request)
     {
         User::where('id', Auth::id())
-            ->update(['name' => $request->name,'email' => $request->email]);
+            ->update(['name' => $request->name,'email' => $request->email ,"about"=>$request->about]);
             
         if (Location::where('user_id', Auth::id())->count() === 0) {
             Location::insert(

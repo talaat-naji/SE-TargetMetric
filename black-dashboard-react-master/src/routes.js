@@ -20,7 +20,7 @@ import Products from "views/Products.js";
 import Suppliers from "views/supplierOrders.js";
 import Notifications from "views/Notifications.js";
 import Rtl from "views/Rtl.js";
-import TableList from "views/TableList.js";
+import RecieveOrder from "views/RecieveOrder.js";
 import Typography from "views/Typography.js";
 import UserProfile from "views/UserProfile.js";
 
@@ -70,7 +70,7 @@ var routes = [
     name: "Recieve Orders",
     rtlName: "قائمة الجدول",
     icon: "tim-icons icon-check-2",
-    component: TableList,
+    component: RecieveOrder,
     layout: "/admin"
   },
   // {

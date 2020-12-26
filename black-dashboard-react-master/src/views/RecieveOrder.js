@@ -15,12 +15,13 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { Button } from "@material-ui/core";
+//import { Button } from "@material-ui/core";
 import React from "react";
-
+import NotificationAlert from "react-notification-alert";
 // reactstrap components
 import {
   Card,
+  Button,
   CardHeader,
   CardBody,
   CardTitle,
@@ -29,9 +30,10 @@ import {
   Col,
   Input
 } from "reactstrap";
-//import Alert from "reactstrap/lib/Alert";
+
 import apiClient from "../services/api";
-class Tables extends React.Component {
+class RecieveOrder extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -45,8 +47,29 @@ class Tables extends React.Component {
     };
     this.products = [];
     this.sum = 0;
+    
   }
-
+  notify = place => {
+   
+    // var color = Math.floor(Math.random() * 5 + 1);
+    var type= "success";
+   
+    var options = {};
+    options = {
+      place: place,
+      message: (
+        <div>
+          <div>
+           Invoice was sent succesfully to the supplier
+          </div>
+        </div>
+      ),
+      type: type,
+      icon: "tim-icons icon-bell-55",
+      autoDismiss: 7
+    };
+    this.refs.notificationAlert.notificationAlert(options);
+  };
   fetchSupplier = (id) => {
     if (sessionStorage.getItem('loggedIn')) {
       apiClient.post('../api/getSupplierById', { supplier_id: id })
@@ -136,6 +159,9 @@ class Tables extends React.Component {
         supplier_email: this.state.supplier_email,
       })
         .then(response => {
+          if (response.status === 200) {
+            this.notify("br")
+          }
           if (response) {
             this.sum = 0;
             this.products = [];
@@ -143,6 +169,7 @@ class Tables extends React.Component {
               orderList: [],
               order_id: 0,
               OrderState: false
+
             });
             
           }
@@ -154,6 +181,10 @@ class Tables extends React.Component {
     return (
       <>
         <div className="content">
+        <div className="react-notification-alert-container">
+            <NotificationAlert ref="notificationAlert" />
+          </div>
+          
           <Row>
             <Col md="12">
               <Card>
@@ -177,7 +208,7 @@ class Tables extends React.Component {
                       <tr>
                         <td>Order ID:</td>
                         <td><Input type="number" onChange={(e) => { this.fetchOrder(e.target.value) }} /></td>
-                        <td>List Orders</td>
+                        <td>{this.state.OrderState ? "order found" : ""}</td>
                       </tr>
                     </tbody>
                   </Table>
@@ -219,14 +250,15 @@ class Tables extends React.Component {
                           <tr><td colSpan="6" className="text-center">enter a valid Purchase Order Id</td></tr>
 
                       }
-                      <tr>
-                        <td colSpan="5" className="text-right">total</td>
-                        <td >{this.sum}</td>
-                      </tr>
-                      <tr>
-                        <td colSpan="6" className="text-center"><Button onClick={this.sendInvoice}>RECIECVE</Button></td>
+                      {this.state.OrderState ? <>
+                        <tr>
+                          <td colSpan="5" className="text-right">total</td>
+                          <td >{this.sum}</td>
+                        </tr>
+                        <tr>
+                          <td colSpan="6" className="text-center"><Button onClick={this.sendInvoice}>RECIECVE</Button></td>
 
-                      </tr>
+                        </tr></> : <></>}
                     </tbody>
                   </Table>
                 </CardBody>
@@ -240,4 +272,4 @@ class Tables extends React.Component {
   }
 }
 
-export default Tables;
+export default RecieveOrder;

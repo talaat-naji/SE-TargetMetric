@@ -18,7 +18,7 @@
 import React from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
-import Orders from "../../views/Orders";
+import MenuListComposition from "../../views/menu";
 // reactstrap components
 import {
   Button,
@@ -137,11 +137,11 @@ class AdminNavbar extends React.Component {
                     id="search-button"
                     onClick={this.toggleModalSearch}
                   >
-                    <i className="tim-icons icon-zoom-split" />
+                    {/* <i className="tim-icons icon-zoom-split" /> */}
                     <span className="d-lg-none d-md-block">Search</span>
                   </Button>
                 </InputGroup>
-          <Orders/>
+                {sessionStorage.getItem("userType") === "retailer" ? <MenuListComposition/> : <></>}
                 <UncontrolledDropdown nav>
                   <DropdownToggle
                     caret
@@ -151,7 +151,7 @@ class AdminNavbar extends React.Component {
                     onClick={e => { e.preventDefault(); }}
                   >
                     <div className="photo">
-                      <img alt="..." src={require("assets/img/anime3.png")} />
+                      <img alt="..." src={sessionStorage.getItem("userProfile")} />
                     </div>
                     <b className="caret d-none d-lg-block d-xl-block" />
                     <p className="d-lg-none">Log out</p>
@@ -160,9 +160,9 @@ class AdminNavbar extends React.Component {
                     <NavLink tag="li">
                       <DropdownItem className="nav-item">Profile</DropdownItem>
                     </NavLink>
-                    <NavLink tag="li">
+                    {/* <NavLink tag="li">
                       <DropdownItem className="nav-item">Settings</DropdownItem>
-                    </NavLink>
+                    </NavLink> */}
                     <DropdownItem divider tag="li" />
                     <NavLink tag="li">
                       <DropdownItem onClick={() => { this.props.logout(); sessionStorage.setItem('userType',null); this.props.history.push("/login")}} className="nav-item">Log out</DropdownItem>

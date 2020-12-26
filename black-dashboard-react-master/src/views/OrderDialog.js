@@ -88,7 +88,7 @@ export default function OrderDialog(props) {
   return (
 
     <div>
-       <ListGroupItem className="content">
+       {/* <ListGroupItem className="content"> */}
       <MenuItem onClick={handleClickOpen} >
       
      
@@ -97,7 +97,7 @@ export default function OrderDialog(props) {
      
     
       </MenuItem>
-      </ListGroupItem>
+      {/* </ListGroupItem> */}
       {/* <li style={{ color: 'black' }} onClick={handleClickOpen}>{props.order.shop.name} ordered {props.order.qty_ordered} pcs of {props.order.product.name}</li> */}
 
 

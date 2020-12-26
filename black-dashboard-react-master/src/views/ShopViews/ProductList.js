@@ -33,6 +33,7 @@ import {
 import apiClient from "../../services/api";
 import RetailerRow from "./RetailerRow";
 import ProductOrder from "./ProductOrder";
+
 class ProductList extends React.Component {
   constructor(props) {
     super(props);
@@ -88,7 +89,7 @@ class ProductList extends React.Component {
 
                 </CardHeader>
                 <CardBody>
-                  <Table className="tablesorter" responsive>
+                  <Table className="tablesorter">
                     <thead className="text-primary">
                       <tr><h3>Products</h3></tr>
                     </thead>
@@ -102,7 +103,8 @@ class ProductList extends React.Component {
                          
                         </Col>
                         <Col>
-                        <Input onChange={(e) => this.fetchProducts(e.target.value)} type="text" placeholder="search product by barcode" />
+                            <Input autoFocus={true} onChange={(e) => this.fetchProducts(e.target.value)} type="text" placeholder="search product by barcode" />
+                            
                         </Col>
                         </Row>
                         </td>

@@ -11,7 +11,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import MapLocation from "./MapLocation";
-
+import db from "../../services/firebase";
 export default function ProductOrder(props) {
     const [open, setOpen] = React.useState(false);
     const [qtyToOrder, setQtyToOrder] = React.useState();
@@ -19,7 +19,19 @@ export default function ProductOrder(props) {
   const [y, setY] = React.useState();
     //const [productId, setProductId] = React.useState();
 
-    const orderProduct = () => {
+  const orderProduct = () => {
+    const a =db.database().ref('Orders/'+props.retailer_id);
+    a.push({
+      shop_name: sessionStorage.getItem("username"),
+      shop_id:sessionStorage.getItem("userId"),
+      product_id: props.product.id,
+      product_name: props.product.name,
+      retailer_id:props.retailer_id,
+      qty: qtyToOrder,
+      lat: x,
+      lng: y,
+      status:false
+    });
         if (sessionStorage.getItem('loggedIn')) {
             apiClient.post('/api/orderProduct',
                 {
@@ -49,7 +61,7 @@ export default function ProductOrder(props) {
   };
   const handleSubmit = () => {
       setOpen(false);
-       orderProduct();
+      orderProduct();
     //   props.onEditProduct();
       
   };
@@ -59,7 +71,7 @@ export default function ProductOrder(props) {
       <>
          
        
-        <Button variant="contained" color="primary" onClick={handleClickOpen}>Order Now</Button>  
+        <Button style={{float:"right"}} variant="contained" color="primary" onClick={handleClickOpen}>Order Now</Button>  
             
     
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth={true}>

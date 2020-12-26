@@ -37,6 +37,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import apiClient from "../services/api"
+
 class UserProfile extends React.Component {
   
   constructor(props) {
@@ -50,19 +51,19 @@ class UserProfile extends React.Component {
       email: '',
       town: "",
       profile: "",
+      about: "",
       open:false
       
     };
   }
    handleClickOpen = () => {
      this.setState({ open: true });
-     //console.log(props.product);
+     
 };
 
  handleClose = () => {
   this.setState({ open: false });
-   // setName(null);
-   // setDeadline(null);
+  
 };
  handleSubmit = () => {
   this.setState({ open: false });
@@ -112,7 +113,10 @@ class UserProfile extends React.Component {
               govId: response.data[0].govId,
               email: response.data[0].email,
               town: response.data[0].town,
-              profile:response.data[0].profile_url});
+              profile: response.data[0].profile_url,
+              about:response.data[0].about
+            });
+            this.fetchDistricts(response.data[0].govId)
           })
           .catch(error => console.error(error))
   
@@ -133,7 +137,8 @@ class UserProfile extends React.Component {
         districtId: this.state.districtId,
         name: this.state.name,
         town: this.state.town,
-        email: this.state.email
+        email: this.state.email,
+        about:this.state.about
       })
           .then(response => {
            // this.setState({ Districts: response.data });
@@ -199,16 +204,36 @@ class UserProfile extends React.Component {
                     <Row>
                       <Col className="pr-md-1" md="4">
                         <FormGroup>
-                          <label>Governorate</label>
-                          <Select defaultValue={{value: this.state.govId}} options={this.state.Governorate} onChange={(e) => { this.handleChangeGov(e.value)}}/>
+                          {/* <label>Governorate</label>
+                          <Select defaultValue={{value: this.state.govId}} options={this.state.Governorate} onChange={(e) => { this.handleChangeGov(e.value)}}/> */}
+                        <label>Governorate</label>
+                                                <select value={this.state.govId} onChange={(e) => { this.setState({ districtId: "undefined"});this.handleChangeGov(e.target.value); }}>
+                                                <option value={"undefined"}>choose governorate</option>
+                                                        {this.state.Governorate.map((governorate) => {
+                                                        return (
+                                                            <option value={governorate.value}>{governorate.label}</option>
+                                                        );
+                                                    })}
+                                                </select>
                         </FormGroup>
                       </Col>
                       <Col className="px-md-1" md="4">
                         <FormGroup>
-                          <label>District</label>
+                          {/* <label>District</label>
                           <Select options={this.state.Districts}
                             isDisabled={this.state.Districts.length <= 0}
-                            onChange={(e) => { this.setState({ districtId: e.value }) }} />
+                            onChange={(e) => { this.setState({ districtId: e.value }) }} /> */}
+                     <label>District</label>
+<br/>
+                                                <select value={this.state.districtId} onChange={(e) => {this.setState({ districtId: e.target.value }) }}>
+                                                    <option value={"undefined"}>choose district</option>
+                                                    {this.state.Districts.map((district) => {
+                                                       
+                                                        return (
+                                                            <option value={district.value}>{district.label}</option>
+                                                        );
+                                                    })}
+                                                </select>
                         </FormGroup>
                       </Col>
                       <Col className="pl-md-1" md="4">
@@ -227,9 +252,9 @@ class UserProfile extends React.Component {
                         <FormGroup>
                           <label>About Me</label>
                           <Input
+                            onChange={(e) => { this.setState({ about: e.target.value }) }}
                             cols="80"
-                            defaultValue="Lamborghini Mercy, Your chick she so thirsty, I'm in
-                            that two seat Lambo."
+                            defaultValue={this.state.about}
                             placeholder="Here can be your description"
                             rows="4"
                             type="textarea"
@@ -274,7 +299,7 @@ class UserProfile extends React.Component {
                     <p className="description">{this.state.email}</p>
                   </div>
                   <div className="card-description">
-                   ...
+                   {this.state.about}
                   </div>
                 </CardBody>
                 <CardFooter>

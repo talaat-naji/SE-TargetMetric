@@ -18,8 +18,8 @@ class ShopController extends Controller
 {
     public function getCustomersCount()
     {
-        $dateS = Carbon::now()->startOfMonth()->subMonth(12);
-        $dateE = Carbon::now()->startOfMonth();
+        $dateS = Carbon::now()->startOfMonth()->subMonth(11);
+        $dateE = Carbon::now();
         $result = DB::table("sales as s")
 
             ->select(DB::raw('count(DISTINCT shop_id) as customerCount'), DB::raw('MONTH(s.created_at) as month'))
@@ -80,7 +80,7 @@ class ShopController extends Controller
       return  Product::join('suppliers', function ($join) {
         $join->on('suppliers.id', '=', 'products.supplier_id');
         $join->where("suppliers.user_id", '=', request("retailer_id"));
-    })->select('suppliers.id',"products.*")->paginate(12);
+    })->select('suppliers.id',"products.*")->paginate(6);
 
     }
 
@@ -123,27 +123,5 @@ class ShopController extends Controller
         ->get();
     }
 
-    // public function updateShopProfile(Request $request){
-      
-    //     User::where('id', Auth::id())
-    //         ->update(['name' => $request->name,'email' => $request->email]);
-            
-    //     if (Location::where('user_id', Auth::id())->count() === 0) {
-    //         Location::insert(
-    //             [
-    //                 'user_id' => Auth::id(),
-    //                 'governorate_id' => $request->GovernorateId,
-    //                 "district_id" => $request->districtId,
-    //                 "town_name" => $request->town
-    //             ]
-    //         );
-    //     } else {
-    //         Location::where('user_id', Auth::id())
-    //             ->update([
-    //                 'governorate_id' => $request->GovernorateId,
-    //                 "district_id" => $request->districtId,
-    //                 "town_name" => $request->town
-    //             ]);
-    //     }
-    // }
+   
 }

@@ -11,66 +11,69 @@ import SupplierVerticalTabs from "./SupplierTabs";
 import { createMuiTheme, ThemeProvider, Typography } from "@material-ui/core";
 
 export default function SupplierTable(props) {
-    const [open, setOpen] = React.useState(false);
-    const [supplier, setSupplier] = React.useState([]);
-// React.useEffect(() => {
-//     console.log(props, "hyyyyyy");
-// }, [])
-   
-  
-  
+  const [open, setOpen] = React.useState(false);
+  const [supplier, setSupplier] = React.useState([]);
+  // React.useEffect(() => {
+  //     console.log(props, "hyyyyyy");
+  // }, [])
+
+
+
   const handleClickOpen = (sup) => {
-      setOpen(true);
-      setSupplier(sup);
-     
+    setOpen(true);
+    setSupplier(sup);
+
   };
 
   const handleClose = () => {
-      setOpen(false);
+    setOpen(false);
   };
 
-    
-    
+
+
 
   return (
-      <div>
- 
-<Table className="tablesorter" responsive>
-                    <thead className="text-primary">
-                      <tr>
-                        <th><Typography>#ID</Typography></th>
-                        <th><Typography>Name</Typography></th>
-                        <th><Typography>Email</Typography></th>
-                        <th className="text-center"><Typography>Phone</Typography></th>
-                      </tr>
-                    </thead>
-              <tbody>
-                  {props.suppliers.map((supplier) => {
-                      return (
-                          <tr key={supplier.id} onClick={()=>handleClickOpen(supplier)}>
-                              <td>{supplier.id}</td>
-                              <td>{supplier.name}</td>
-                              <td>{supplier.email}</td>
-                              <td className="text-center">{supplier.phone}</td>
-                          </tr>
-                      );
-                  })}
-                      
-                     
-                    </tbody>
-          </Table>
-      
-          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullScreen={true}>
-        <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#1e1e2e" }}>{supplier.name}</DialogTitle>
-        <DialogContent style={{ backgroundColor: "#252537" }}>
-                  <SupplierVerticalTabs style={{backgroundColor:"#252537"}} supplier={supplier}/>
-        </DialogContent>
-        <DialogActions style={{ backgroundColor: "#252537" }}>
+    <div>
+
+      <Table className="tablesorter" responsive>
+        <thead className="text-primary">
+          <tr>
+            <th><Typography>#ID</Typography></th>
+            <th><Typography>Name</Typography></th>
+            <th><Typography>Email</Typography></th>
+            <th className="text-center"><Typography>Phone</Typography></th>
+          </tr>
+        </thead>
+        <tbody>
+          {props.suppliers.map((supplier) => {
+            return (
+              <tr key={supplier.id} onClick={() => handleClickOpen(supplier)}>
+                <td>{supplier.id}</td>
+                <td>{supplier.name}</td>
+                <td>{supplier.email}</td>
+                <td className="text-center">{supplier.phone}</td>
+              </tr>
+            );
+          })}
+
+
+        </tbody>
+      </Table>
+
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullScreen={true}>
+        <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#1e1e2e" }}>
+        <h4 style={{ color: "#c9d0b6" }}>
           <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-         
-        </DialogActions>
+            <i className="tim-icons icon-minimal-left" />
+
+          </Button>{supplier.name}</h4></DialogTitle>
+        
+        <DialogContent style={{ backgroundColor: "#252537" }}>
+
+          <SupplierVerticalTabs style={{ backgroundColor: "#252537" }} supplier={supplier} />
+
+        </DialogContent>
+
       </Dialog>
     </div>
   );
