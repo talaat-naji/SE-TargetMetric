@@ -31,6 +31,7 @@
     "react-router-dom": "5.1.2",
     "react-scripts": "3.4.0",
     "react-select": "^3.1.1",
+    "react-sticky-table": "^5.1.11",
     "react-swipeable-views": "^0.13.9",
     "react-webcam": "^5.2.2",
     "react-webcam-barcode-scanner": "0.0.2-rc2",

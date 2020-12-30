@@ -14,6 +14,7 @@ use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\GovernorateController;
+use App\Http\Controllers\PosController;
 use App\Http\Controllers\RecieveOrderController;
 use App\Http\Controllers\SupplierOrderController;
 
@@ -45,6 +46,7 @@ Route::middleware('auth:sanctum')->post('/editProductPic',[ProductController::cl
 | Charts Routes
 |--------------------------------------------------------------------------
 |*/
+Route::middleware('auth:sanctum')->post('/getDailyData',[SaleController::class,"getDailyData"]);
 Route::middleware('auth:sanctum')->get('/getSales',[SaleController::class,"getSales"]);
 Route::middleware('auth:sanctum')->get('/getProfit',[SaleController::class,"getProfit"]);
 Route::middleware('auth:sanctum')->get('/getYearlyProfit',[SaleController::class,"getYearlyProfit"]);
@@ -112,3 +114,11 @@ Route::middleware('auth:sanctum')->post('/getRetailerProducts',[ShopController::
 Route::middleware('auth:sanctum')->post('/orderProduct',[ShopController::class,"orderProduct"]);
 Route::middleware('auth:sanctum')->post('/getProductsByBarcode',[ShopController::class,"getProductsByBarcode"]);
 Route::middleware('auth:sanctum')->get('/getDemandedProductsInDistrict',[ShopController::class,"getDemandedProductsInDistrict"]);
+
+/*SHOP USER!!!!!
+|--------------------------------------------------------------------------
+| POINT OF SALE
+|--------------------------------------------------------------------------
+|*/
+Route::middleware('auth:sanctum')->post('/getProductByBarcode',[PosController::class,"getProductByBarcode"]);
+Route::middleware('auth:sanctum')->post('/saveInv',[PosController::class,"saveInv"]);

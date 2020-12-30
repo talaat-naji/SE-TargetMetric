@@ -45,7 +45,7 @@ export default function CustomerTable(props) {
                   </thead>
                   <tbody>
                     {props.customersData.map((customer) => {
-                      return (<tr onClick={() => { handleClickOpen(customer.shop_id,customer.name) }}>
+                      return (<tr style={{ cursor: 'pointer'}} onClick={() => { handleClickOpen(customer.shop_id,customer.name) }}>
                         <td ><Row><Col xs="auto"><img className="avatar" src={customer.profile_url}/></Col><Col>{customer.name}</Col></Row></td>
                         <td>{customer.govName}</td>
                         <td>{customer.distName}</td>
@@ -59,16 +59,14 @@ export default function CustomerTable(props) {
             
     
           <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullScreen={true} >
-              <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#1e1e2e" }}>{customerName}</DialogTitle>
+        <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#1e1e2e" }}>
+          <Button onClick={handleClose} color="primary">
+            <i className="tim-icons icon-minimal-left"/>
+          </Button>{customerName}</DialogTitle>
         <DialogContent style={{ backgroundColor: "#252537" }}>
                   <VerticalTabs shopId={customerId}/>
         </DialogContent>
-        <DialogActions style={{ backgroundColor: "#252537" }}>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-         
-        </DialogActions>
+       
       </Dialog>
     </div>
   );

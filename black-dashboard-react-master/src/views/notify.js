@@ -1,3 +1,5 @@
+import React from "react";
+import NotificationAlert from "react-notification-alert";
 export default class Notify extends React.Component {
 
     constructor(props) {
@@ -14,7 +16,7 @@ export default class Notify extends React.Component {
             message: (
                 <div>
                     <div>
-                        Invoice was sent succesfully to the supplier
+                       You have new orders to deliver see your order list for more details
           </div>
                 </div>
             ),
@@ -24,4 +26,16 @@ export default class Notify extends React.Component {
         };
         this.refs.notificationAlert.notificationAlert(options);
     };
+    componentDidMount() {
+        this.notify("br");
+}
+    render() {
+        return (
+          <>
+          
+              <div className="react-notification-alert-container">
+                <NotificationAlert ref="notificationAlert" />
+                    </div>
+                    </>
+                )}
 }

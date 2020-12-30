@@ -35,7 +35,7 @@ export default function RetailerRow(props) {
     
 
     return (<>
-        <tr >
+        <tr style={{ cursor: 'pointer'}} >
             <td><Row><Col xs="auto" onClick={()=>handleClickOpen2(props.retailer)}><img className="avatar" src={props.retailer.profile_url}/></Col><Col onClick={()=>handleClickOpen(props.retailer)}>{props.retailer.name}</Col></Row></td>
             <td>{props.retailer.email}</td>
             <td>{props.retailer.governorate !== null ? props.retailer.governorate.gov_name : null}</td>

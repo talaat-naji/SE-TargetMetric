@@ -47,7 +47,7 @@ export default function SupplierTable(props) {
         <tbody>
           {props.suppliers.map((supplier) => {
             return (
-              <tr key={supplier.id} onClick={() => handleClickOpen(supplier)}>
+              <tr style={{ cursor: 'pointer'}} key={supplier.id} onClick={() => handleClickOpen(supplier)}>
                 <td>{supplier.id}</td>
                 <td>{supplier.name}</td>
                 <td>{supplier.email}</td>

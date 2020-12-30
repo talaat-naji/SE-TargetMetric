@@ -7,6 +7,8 @@ import RTLLayout from "layouts/RTL/RTL.js";
 import Register from "layouts/Register/Register";
 import Login from "layouts/Register/Login";
 import axios from "axios";
+import Verify from "layouts/verify";
+import PosMain from "views/ShopViews/Pos";
 
 const App = () => {
 
@@ -41,10 +43,12 @@ const App = () => {
 
         <Router history={hist}>
             <Switch>
+            <Route path="/verify" render={props => <Verify {...props} logout={logout}/>} />
                 <Route path="/admin" render={props => <AdminLayout {...props} loggedIn={loggedIn} logout={logout} />} />
                 <Route path="/rtl" render={props => <RTLLayout {...props} loggedIn={loggedIn} logout={logout} />} />
                 <Route path="/login" render={props => <Login {...props} login={login} />} />
                 <Route path="/register" render={props => <Register {...props} login={login} />} />
+                <Route path="/pos" render={props => <PosMain {...props} login={login} />} />
                 {/* <Redirect from="/" to="/admin/dashboard" /> */}
 
                 <Route path="/shop" render={props => <ShopLayout {...props} loggedIn={loggedIn} logout={logout} />} />

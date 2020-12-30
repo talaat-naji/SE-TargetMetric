@@ -14,6 +14,7 @@ import OrderDialog from "./OrderDialog"
 import db from "../services/firebase";
 import { Typography } from "@material-ui/core";
 import NotificationAlert from "react-notification-alert";
+import Notify from "./notify";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -63,10 +64,10 @@ export default function MenuListComposition() {
     const fireBase = () => {
 
         db.database().ref("Orders/" + sessionStorage.getItem("userId")).on("value", snapshot => {
-
+            setOrders([]);
             fetchOrders();
             // if (orders.length > 0) {
-                console.log("asdf");
+                
              //   notify();
             // }
         });
@@ -85,9 +86,10 @@ export default function MenuListComposition() {
 
     return (
         <div className={classes.root}>
-<div className="react-notification-alert-container">
+{/* <div className="react-notification-alert-container">
             <NotificationAlert ref={inputEl} />
-          </div>
+          </div> */}
+            {orders.length > 0 ? <Notify /> : <></>}
             <div>
                 <Button
                     

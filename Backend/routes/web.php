@@ -1,6 +1,9 @@
 <?php
 
 //use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +23,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/verify', function(){
+    User::where('id',Auth::id())->update(["email_verified_at"=>Carbon::now()]);
+    return redirect('http://localhost:3000/login');
+    });
 
 // Auth::routes();
 

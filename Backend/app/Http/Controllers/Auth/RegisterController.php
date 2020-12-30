@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Hash;
 
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
@@ -68,6 +70,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        Notification::route('mail', $data['email'])->notify(new VerifyEmail());
        //dd($data['userType']);
         return User::create([
             'name' => $data['name'],
@@ -77,5 +80,8 @@ class RegisterController extends Controller
             
             
         ]);
+
+           
+     
     }
 }

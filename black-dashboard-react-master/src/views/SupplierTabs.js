@@ -306,7 +306,7 @@ export default function VerticalTabs(props) {
             <TabPanel value={value} index={2} style={{ width: "80%", hieght: "80%" }}>
 
 
-                {order.length >0 ? <AutoOrder orders={order} supplier={props.supplier} /> : <></>}
+                {order.length >0 ? <AutoOrder orders={order} supplier={props.supplier} /> : "you have enough qty of products from this supplier"}
 
             </TabPanel>
             <TabPanel value={value} index={3} style={{ width: "80%", hieght: "80%" }}>
@@ -331,7 +331,7 @@ export default function VerticalTabs(props) {
                             <tbody>
                                 {orderHistory.map((order) => {
                                     return (
-                                        <tr onClick={() => { fetchOrderContent(order.id); setDetail(true); setValue(4);setRecieved(order.status)}}>
+                                        <tr style={{ cursor: 'pointer'}} onClick={() => { fetchOrderContent(order.id); setDetail(true); setValue(4);setRecieved(order.status)}}>
                                             <td>{order.id}</td>
                                             <td>{order.status?"Recieved":"Not recieved yet!!"}</td>
                                             <td>{order.status?moment(order.updated_at).format("LLL"):""}</td>

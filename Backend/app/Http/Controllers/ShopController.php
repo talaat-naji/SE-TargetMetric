@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\shopOrderedRetailer;
 use App\Models\Sale;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Location;
 use App\Models\Supplier;
+use App\Models\ShopStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Events\shopOrderedRetailer;
 use Illuminate\Support\Facades\Auth;
 
 class ShopController extends Controller

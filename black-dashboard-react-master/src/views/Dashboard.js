@@ -30,19 +30,16 @@ import {
   CardHeader,
   CardBody,
   CardTitle,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  Label,
-  FormGroup,
-  Input,
-  Table,
   Row,
   Col,
-  UncontrolledTooltip
 } from "reactstrap";
+import Button2 from '@material-ui/core/Button';
 import CustomersTable from "./CustomerTable";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 // core components
 import {
   chartExample1,
@@ -51,6 +48,8 @@ import {
   chartExample4
 } from "variables/charts.js";
 
+// chartExample1 and chartExample2 options
+
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -58,14 +57,109 @@ class Dashboard extends React.Component {
     this.state = {
       bigChartData: "data1",
       myData: [],
+      myDailyData: [],
       stock: [],
       stockTotal: [],
       customers: [],
       customersTable:[],
-      yearlyProfit: []
+      yearlyProfit: [],
+      open: false,
+      ind: null,
+      month:""
+    };
+    this.chart1_2_options = {
+      maintainAspectRatio: false,
+      onClick: (e, element) => {
+        if (element.length > 0) {
+          let ind = element[0]._index;
+          this.setState({ open: true ,ind:ind+1})
+          this.fetchDailyData(ind);
+        }
+      },
+      
+      legend: {
+        display: false
+      },
+      tooltips: {
+        backgroundColor: "#f5f5f5",
+        titleFontColor: "#333",
+        bodyFontColor: "#666",
+        bodySpacing: 4,
+        xPadding: 12,
+        mode: "nearest",
+        intersect: 0,
+        position: "nearest",
+      },
+      responsive: true,
+      scales: {
+        yAxes: [
+          {
+            barPercentage: 1.6,
+            gridLines: {
+              drawBorder: false,
+              color: "rgba(29,140,248,0.0)",
+              zeroLineColor: "transparent"
+            },
+            ticks: {
+              suggestedMin: 60,
+              suggestedMax: 125,
+              padding: 20,
+              fontColor: "#9a9a9a"
+            }
+          }
+        ],
+        xAxes: [
+          {
+            barPercentage: 1.6,
+            gridLines: {
+              drawBorder: false,
+              color: "rgba(29,140,248,0.1)",
+              zeroLineColor: "transparent"
+            },
+            ticks: {
+              padding: 20,
+              fontColor: "#9a9a9a"
+            }
+          }
+        ]
+      }
     };
   }
+  fetchDailyData = (ind) => {
+    if (sessionStorage.getItem('loggedIn')) {
+      apiClient.post('../api/getDailyData', { monthNb:ind+1,  bigChartData: this.state.bigChartData})
+        .then(response => {
+          this.fixDailyData(response.data)
+        })
+        .catch(error => console.error(error))
 
+    }
+  }
+ 
+  fixDailyData(data) {
+    let date = new Date("2020/" + this.state.ind + "/1")
+    let shortMonth = date.toLocaleString('en-us', { month: 'long' });
+    this.setState({ month:shortMonth});
+    let sumArr = [];
+   let  lastday =new Date(data[0].year, data[0].month, 0).getDate();
+    for (var i = 1; i <= lastday; i++) {
+      let j = 0;
+      let sum = 0;
+      while (j < data.length) {
+        if (data[j]['day'] == i) {
+          sum += data[j]['sales'];
+
+        }
+
+        j++;
+      }
+
+      sumArr.push({ sales: sum, day: i });
+    }
+   
+    this.setState({ myDailyData: sumArr ,month:shortMonth});
+   
+  }
   fixMyData = (data) => {
     let sumArr = [];
     for (var i = 1; i <= 12; i++) {
@@ -195,7 +289,7 @@ class Dashboard extends React.Component {
     if (sessionStorage.getItem('loggedIn')) {
       apiClient.get('../api/getCustomersCount')
         .then(response => {
-          //  console.log(response.data);
+          
           this.fixCustomerCount(response.data)
         })
         .catch(error => console.error(error))
@@ -216,6 +310,7 @@ class Dashboard extends React.Component {
 
   }
   componentDidMount() {
+    
     this.fetchSales();
     this.fetchStockValue();
     this.fetchStock();
@@ -228,11 +323,70 @@ class Dashboard extends React.Component {
       bigChartData: name
     });
   };
+ 
+handleClose = () => {
+  this.setState({
+    open: false,
+    myDailyData: [],
+    month: "",
+    inv:null
+  });
+ 
+};
   render() {
 
     return (
       <>
         <div className="content">
+        <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" fullWidth={true} >
+        <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#1e1e2e" }}>
+          <Button2 onClick={this.handleClose} color="primary">
+            <i className="tim-icons icon-minimal-left"/>
+              </Button2>{this.state.month} {this.state.bigChartData === "data1" ? "Sales" : "Profits"}</DialogTitle>
+        <DialogContent style={{ backgroundColor: "#252537" }}>
+        <Card className="card-chart">
+                <CardHeader>
+                  <Row>
+                    <Col className="text-left" sm="6">
+                     
+                      <CardTitle tag="h2">{this.state.bigChartData === "data1" ? "Daily Sales" : "Daily Profits"}</CardTitle>
+                    </Col></Row></CardHeader><CardBody>
+              <div className="chart-area">
+                    <Line
+                      data={{
+                        labels:
+                          this.state.myDailyData.map((days)=>{return days.day}),
+                        datasets: [
+                          {
+                            label: this.state.bigChartData === "data1" ? "Sales" : "Profits",
+                            fill: true,
+                            backgroundColor: "powderblue",
+                            borderColor: "#1f8ef1",
+                            borderWidth: 2,
+                            borderDash: [],
+                            borderDashOffset: 0.0,
+                            pointBackgroundColor: "#1f8ef1",
+                            pointBorderColor: "rgba(255,255,255,0)",
+                            pointHoverBackgroundColor: "#1f8ef1",
+                            pointBorderWidth: 20,
+                            pointHoverRadius: 4,
+                            pointHoverBorderWidth: 15,
+                            pointRadius: 4,
+                            data: this.state.myDailyData.map((sales)=>{return sales.sales})
+                          }
+                        ]
+                      }
+                      }
+                      options={chartExample3.options}
+
+                    />
+
+                  </div>
+                </CardBody>
+                </Card>
+        </DialogContent>
+       
+      </Dialog>
           <Row>
             <Col xs="12">
               <Card className="card-chart">
@@ -306,7 +460,7 @@ class Dashboard extends React.Component {
                         ],
                         datasets: [
                           {
-                            label: "My First dataset",
+                            label: this.state.bigChartData === "data1" ? "Sales" : "Profits" ,
                             fill: true,
                             backgroundColor: "powderblue",
                             borderColor: "#1f8ef1",
@@ -325,7 +479,7 @@ class Dashboard extends React.Component {
                         ]
                       }
                       }
-                      options={chartExample1.options}
+                      options={this.chart1_2_options}
 
                     />
 
@@ -370,7 +524,7 @@ class Dashboard extends React.Component {
                           }
                         ]
                       }}
-                      options={chartExample2.options}
+                      options={this.chart1_2_options}
                     />
                   </div>
                 </CardBody>
@@ -445,7 +599,7 @@ class Dashboard extends React.Component {
                           }
                         ]
                       }}
-                      options={chartExample4.options}
+                      options={this.chart1_2_options}
                     />
                   </div>
                 </CardBody>

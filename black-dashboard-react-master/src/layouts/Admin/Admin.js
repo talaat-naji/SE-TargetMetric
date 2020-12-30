@@ -79,24 +79,31 @@ class Admin extends React.Component {
     this.setState({ sidebarOpened: !this.state.sidebarOpened });
   };
   getRoutes = routes => {
-    if (sessionStorage.getItem('userType') != "retailer") {
-      return <Redirect to="/login" />
-    } else {
-      return routes.map((prop, key) => {
-        if (prop.layout === "/admin") {
-          return (
-            <Route
-              path={prop.layout + prop.path}
-              component={prop.component}
-              key={key}
-            />
-          );
-        } else {
-          return null;
-        }
-      });
+   
+    if (sessionStorage.getItem('verified') == false) {
+        return <Redirect to="/verify" />
     }
-  }
+
+      if (sessionStorage.getItem('userType') != "retailer") {
+        return <Redirect to="/login" />
+      } else {
+        return routes.map((prop, key) => {
+          if (prop.layout === "/admin") {
+            return (
+              <Route
+                path={prop.layout + prop.path}
+                component={prop.component}
+                key={key}
+              />
+            );
+          } else {
+            return null;
+          }
+        });
+      }
+    } 
+
+ 
   handleBgClick = color => {
     this.setState({ backgroundColor: color });
   };

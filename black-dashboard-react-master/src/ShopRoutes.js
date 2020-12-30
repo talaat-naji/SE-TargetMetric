@@ -11,16 +11,17 @@ import MapLocation from "views/ShopViews/MapLocation";
 import DemandedProducts from "views/ShopViews/DemandedProducts";
 import ProductsTabs from "views/ShopViews/DemandedProducts";
 import ShopUserProfile from "views/ShopViews/user-profile";
+import PosMain from "views/ShopViews/Pos";
 
 var shopRoutes = [
-    // {
-    //   path: "/dashboard",
-    //   name: "Dashboard",
-    //   rtlName: "لوحة القيادة",
-    //   icon: "tim-icons icon-chart-pie-36",
-    //   component: Dashboard,
-    //   layout: "/shop"
-    // },
+    {
+      path: "/dashboard",
+      name: "POS",
+      rtlName: "لوحة القيادة",
+      icon: "tim-icons icon-chart-pie-36",
+      component: PosMain,
+      layout: "/shop"
+    },
     {
       path: "/icons",
       name: "Products",

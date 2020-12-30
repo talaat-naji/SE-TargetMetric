@@ -7,6 +7,7 @@ const Login = (props) => {
     const [password, setPassword] = React.useState('');
     const [toHome, setToHome] = React.useState(false);
     const [userType, setUserType] = React.useState('');
+    const [verified, setVerified] = React.useState('');
     const [authError, setAuthError] = React.useState(false);
     const [unknownError, setUnknownError] = React.useState(false);
 
@@ -39,7 +40,11 @@ const Login = (props) => {
                             sessionStorage.setItem('userProfile', response.data.profile_url);
                             sessionStorage.setItem('userId', response.data.id);
                             sessionStorage.setItem('username', response.data.name);
-                            setUserType(response.data.userType);
+                            sessionStorage.setItem('verified', response.data.email_verified_at !== null);
+                            setVerified(response.data.email_verified_at !== null);
+                            if (response.data.email_verified_at !== null) {
+                                setUserType(response.data.userType);
+                            }else{setUserType("notVerified");}
                         });
                     }
                 }).catch(error => {
@@ -61,7 +66,10 @@ const Login = (props) => {
     }
     
     if (toHome === true) {
-        if (userType === "retailer") {
+        if (verified === false) {
+            console.log("enterdIF in login")
+            props.history.push('/verify');
+         } else if (userType === "retailer") {
            props.history.push('/admin/dashboard');
         } else if (userType === "shop") {
             console.log("testshop");
