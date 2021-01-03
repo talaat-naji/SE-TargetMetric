@@ -81,9 +81,15 @@ class ShopController extends Controller
       return  Product::join('suppliers', function ($join) {
         $join->on('suppliers.id', '=', 'products.supplier_id');
         $join->where("suppliers.user_id", '=', request("retailer_id"));
-    })->select('suppliers.id',"products.*")->paginate(6);
+    })->select('suppliers.id',"products.*")->paginate(10);
 
     }
+
+    public function getShopProducts(){
+
+        return  ShopStock::where("user_id",Auth::id())->paginate(10);
+  
+      }
 
     public function orderProduct(Request $request){
         event(new shopOrderedRetailer($request->retailer_id));
@@ -93,7 +99,7 @@ class ShopController extends Controller
         $order->user_id=$request->retailer_id;
         $order->product_id=$request->product_id;
         $order->qty_ordered=$request->qty;
-        $order->status=false;
+        $order->status="0";
         $order->lat=$request->lat;
         $order->lng=$request->lng;
         $order->save();

@@ -9,6 +9,7 @@ const Register = (props) => {
     const [password, setPassword] = React.useState('');
     const [password_confirmation, setConfirmPassword] = React.useState('');
     const [toHome, setToHome] = React.useState(false);
+    const [verified, setVerified] = React.useState('');
     const [authError, setAuthError] = React.useState(false);
     const [unknownError, setUnknownError] = React.useState(false);
 
@@ -33,9 +34,11 @@ const Register = (props) => {
                         sessionStorage.setItem('loggedIn', true);
 
                         axios.get('../api/user', {}).then(response => {
-
+                            setVerified(response.data.email_verified_at !== null);
+                            sessionStorage.setItem('verified', response.data.email_verified_at !== null);
                             sessionStorage.setItem('userId', response.data.id);
                             sessionStorage.setItem('userProfile', response.data.profile_url);
+                            sessionStorage.setItem('username', response.data.name);
                             
                         });
                     }
@@ -46,7 +49,10 @@ const Register = (props) => {
 
     }
     if (toHome === true) {
-        if (userType === "retailer") {
+        if (verified === false) {
+            console.log("enterdIF in register")
+            props.history.push('/verify');
+         } else if (userType === "retailer") {
             props.history.push('/admin/dashboard');
          } else if (userType === "shop") {
              console.log("testshop");

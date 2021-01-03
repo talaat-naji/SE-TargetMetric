@@ -79,7 +79,9 @@ Route::middleware('auth:sanctum')->post('/editProfilePic',[LocationController::c
 |--------------------------------------------------------------------------
 |*/
 Route::middleware('auth:sanctum')->get('/getOrders',[OrderController::class,"getOrders"]);
+Route::middleware('auth:sanctum')->get('/getOrdersShopside',[OrderController::class,"getOrdersShopside"]);
 Route::middleware('auth:sanctum')->post('/deliverOrder',[OrderController::class,"deliverOrder"]);
+Route::middleware('auth:sanctum')->post('/recieveOrder',[OrderController::class,"recieveOrder"]);
 Route::middleware('auth:sanctum')->post('/orderSupplier',[OrderController::class,"orderSupplier"]);
 /*
 |--------------------------------------------------------------------------
@@ -114,7 +116,7 @@ Route::middleware('auth:sanctum')->post('/getRetailerProducts',[ShopController::
 Route::middleware('auth:sanctum')->post('/orderProduct',[ShopController::class,"orderProduct"]);
 Route::middleware('auth:sanctum')->post('/getProductsByBarcode',[ShopController::class,"getProductsByBarcode"]);
 Route::middleware('auth:sanctum')->get('/getDemandedProductsInDistrict',[ShopController::class,"getDemandedProductsInDistrict"]);
-
+Route::middleware('auth:sanctum')->post('/getShopProducts',[ShopController::class,"getShopProducts"]);
 /*SHOP USER!!!!!
 |--------------------------------------------------------------------------
 | POINT OF SALE
@@ -122,3 +124,11 @@ Route::middleware('auth:sanctum')->get('/getDemandedProductsInDistrict',[ShopCon
 |*/
 Route::middleware('auth:sanctum')->post('/getProductByBarcode',[PosController::class,"getProductByBarcode"]);
 Route::middleware('auth:sanctum')->post('/saveInv',[PosController::class,"saveInv"]);
+Route::middleware('auth:sanctum')->post('/addProd',[PosController::class,"addProd"]); //adding products without barcode
+Route::middleware('auth:sanctum')->get('/getFavProds',[PosController::class,"getFavProds"]);
+Route::middleware('auth:sanctum')->get('/getTodaySales',[PosController::class,"getTodaySales"]);
+Route::middleware('auth:sanctum')->post('/addToStock',[PosController::class,"addToStock"]);
+Route::middleware('auth:sanctum')->post('/getGroupedDebts',[PosController::class,"getGroupedDebts"]);
+Route::middleware('auth:sanctum')->post('/getCustomerDebts',[PosController::class,"getCustomerDebts"]);
+Route::middleware('auth:sanctum')->post('/getSales',[PosController::class,"getSales"]);
+Route::middleware('auth:sanctum')->post('/savePayment',[PosController::class,"savePayment"]);

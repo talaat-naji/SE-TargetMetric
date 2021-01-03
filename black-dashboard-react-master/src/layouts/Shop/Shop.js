@@ -81,7 +81,10 @@ class Shop extends React.Component {
   getRoutes = shopRoutes => {
     if (sessionStorage.getItem('userType') != "shop") {
       return <Redirect to="/login" />
-    } else {
+    } else  if (sessionStorage.getItem('verified') == "false") {
+     
+        return <Redirect to="/verify" />
+    }else{
       return shopRoutes.map((prop, key) => {
         if (prop.layout === "/shop") {
           return (

@@ -26,6 +26,19 @@ class OrderController extends Controller
       ->with('shop')
       ->latest()->get();
   }
+  public function getOrdersShopside()
+  {
+    return  Order::where('shop_id', Auth::id())
+    ->whereIn("status",["0","1"])
+      ->with('product')
+      ->with('shop')
+      ->latest()->get();
+  }
+
+  public function recieveOrder(Request $request){
+   Order::where("id", $request->oId)->update(['status' => "recieved"]);
+    PosController::addToStock($request);
+  }
 
   public function deliverOrder(Request $request)
   {

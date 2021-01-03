@@ -48,8 +48,8 @@ const App = () => {
                 <Route path="/rtl" render={props => <RTLLayout {...props} loggedIn={loggedIn} logout={logout} />} />
                 <Route path="/login" render={props => <Login {...props} login={login} />} />
                 <Route path="/register" render={props => <Register {...props} login={login} />} />
-                <Route path="/pos" render={props => <PosMain {...props} login={login} />} />
-                {/* <Redirect from="/" to="/admin/dashboard" /> */}
+                {/* <Route path="/pos" render={props => <PosMain {...props} login={login} />} /> */}
+                <Redirect exact from="/" to="/login" />
 
                 <Route path="/shop" render={props => <ShopLayout {...props} loggedIn={loggedIn} logout={logout} />} />
             </Switch>

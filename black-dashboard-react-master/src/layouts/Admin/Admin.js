@@ -80,13 +80,14 @@ class Admin extends React.Component {
   };
   getRoutes = routes => {
    
-    if (sessionStorage.getItem('verified') == false) {
-        return <Redirect to="/verify" />
-    }
+   
 
       if (sessionStorage.getItem('userType') != "retailer") {
         return <Redirect to="/login" />
-      } else {
+      } else  if (sessionStorage.getItem('verified') == "false") {
+       
+          return <Redirect to="/verify" />
+      }else{
         return routes.map((prop, key) => {
           if (prop.layout === "/admin") {
             return (

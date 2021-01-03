@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateShopSalesTable extends Migration
+class CreateSaleDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateShopSalesTable extends Migration
      */
     public function up()
     {
-        Schema::create('shop_sales', function (Blueprint $table) {
+        Schema::create('sale_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('customer')->nullable();
-            $table->double('total');
-            $table->double('totalCost');
-            $table->double('amountRecieved');
+            $table->foreignId("shop_sale_id")->constrained()->cascadeOnDelete();
+            $table->string("barcode");
+            $table->double("qty");
+            $table->double("uPrice");
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ class CreateShopSalesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_sales');
+        Schema::dropIfExists('sale_details');
     }
 }

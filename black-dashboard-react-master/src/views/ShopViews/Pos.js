@@ -43,14 +43,27 @@ import apiClient from "../../services/api"
 
 import ItemTable from "./ItemTable";
 import { Paper, TextField } from "@material-ui/core";
+import { Label, SettingsInputComponentSharp } from "@material-ui/icons";
+import Products from "views/Products";
+import TodayData from "./TodayData";
+import Stock from "./StockManagment";
+import ReportsTabs from "./ReportsTabs";
 
 function PosMain() {
     const [open, setOpen] = React.useState(false);
     const [productList, setProductList] = React.useState([]); //list of products in an invoice
     const [open2, setOpen2] = React.useState(false); //in case of debt
+    const [open3, setOpen3] = React.useState(false); //add products that dont have barcode
+    const [open4, setOpen4] = React.useState(false); //reports
     const [total, setTotal] = React.useState(0); //invoice total
     const [recieved, setRecieved] = React.useState(0); //money recieved
+    const [cost, setCost] = React.useState(0); //invoice total
+    const [totalCost, setTotalCost] = React.useState(0);
+    const [price, setPrice] = React.useState(0); 
     const [customer, setCustomer] = React.useState("");
+    const [name, setName] = React.useState("");
+    const [favProds, setFavProds] = React.useState([]);
+    const [prdId,setPrdId]=React.useState(null); 
     const handleClickOpen = () => {
         setOpen(true);
 
@@ -58,43 +71,130 @@ function PosMain() {
 
     const handleClose = () => {
         setOpen(false);
-        
-        // setName(null);
-        // setDeadline(null);
+     
     };
     const handleClose2 = () => {
-        
         setOpen2(false);
-        // setName(null);
-        // setDeadline(null);
+     
     };
+   
     const saveInv = () => {
         if (recieved >= total && customer === "") {
             if (sessionStorage.getItem('loggedIn')) {
 
-                apiClient.post('../api/saveInv', { total: total, recieved: recieved, invoice: productList })
+                apiClient.post('../api/saveInv', { customer: customer,total: total ,totalCost:totalCost, recieved: recieved, invoice: productList })
                     .then(response => {
-                        if (response.status == 200) { setProductList([]); setCustomer("");setOpen2(false); }
-                    })
+                        if (response.status == 200) {
+                            setProductList([]);
+                            setCustomer("");
+                            setRecieved(0);
+                            setOpen2(false);
+                        }
+                    }).catch(error => console.error(error))
             }
         } else if (recieved < total && customer !== "") {
             if (sessionStorage.getItem('loggedIn')) {
 
-                apiClient.post('../api/saveInv', { customer: customer, total: total, recieved: recieved, invoice: productList })
+                apiClient.post('../api/saveInv', { customer: customer, total: total,totalCost:totalCost, recieved: recieved, invoice: productList })
                     .then(response => {
-                        if (response.status == 200) { setProductList([]); setCustomer("");setOpen2(false);}
-                    })
+                        if (response.status == 200) {
+                            setProductList([]);
+                            setCustomer("");
+                            setRecieved(0);
+                            setOpen2(false);
+                        }
+                    }).catch(error => console.error(error))
             }
         } else { setOpen2(true); }
     }
 
+    const addProd = () => {
+        if (sessionStorage.getItem('loggedIn')) {
 
+            apiClient.post('../api/addProd', {id:prdId, barcode: name, cost: cost, price: price, })
+                .then(response => {
+                    setOpen3(false);
+                    fetchProds();
+                    setPrdId(null);
+                 }).catch(error => console.error(error))
+        }
+   }
+    const addToList = (prod) => {
+       
+     
+        let test = true;
+        let temp = productList;
+        temp.forEach(element => {
 
+            if (element.barcode === prod.barcode) {
+                element.qty = element.qty + 1;
+                test = false;
 
+            }
+            
+        });
+        setTotal(total + prod.price);
+        setTotalCost(totalCost + prod.cost);
+
+        if (test) {
+            temp.push({
+                barcode: prod.barcode,
+                description: prod.barcode,
+                qty: 1,
+                price: prod.price,
+                cost: prod.cost
+            });
+           
+         
+            setProductList(temp);
+        }
+    }
+    const fetchProds = () => {
+        if (sessionStorage.getItem('loggedIn')) {
+
+            apiClient.get('../api/getFavProds')
+                .then(response => {
+                    setFavProds(response.data);
+
+                 }).catch(error => console.error(error))
+        }
+    }
+React.useEffect(() => {
+    fetchProds();
+}, [])
 
     return (
         <>
-            <div className="content white-content">
+            <div className="content">
+             
+                <Row>
+                    <Col>
+                    <Button color="info" onClick={handleClickOpen} style={{ height: '175px', width: "95%" , fontWeight:"bolder" ,fontSize:"22px"}}>Sales Entry</Button>
+                    </Col>
+                    <Col>
+                    <TodayData/>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                    <Button color="success" onClick={()=>setOpen4(true)} style={{ height: '175px', width: "95%", fontWeight:"bolder",fontSize:"22px"}}>reports</Button>
+                    </Col>
+                    <Col>
+                    <Stock />
+                    </Col>
+                </Row>
+                
+                <Dialog open={open4} fullScreen={true} onClose={()=>setOpen4(false)} aria-labelledby="form-dialog-title" >
+                    <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#1e1e2e" ,color:"#cbd0d5"}}><Button onClick={()=>setOpen4(false)}>cancel</Button>
+                   Reports</DialogTitle>
+                    <DialogContent style={{ backgroundColor: "#252537"}}>
+                   <ReportsTabs/>
+                    </DialogContent>
+              
+                </Dialog>
+               
+                
+                
                 <Dialog open={open2} onClose={handleClose2} aria-labelledby="form-dialog-title" >
                     <DialogTitle id="form-dialog-title">unPaid invoice</DialogTitle>
                     <DialogContent>
@@ -106,12 +206,27 @@ function PosMain() {
                         <Button onClick={saveInv}>save</Button>
                     </DialogActions>
                 </Dialog>
-                <Button onClick={handleClickOpen} style={{ height: '80Px', width: "10%" }}>Sales Entry</Button>
-                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullScreen={true}>
-                    <DialogTitle id="form-dialog-title">
-                        <Button onClick={handleClose}><i className="tim-icons icon-minimal-left" /></Button>
-                    </DialogTitle>
+
+                <Dialog open={open3} onClose={() => setOpen3(false)} fullWidth={false} aria-labelledby="form-dialog-title" >
+                    <DialogTitle style={{ backgroundColor: "#cbd0d5" ,color:"#1e1e25"}} id="form-dialog-title">Add/Edit Product</DialogTitle>
                     <DialogContent>
+                        <TextField label="Product Name" onChange={(e) => setName(e.target.value)} />
+                          <br></br>  
+                        <TextField label="Product Cost" onChange={(e) => setCost(e.target.value)} />
+                        <br></br> 
+                        <TextField label="Product Price" onChange={(e) => setPrice(e.target.value)} />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={()=>setOpen3(false)}>cancel</Button>
+                        <Button onClick={addProd}>save</Button>
+                    </DialogActions>
+                </Dialog>
+               
+                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullScreen={true}>
+                    {/* <DialogTitle id="form-dialog-title">
+                        <Button onClick={handleClose}><i className="tim-icons icon-minimal-left" /></Button>
+                    </DialogTitle> */}
+                    <DialogContent style={{ backgroundColor: "#cbd0d5" }}>
 
                         <Row>
 
@@ -119,7 +234,7 @@ function PosMain() {
                                 <Card style={{ backgroundColor: "#ffffff", color: "black", fontSize: "10px" }}>
                                     <CardBody>
                                         <Row>
-                                            <ItemTable onAddProd={(e) => { setTotal(e) }} onAdd={(e) => { setProductList(e) }} clear={productList} />
+                                            <ItemTable onAddProd={(e, c) => { setTotal(e);setTotalCost(c)}} onAdd={(e) => { setProductList(e) }} clear={productList} />
                                         </Row>
 
                                     </CardBody>
@@ -132,29 +247,32 @@ function PosMain() {
                                     <CardBody>
                                         <Row>
                                             <Col>
-                                                <h4>Invoice Total : </h4>
+                                                
                                                 <Paper className="text-center" elevation={3} >
-                                                    <br />
-                                                    {total}
-                                                    <br /><br />
+                                                <br />
+                                                <h4 style={{color:"#1e1e24",fontWeight:"bolder"}}>Invoice Total <br />{total}</h4>
+                                                <hr />
                                                 </Paper>
                                             </Col>
                                             <Col>
-                                                <h4>Change : </h4>
+                                               
                                                 <Paper className="text-center" elevation={3} >
-                                                    <br />
-                                                    {recieved - total}
-                                                    <br /><br />
+                                                    {recieved - total < 0 ?<> <br /><h4 style={{ color: "red",fontWeight:"bolder" }}> Change  <br />
+                                                        {recieved - total}
+                                                        </h4>
+                                                        <hr /> </>:
+                                                        <><br /><h4 style={{ color: "green",fontWeight:"bolder" }}>Change  <br />{recieved - total} </h4>
+                                                        <hr /></>}
                                                 </Paper>
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col>
                                                 <br />
-                                                <h4>Amount Recieved : </h4>
-                                                <Paper elevation={3} >
-
-                                                    <Input type="number" onChange={(e) => { setRecieved(e.target.value) }} />
+                                                
+                                                <Paper className="text-center" elevation={3} >
+                                                <h4 style={{color:"#1e1e24",fontWeight:"bolder"}}>Amount Recieved </h4>
+                                                    <Input style={{color:"#1e1e24"}} value={recieved} onChange={(e) => { setRecieved(e.target.value) }} />
                                                 </Paper>
                                             </Col>
                                         </Row> <Row>
@@ -177,30 +295,24 @@ function PosMain() {
                         </Row>
                         <Row style={{ marginLeft: "10px" }}>
                             <Col>
-                                <Button style={{ height: '80Px', width: "10%" }}>PROD 1</Button>
-                                <Button style={{ height: '80Px', width: "10%" }}>PROD 2</Button>
-                                <Button style={{ height: '80Px', width: "10%" }}>PROD 3</Button>
-                                <Button style={{ height: '80Px', width: "10%" }}>PROD 4</Button>
-                                <Button style={{ height: '80Px', width: "10%" }}>PROD 5</Button>
-                                <Button style={{ height: '80Px', width: "10%" }}>PROD 6</Button>
-                                <Button style={{ height: '80Px', width: "10%" }}>PROD 7</Button>
-                                <Button style={{ height: '80Px', width: "10%" }}>PROD 8</Button>
-                                <Button style={{ height: '80Px', width: "10%" }}>PROD 9</Button>
-
+                                {favProds.map((prod) => {
+                                    return (
+                                        <Button
+                                            onDoubleClick={(e) => { setPrdId(prod.id); setOpen3(true);setProductList([]) }}
+                                            onClick={(e) => { addToList( prod ) }}
+                                            key={prod.barcode}
+                                            style={{ height: '80Px', width: "10%" }}>
+                                            {prod.barcode}
+                                        </Button>
+                                    )
+                                })}
+                                 {favProds.length<17?<Button onClick={(e)=>{setOpen3(true)}} id="11" style={{ height: '80Px', width: "auto" }}>Add Product</Button>:<></>}
+                                <Button  onClick={handleClose} style={{ height: '80Px', width: "10%", color: "red", fontWeight: "bolder" }}>EXIT</Button>
                             </Col>
                         </Row>
                         <Row style={{ marginLeft: "10px" }}>
                             <Col>
-                                <Button style={{ height: '80Px', width: "10%" }}>PROD 1</Button>
-                                <Button style={{ height: '80Px', width: "10%" }}>PROD 2</Button>
-                                <Button style={{ height: '80Px', width: "10%" }}>PROD 3</Button>
-                                <Button style={{ height: '80Px', width: "10%" }}>PROD 4</Button>
-                                <Button style={{ height: '80Px', width: "10%" }}>PROD 5</Button>
-                                <Button style={{ height: '80Px', width: "10%" }}>PROD 6</Button>
-                                <Button style={{ height: '80Px', width: "10%" }}>PROD 7</Button>
-                                <Button style={{ height: '80Px', width: "10%" }}>PROD 8</Button>
-                                <Button style={{ height: '80Px', width: "10%" }}>PROD 9</Button>
-
+                               
                             </Col>
                         </Row>
                     </DialogContent>

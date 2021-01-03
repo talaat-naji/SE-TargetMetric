@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ShopSales extends Model
+class SaleDetails extends Model
 {
     use HasFactory;
-
-    protected $fillable=["total","totalCost","customer","user_id","amountRecieved"];
+    
+    protected $fillable=["barcode","qty", "uPrice","shop_sale_id"];
 }

@@ -8,13 +8,15 @@ export default function ItemTable(props) {
     // const [total, setTotal] = React.useState(0);
 
     React.useEffect(() => {
-        setProductList([]);
-        props.onAddProd(0);
-},[props.clear])
+
+        setProductList(props.clear);
+        props.onAddProd(0, 0);
+    }, [props.clear])
     const getProductLine = (barcode) => {
 
         let test = true;
         let sum = 0;
+        let costSum = 0;
         let temp = productList;
         temp.forEach(element => {
 
@@ -23,12 +25,13 @@ export default function ItemTable(props) {
                 test = false;
 
             }
+            sum += element.qty * element.price;
+            costSum += element.qty * element.cost;
 
         });
-        temp.forEach(element => {
-            sum += element.qty * element.price;
-        });
-        props.onAddProd(sum);
+
+        props.onAddProd(sum, costSum);
+
         props.onAdd(temp);
         if (test) {
             if (sessionStorage.getItem('loggedIn')) {
@@ -37,11 +40,13 @@ export default function ItemTable(props) {
                     .then(response => {
                         if (response.data != null) {
 
-                            temp.push({ barcode: barcode, description: response.data[0].description, qty: 1, price: response.data[0].price });
+                            temp.push({ barcode: barcode, description: response.data[0].description, qty: 1, price: response.data[0].price, cost: response.data[0].cost });
+                            sum = 0;
                             temp.forEach(element => {
                                 sum += element.qty * element.price;
+                                costSum += element.qty * element.cost;
                             });
-                            props.onAddProd(sum);
+                            props.onAddProd(sum, costSum);
                             setProductList([]);
                             setBarcode("");
                             setProductList(temp);
@@ -56,11 +61,11 @@ export default function ItemTable(props) {
 
 
     return (
-         <div style={{marginLeft:"1px", width: '100%', height: '190px' }}>
-            <StickyTable style={{ marginLeft:"5px", width: '100%' }}>
+        <div style={{ marginLeft: "1px", width: '100%', height: '240px' }}>
+            <StickyTable style={{ marginLeft: "5px", width: '100%' }}>
                 <Row>
                     <Cell>Barcode</Cell>
-                    <Cell>description                      </Cell>
+                    <Cell>description                                </Cell>
                     <Cell>qty</Cell>
                     <Cell>U.price</Cell>
                     <Cell>T.price</Cell>
@@ -71,19 +76,19 @@ export default function ItemTable(props) {
                             <Cell>{line.barcode}</Cell>
                             <Cell>{line.description}</Cell>
                             <Cell><input style={{ width: "60px" }} value={line.qty} /></Cell>
-                          
+
                             <Cell>{line.price}</Cell>
                             <Cell>{line.price * line.qty}</Cell>
                         </Row>
                     );
                 })}
                 <Row>
-                   <Cell> <input style={{ width: "150px" }} type="text" value={barcode} onChange={(e) => { setBarcode(e.target.value); getProductLine(e.target.value) }} />
+                    <Cell> <input style={{ width: "150px" }} type="text" value={barcode} onChange={(e) => { setBarcode(e.target.value); getProductLine(e.target.value) }} />
                     </Cell>
                     <Cell></Cell><Cell></Cell><Cell></Cell><Cell></Cell>
                 </Row>
-    
- 
+
+
             </StickyTable>
         </div>
     )

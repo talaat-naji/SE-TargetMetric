@@ -19,6 +19,7 @@ class CreateShopStocksTable extends Migration
             $table->string('barcode');
             $table->string('description');
             $table->double('price');
+            $table->double('cost');
             $table->unique(["barcode","user_id"]);
             $table->double('qty');
             $table->timestamps();

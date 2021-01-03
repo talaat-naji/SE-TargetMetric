@@ -36,6 +36,7 @@ import {
   Container,
   Modal
 } from "reactstrap";
+import ShopList from "views/ShopViews/ShopList";
 
 class AdminNavbar extends React.Component {
   constructor(props) {
@@ -141,7 +142,7 @@ class AdminNavbar extends React.Component {
                     <span className="d-lg-none d-md-block">Search</span>
                   </Button>
                 </InputGroup>
-                {sessionStorage.getItem("userType") === "retailer" ? <MenuListComposition/> : <></>}
+                {sessionStorage.getItem("userType") === "retailer" ? <MenuListComposition/> : <ShopList/>}
                 <UncontrolledDropdown nav>
                   <DropdownToggle
                     caret
