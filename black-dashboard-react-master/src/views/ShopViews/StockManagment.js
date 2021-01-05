@@ -22,7 +22,7 @@ import { Button} from "reactstrap";
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
+import Button2 from '@material-ui/core/Button';
 
 import ShopStock from "./ShopStock";
 
@@ -54,8 +54,9 @@ function Stock() {
                     <h4 style={{ color: "#c2d0d4", fontWeight: "bolder" }}>
 
                        
-
-                            <i onClick={handleClose} className="tim-icons icon-minimal-left" />
+<Button2 onClick={handleClose} style={{color:"#cbd0d5"}}>
+                            <i  className="tim-icons icon-minimal-left" />
+                            </Button2>
                         Stock
                     </h4>
                 </DialogTitle>

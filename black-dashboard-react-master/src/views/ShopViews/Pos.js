@@ -48,6 +48,7 @@ import Products from "views/Products";
 import TodayData from "./TodayData";
 import Stock from "./StockManagment";
 import ReportsTabs from "./ReportsTabs";
+import Button2 from '@material-ui/core/Button';
 
 function PosMain() {
     const [open, setOpen] = React.useState(false);
@@ -185,7 +186,9 @@ React.useEffect(() => {
                 </Row>
                 
                 <Dialog open={open4} fullScreen={true} onClose={()=>setOpen4(false)} aria-labelledby="form-dialog-title" >
-                    <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#1e1e2e" ,color:"#cbd0d5"}}><Button onClick={()=>setOpen4(false)}>cancel</Button>
+                    <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#1e1e2e" ,color:"#cbd0d5"}}><Button2 style={{color:"#cbd0d5"}} onClick={()=>setOpen4(false)} color="primary">
+            <i className="tim-icons icon-minimal-left"/>
+              </Button2>
                    Reports</DialogTitle>
                     <DialogContent style={{ backgroundColor: "#252537"}}>
                    <ReportsTabs/>

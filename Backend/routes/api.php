@@ -131,4 +131,5 @@ Route::middleware('auth:sanctum')->post('/addToStock',[PosController::class,"add
 Route::middleware('auth:sanctum')->post('/getGroupedDebts',[PosController::class,"getGroupedDebts"]);
 Route::middleware('auth:sanctum')->post('/getCustomerDebts',[PosController::class,"getCustomerDebts"]);
 Route::middleware('auth:sanctum')->post('/getSales',[PosController::class,"getSales"]);
+Route::middleware('auth:sanctum')->post('/getDailySales',[PosController::class,"getDailySales"]);
 Route::middleware('auth:sanctum')->post('/savePayment',[PosController::class,"savePayment"]);

@@ -24,7 +24,7 @@ class PosController extends Controller
 
       $id = ShopSales::create([
          "total" => $request->total,
-         "totalCost"=>$request->totalCost,
+         "totalCost" => $request->totalCost,
          "customer" => $request->customer,
          "amountRecieved" => $request->recieved,
          "user_id" => Auth::id()
@@ -46,22 +46,21 @@ class PosController extends Controller
    public function addProd(Request $request)
    {
 
-      if($request->id===null){
-      ShopProducts::create([
-         "user_id" => Auth::id(),
-         "barcode" => $request->barcode,
-         "cost" => $request->cost,
-         "price" => $request->price
-      ]);
-      }
-      else{
-         ShopProducts::where("user_id" , Auth::id())
-         ->where("id",$request->id)
-         ->update([
+      if ($request->id === null) {
+         ShopProducts::create([
+            "user_id" => Auth::id(),
             "barcode" => $request->barcode,
             "cost" => $request->cost,
             "price" => $request->price
          ]);
+      } else {
+         ShopProducts::where("user_id", Auth::id())
+            ->where("id", $request->id)
+            ->update([
+               "barcode" => $request->barcode,
+               "cost" => $request->cost,
+               "price" => $request->price
+            ]);
       }
    }
 
@@ -78,7 +77,7 @@ class PosController extends Controller
          ->whereDate("created_at", Carbon::today())
          ->select(DB::raw("SUM(total) as totalSales"))->get();
 
-         $totalCosts = ShopSales::where("user_id", Auth::id())
+      $totalCosts = ShopSales::where("user_id", Auth::id())
          ->whereDate("created_at", Carbon::today())
          ->select(DB::raw("SUM(totalCost) as totalCosts"))->get();
 
@@ -87,73 +86,105 @@ class PosController extends Controller
          ->whereRaw("total>amountRecieved")
          ->select(DB::raw("SUM(total-amountRecieved) as CreditSales"))->get();
 
-      return [$creditSales, $totalSales,$totalCosts];
+      return [$creditSales, $totalSales, $totalCosts];
    }
 
-   public static function addToStock(Request $request){
-     $count= ShopStock::where("user_id",Auth::id())->where("barcode",$request->barcode)->count();
+   public static function addToStock(Request $request)
+   {
+      $count = ShopStock::where("user_id", Auth::id())->where("barcode", $request->barcode)->count();
 
-     if($count>0){
-      
-      $qty= ShopStock::where("user_id",Auth::id())->where("barcode",$request->barcode)->get();
-     
-      $currentPropotion=$qty[0]['qty']/($qty[0]['qty']+$request->qty);
+      if ($count > 0) {
 
-      $newPropotion=1-$currentPropotion;
-     $newCost= ($currentPropotion*$qty[0]["cost"])+($newPropotion*$request->cost);
+         $qty = ShopStock::where("user_id", Auth::id())->where("barcode", $request->barcode)->get();
 
-     ShopStock::where("user_id",Auth::id())
-     ->where("barcode",$request->barcode)
-     ->update([
-      "cost"=>$newCost,
-      "price"=>$request->price,
-      "qty"=>$request->qty+$qty[0]['qty']
+         $currentPropotion = $qty[0]['qty'] / ($qty[0]['qty'] + $request->qty);
 
-   ]);
+         $newPropotion = 1 - $currentPropotion;
+         $newCost = ($currentPropotion * $qty[0]["cost"]) + ($newPropotion * $request->cost);
 
-     }else{
-      ShopStock::create([
-         "user_id"=>Auth::id(),
-         "barcode"=>$request->barcode,
-         "description"=>$request->description,
-         "price"=>$request->price,
-         "cost"=>$request->cost,
-         "qty"=>$request->qty
+         ShopStock::where("user_id", Auth::id())
+            ->where("barcode", $request->barcode)
+            ->update([
+               "cost" => $newCost,
+               "price" => $request->price,
+               "qty" => $request->qty + $qty[0]['qty']
 
-      ]);
-     }
+            ]);
+      } else {
+         ShopStock::create([
+            "user_id" => Auth::id(),
+            "barcode" => $request->barcode,
+            "description" => $request->description,
+            "price" => $request->price,
+            "cost" => $request->cost,
+            "qty" => $request->qty
+
+         ]);
+      }
    }
 
-   public function getSales(){
+   public function getSales()
+   {
+      $dateS = Carbon::now()->startOfYear();
+      $dateE = Carbon::now()->endOfYear();
 
+      $sales = ShopSales::where("user_id", Auth::id())
+         ->whereBetween("created_at", [$dateS, $dateE])
+         ->select(DB::raw("SUM(total) as totalSales , MONTH(created_at) as month "))
+         ->groupBy("month")->get();
+
+      $profit =  ShopSales::where("user_id", Auth::id())
+      ->whereBetween("created_at", [$dateS, $dateE])
+      ->select(DB::raw("SUM(total-totalCost) as totalProfit , MONTH(created_at) as month "))
+      ->groupBy("month")->get();
+
+      return [$sales, $profit];
+   }
+   public function getDailySales(Request $request)
+   {
+      $dateS = Carbon::now()->startOfYear();
+      $dateE = Carbon::now()->endOfYear();
+
+      $sales = ShopSales::where("user_id", Auth::id())
+         ->whereBetween("created_at", [$dateS, $dateE])
+         ->whereRaw("MONTH(created_at) = $request->month")
+         ->select(DB::raw("SUM(total) as totalSales , DAY(created_at) as day "))
+         ->groupBy("day")->get();
+
+      $profit =  ShopSales::where("user_id", Auth::id())
+      ->whereBetween("created_at", [$dateS, $dateE])
+      ->whereRaw("MONTH(created_at) = $request->month")
+      ->select(DB::raw("SUM(total-totalCost) as totalProfit , DAY(created_at) as day "))
+      ->groupBy("day")->get();
+
+      return [$request->month,$sales, $profit];
+   }
+   public function getGroupedDebts()
+   {
+
+      return ShopSales::where("user_id", Auth::id())
+         ->whereRaw("amountRecieved<total")
+         ->select(DB::raw("SUM(total-amountRecieved) as debtValue,customer"))
+         ->groupBy("customer")
+         ->get();
    }
 
-   public function getGroupedDebts(){
-      
-     return ShopSales::where("user_id",Auth::id())
-     ->whereRaw("amountRecieved<total")
-     ->select(DB::raw("SUM(total-amountRecieved) as debtValue,customer"))
-     ->groupBy("customer")
-     ->get();
+   public function getCustomerDebts(Request $request)
+   {
+
+      return ShopSales::where("user_id", Auth::id())
+         ->where("customer", $request->name)
+         ->whereRaw("amountRecieved<total")->get();
    }
 
-   public function getCustomerDebts(Request $request){
-      
-      return ShopSales::where("user_id",Auth::id())
-      ->where("customer",$request->name)
-      ->whereRaw("amountRecieved<total")->get();
-
-   }
-
-   public function savePayment(Request $request){
+   public function savePayment(Request $request)
+   {
 
       foreach ($request->data as $invoice) {
 
-         ShopSales::where("user_id",Auth::id())
-         ->where("id",$invoice["id"])
-         ->update(["amountRecieved"=>$invoice["amountRecieved"]]);
+         ShopSales::where("user_id", Auth::id())
+            ->where("id", $invoice["id"])
+            ->update(["amountRecieved" => $invoice["amountRecieved"]]);
       }
-
-
-   } 
+   }
 }

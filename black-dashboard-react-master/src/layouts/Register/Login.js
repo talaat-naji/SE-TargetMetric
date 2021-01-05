@@ -72,8 +72,8 @@ const Login = (props) => {
          } else if (userType === "retailer") {
            props.history.push('/admin/dashboard');
         } else if (userType === "shop") {
-            console.log("testshop");
-            props.history.push('/shop/user-profile');
+            
+            props.history.push('/shop/dashboard');
         }
     }
     return (
