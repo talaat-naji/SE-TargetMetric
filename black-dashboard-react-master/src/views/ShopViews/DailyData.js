@@ -150,11 +150,11 @@ export default function DailyData(props) {
 },[props.open])
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth={true} >
-        <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#1e1e2e" }}>
+        <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#cbd0d5" }}>
           <Button2 onClick={handleClose} color="primary">
             <i className="tim-icons icon-minimal-left"/>
               </Button2>{monthName} {dailyChartData}</DialogTitle>
-        <DialogContent style={{ backgroundColor: "#252537" }}>
+        <DialogContent style={{ backgroundColor: "#f5f6fa" }}>
         <Row>
         <Col xs="12">
           <Card className="card-chart">

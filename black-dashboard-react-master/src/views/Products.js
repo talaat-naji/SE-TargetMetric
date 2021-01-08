@@ -60,21 +60,23 @@ class Products extends React.Component {
                  
                 </CardHeader>
                 <CardBody className="all-icons">
-                  <Row>
+                  
                     {this.state.products.map((product) => {
                       return (
                         // product.products.map((prod) => {
                         
                         //   return (
-                            <Col
-                              className="font-icon-list"
-                              lg="4.5"
-                              md="6"
-                              sm="9"
-                            >
-                             
+                        //     <Col
+                        //       className="font-icon-list"
+                        //       lg="4.5"
+                        //       md="6"
+                        //       sm="9"
+                        // >
+                          
+                             <>
                               <ViewProd onImageUpdate={this.handleEditProduct} product={product} onEditProduct={this.handleEditProduct} />
-                            </Col>
+                        
+                          </>
                           );
                         // }));
                     })}
@@ -84,7 +86,7 @@ class Products extends React.Component {
                     
                    
                   
-                  </Row>
+                 
                 </CardBody>
               </Card>
             </Col>

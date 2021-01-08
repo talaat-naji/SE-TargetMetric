@@ -80,19 +80,19 @@ export default function RetailerTabs(props) {
         fetchProducts(pageNb);
     }, [])
     return (
-   <div className="content">
-                    <Row>
-                        <Col md="12">
-                            <Card responsive> 
-                               <CardHeader>
-                                     <Row>
-                                        {/* <Col><Button style={{ float: "right" }}  //  PREVIOS PAGE
+        <div className="content">
+            <Row>
+                <Col md="12">
+                    <Card responsive>
+                        <CardHeader>
+                            <Row>
+                                {/* <Col><Button style={{ float: "right" }}  //  PREVIOS PAGE
                                             onClick={() => {
                                                 if (pageNb - 1 >= 1) { fetchProducts(pageNb - 1); setPageNb(pageNb - 1) }
                                             }
                                             }><i className="tim-icons icon-minimal-left" /></Button></Col> */}
-                                        <Col><span className="title" style={{ float: "center" }}>Products</span><div>Page: {pageNb + " / " + lastPage}</div></Col>
-                                        {/* <Col><Button style={{ float: "left" }} //NEXT PAGE
+                                <Col><span className="title" style={{ float: "center" }}>Products</span><div>Page: {pageNb + " / " + lastPage}</div></Col>
+                                {/* <Col><Button style={{ float: "left" }} //NEXT PAGE
                                             onClick={() => {
 
                                                 if (pageNb + 1 <= lastPage) {
@@ -102,62 +102,62 @@ export default function RetailerTabs(props) {
                                             <i className="tim-icons icon-minimal-right" />
                                         </Button>
                                         </Col> */}
-                                    </Row> 
-                                </CardHeader>
-                                <CardBody className="all-icons">
+                            </Row>
+                        </CardHeader>
+                        <CardBody className="all-icons">
 
-                                    {products.map((prod) => {
-                                        
-
-                                        return (
-                                            <Row>
-                                             
-                                                <Col
-                                                    className="font-icon-list col-xs-auto col-xs-auto"
-                                                    lg="2"
-                                                    md="5"
-                                                    sm="6"
-                                                >
-                                                   
-                                                               
+                            {products.map((prod) => {
 
 
-                                                       
-<Card>
-                                                                {prod.pic_path != "" ? <CardImg
-                                                                    top style={{ width: "100%", height: "40%" }}
-                                                                    src={prod.pic_path} /> : <CardImg
-                                                                        top style={{ width: "100%", height: "40%" }}
-                                                                        src="/img/095333-unnamed.png" />}
-                                                           
-                                                           </Card>  
-                                                </Col>
-                                                <Col>
-                                                    <Card>
-                                                        <CardHeader tag="h4">
-                                                            {prod.name}
-                                                        </CardHeader>
-                                                        <CardBody>
-                                                            <Row>
+                                return (
+                                    <Row>
 
-                                                                <Col>
-                                                                    <p>Price: {prod.price}</p>
-                                                                    <Typography color="inherit">{prod.description}</Typography>
-                                                                </Col>
-                                                                <Col>
-                                                                    <ProductOrder product={prod} retailer_id={props.retailer.id} />
-                                                                </Col>
-                                                            </Row>
-                                                        </CardBody>
-                                                        </Card>
-                                                    {/* </div> */}
+                                        <Col
+                                            className="font-icon-list col-xs-auto col-xs-auto"
+                                            lg="2"
+                                            md="5"
+                                            sm="6"
+                                        >
 
-                                                </Col>
-                                               
-                                            </Row>
-                                        );
 
-                                    })}
+
+
+
+                                            <Card>
+                                                {prod.pic_path != "" ? <CardImg
+                                                    top style={{ width: "100%", height: "40%" }}
+                                                    src={prod.pic_path} /> : <CardImg
+                                                        top style={{ width: "100%", height: "40%" }}
+                                                        src="/img/095333-unnamed.png" />}
+
+                                            </Card>
+                                        </Col>
+                                        <Col>
+                                            <Card>
+                                                <CardHeader tag="h4">
+                                                    {prod.name}
+                                                </CardHeader>
+                                                <CardBody>
+                                                    <Row>
+
+                                                        <Col>
+                                                            <p>Price: {prod.price}</p>
+                                                            <Typography color="inherit">{prod.description}</Typography>
+                                                        </Col>
+                                                        <Col>
+                                                            <ProductOrder product={prod} retailer_id={props.retailer.id} />
+                                                        </Col>
+                                                    </Row>
+                                                </CardBody>
+                                            </Card>
+                                            {/* </div> */}
+
+                                        </Col>
+
+                                    </Row>
+                                );
+
+                            })}
 
 
 
@@ -167,33 +167,33 @@ export default function RetailerTabs(props) {
 
                         </CardBody>
                         <CardFooter>
-                                     <Row>
-                                        <Col><Button style={{ float: "right" }}  //  PREVIOS PAGE
-                                            onClick={() => {
-                                                if (pageNb - 1 >= 1) { fetchProducts(pageNb - 1); setPageNb(pageNb - 1) }
-                                            }
-                                            }><i className="tim-icons icon-minimal-left" /></Button></Col>
-                                        <Col><span className="title" style={{color:"#c2d0d4" , marginLeft:"43%"}}>Products</span><div  style={{color:"#c2d0d4",marginLeft:"43%"}}>Page: {pageNb + " / " + lastPage}</div></Col>
-                                        <Col><Button style={{ float: "left" }} //NEXT PAGE
-                                            onClick={() => {
+                            <Row>
+                                <Col><Button color="info" style={{ float: "right" }}  //  PREVIOS PAGE
+                                    onClick={() => {
+                                        if (pageNb - 1 >= 1) { fetchProducts(pageNb - 1); setPageNb(pageNb - 1) }
+                                    }
+                                    }><i className="tim-icons icon-minimal-left" /></Button></Col>
+                                <Col><span className="title" style={{ marginLeft: "43%" }}>Products</span><div style={{ color: "#c2d0d4", marginLeft: "43%" }}>Page: {pageNb + " / " + lastPage}</div></Col>
+                                <Col><Button color="info" style={{ float: "left" }} //NEXT PAGE
+                                    onClick={() => {
 
-                                                if (pageNb + 1 <= lastPage) {
-                                                    fetchProducts(pageNb + 1); setPageNb(pageNb + 1)
-                                                }
-                                            }}>
-                                            <i className="tim-icons icon-minimal-right" />
-                                        </Button>
-                                        </Col>
-                                    </Row> 
-                                </CardFooter>
-                            </Card>
-                        </Col>
-                    </Row>
-                </div>
-            /* </TabPanel> */
-            /* <TabPanel value={value} index={1} style={{ width: "80%", hieght: "80%" }}>
-                Comming soon...
-              </TabPanel> */
+                                        if (pageNb + 1 <= lastPage) {
+                                            fetchProducts(pageNb + 1); setPageNb(pageNb + 1)
+                                        }
+                                    }}>
+                                    <i className="tim-icons icon-minimal-right" />
+                                </Button>
+                                </Col>
+                            </Row>
+                        </CardFooter>
+                    </Card>
+                </Col>
+            </Row>
+        </div>
+        /* </TabPanel> */
+        /* <TabPanel value={value} index={1} style={{ width: "80%", hieght: "80%" }}>
+            Comming soon...
+          </TabPanel> */
 
 
 

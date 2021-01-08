@@ -268,7 +268,7 @@ export default function VerticalTabs(props) {
                     <Row style={{ margin:"1em"}}>
                         <Col>from:<Input value={from} type="date" name="from" onChange={(e) => { setFrom(e.target.value) }}/></Col>
                         <Col>to:<Input value={to} type="date" name="to" onChange={(e) => { setTo(e.target.value)}}/></Col>
-                        <Col><br/><Button1 variant="contained" color="primary" onClick={fetchProducts} >show results</Button1></Col>
+                        <Col><br/><Button variant="contained" color="info" onClick={fetchProducts} >Show results</Button></Col>
                     </Row>
                     
                 </Card>
@@ -276,7 +276,7 @@ export default function VerticalTabs(props) {
                
                     <CardHeader>
                       
-                  <h3 className="card-category">products boaught</h3>
+                  <h3 className="card-category">products bought</h3>
                   <CardTitle tag="h4">
 {/*                    
                     <p> Selling value: {this.state.stockTotal.saleValue} L.L</p>

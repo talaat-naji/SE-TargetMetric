@@ -192,7 +192,7 @@ class RecieveOrder extends React.Component {
                   {/* <CardTitle tag="h4">Simple Table</CardTitle> */}
                 </CardHeader>
                 <CardBody>
-                  <Table className="tablesorter" responsive>
+                  <Table className="tablesorter" >
                     <thead className="text-primary">
                       <tr>
                         <th colSpan="3" className="text-center"><h3>RECIEVE PRODUCTS</h3></th>
@@ -216,7 +216,7 @@ class RecieveOrder extends React.Component {
               </Card>
               <Card>
                 <CardBody>
-                  <Table className="tablesorter" responsive>
+                  <Table className="tablesorter">
                     <thead>
                       <tr>
                         <td>Barcode</td>
@@ -256,7 +256,7 @@ class RecieveOrder extends React.Component {
                           <td >{this.sum}</td>
                         </tr>
                         <tr>
-                          <td colSpan="6" className="text-center"><Button onClick={this.sendInvoice}>RECIECVE</Button></td>
+                          <td colSpan="6" className="text-center"><Button color="info" onClick={this.sendInvoice}>RECIECVE</Button></td>
 
                         </tr></> : <></>}
                     </tbody>

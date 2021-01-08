@@ -12,6 +12,8 @@ import DemandedProducts from "views/ShopViews/DemandedProducts";
 import ProductsTabs from "views/ShopViews/DemandedProducts";
 import ShopUserProfile from "views/ShopViews/user-profile";
 import PosMain from "views/ShopViews/Pos";
+import ShopList from "views/ShopViews/ShopList";
+import MyOrders from "views/ShopViews/MyOrders";
 
 var shopRoutes = [
     {
@@ -23,10 +25,10 @@ var shopRoutes = [
       layout: "/shop"
     },
     {
-      path: "/icons",
+      path: "/products",
       name: "Products",
       rtlName: "الرموز",
-      icon: "tim-icons icon-atom",
+      icon: "tim-icons icon-cart",
       component: ProductsTabs,
       layout: "/shop"
     },
@@ -46,7 +48,24 @@ var shopRoutes = [
     //   component: Notifications,
     //   layout: "/shop"
     // },
+  
     {
+      path: "/retailers",
+      name: "Retailers",
+      rtlName: "قائمة الجدول",
+      icon: "tim-icons icon-vector",
+      component: RetailersList,
+      layout: "/shop"
+    },
+    {
+      path: "/myOrders",
+      name: "My Orders",
+      rtlName: "طباعة",
+      icon: "tim-icons icon-align-center",
+      component: MyOrders,
+      layout: "/shop"
+  },
+  {
       path: "/user-profile",
       name: "User Profile",
       rtlName: "ملف تعريفي للمستخدم",
@@ -54,21 +73,5 @@ var shopRoutes = [
       component: ShopUserProfile,
       layout: "/shop"
     },
-    {
-      path: "/tables",
-      name: "Retailers",
-      rtlName: "قائمة الجدول",
-      icon: "tim-icons icon-puzzle-10",
-      component: RetailersList,
-      layout: "/shop"
-    },
-    // {
-    //   path: "/typography",
-    //   name: "Typography",
-    //   rtlName: "طباعة",
-    //   icon: "tim-icons icon-align-center",
-    //   component: Typography,
-    //   layout: "/shop"
-    // },
   ];
   export default shopRoutes;

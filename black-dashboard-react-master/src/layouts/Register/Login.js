@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
+import { Button } from "reactstrap";
 
 const Login = (props) => {
     const [email, setEmail] = React.useState('');
@@ -78,7 +79,7 @@ const Login = (props) => {
     }
     return (
       
-    <div className="container">
+    <div className="container ">
 
         <div className="row justify-content-center">
 
@@ -121,7 +122,7 @@ const Login = (props) => {
                 </div>
                 {authError ? <div className="alert alert-danger">Credentials not recognised. Please try again.</div> : null}
                 {unknownError ? <div className="alert alert-danger">There was an error submitting your details.</div> : null}
-                <button type="submit" className="btn btn-primary">Login</button>
+                <Button color="info" type="submit">Login</Button>
             </form>
                                     <hr></hr>
                                     <div className="text-center">

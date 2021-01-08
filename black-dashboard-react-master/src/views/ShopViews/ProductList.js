@@ -122,7 +122,7 @@ class ProductList extends React.Component {
                         <th>description</th>
                         <th>Retailer</th>
                         <th onClick={this.sortResults}>price <i  className={this.state.sortWay=="dsc"?"tim-icons icon-minimal-down bold":"tim-icons icon-minimal-up"}/></th>
-                        <th>action</th>
+                        <th style={{float:"right",marginRight:"80px"}}>action</th>
                       </tr>
                     </thead>
                     <tbody>

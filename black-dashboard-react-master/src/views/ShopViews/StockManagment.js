@@ -23,7 +23,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button2 from '@material-ui/core/Button';
-
+import { Tooltip, Typography, withStyles } from "@material-ui/core";
 import ShopStock from "./ShopStock";
 
 
@@ -40,21 +40,36 @@ function Stock() {
         setOpen(false);
 
     };
-
+    const HtmlTooltip = withStyles((theme) => ({
+        tooltip: {
+          backgroundColor: '#f5f5f9',
+            color: 'rgba(0, 0, 0, 0.87)',
+        
+          maxWidth: 220,
+          fontSize: theme.typography.pxToRem(12),
+          border: '1px solid #dadde9',
+        },
+      }))(Tooltip);
     return (
         <>
         
+        <HtmlTooltip placement="bottom"
+                            title={
+                                <React.Fragment>
+                                    <Typography color="inherit">View products remaining in your stock </Typography>
 
-            <Button color="info" onClick={handleClickOpen} style={{  height: '175px', width: "95%", fontWeight:"bolder",fontSize:"22px" }}>Stock</Button>
-
+                                </React.Fragment>
+                            }>
+            <Button color="info" onClick={handleClickOpen} style={{  height: '175px', width: "95%", fontWeight:"bolder",fontSize:"22px" }}><i className="tim-icons icon-app"/> Stock</Button>
+            </HtmlTooltip>
             <Dialog open={open} fullScreen={true} onClose={handleClose} aria-labelledby="form-dialog-title" >
 
-                <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#1e1e2e" }}>
+                <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#c9d0b6" }}>
 
-                    <h4 style={{ color: "#c2d0d4", fontWeight: "bolder" }}>
+                    <h4 style={{ fontWeight: "bolder" }}>
 
                        
-<Button2 onClick={handleClose} style={{color:"#cbd0d5"}}>
+<Button2 onClick={handleClose} >
                             <i  className="tim-icons icon-minimal-left" />
                             </Button2>
                         Stock
@@ -62,7 +77,7 @@ function Stock() {
                 </DialogTitle>
                 
 
-                <DialogContent style={{ backgroundColor: "#252537" }}>
+                <DialogContent style={{ backgroundColor: "#f5f6fa" }}>
                
                     <ShopStock />
 

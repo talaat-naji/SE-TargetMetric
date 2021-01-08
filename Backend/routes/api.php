@@ -80,6 +80,7 @@ Route::middleware('auth:sanctum')->post('/editProfilePic',[LocationController::c
 |*/
 Route::middleware('auth:sanctum')->get('/getOrders',[OrderController::class,"getOrders"]);
 Route::middleware('auth:sanctum')->get('/getOrdersShopside',[OrderController::class,"getOrdersShopside"]);
+Route::middleware('auth:sanctum')->get('/getOrdersShopsidePage',[OrderController::class,"getOrdersShopsidePage"]);
 Route::middleware('auth:sanctum')->post('/deliverOrder',[OrderController::class,"deliverOrder"]);
 Route::middleware('auth:sanctum')->post('/recieveOrder',[OrderController::class,"recieveOrder"]);
 Route::middleware('auth:sanctum')->post('/orderSupplier',[OrderController::class,"orderSupplier"]);

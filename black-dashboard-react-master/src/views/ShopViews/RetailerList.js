@@ -30,6 +30,7 @@ import {
   Input
 } from "reactstrap";
 //import Alert from "reactstrap/lib/Alert";
+
 import apiClient from "../../services/api";
 import RetailerRow from "./RetailerRow";
 class RetailersList extends React.Component {
@@ -41,7 +42,7 @@ class RetailersList extends React.Component {
       retailersFilter:[]
 
     };
-   
+
   }
 
   fetchRetailers = () => {
@@ -69,7 +70,8 @@ class RetailersList extends React.Component {
   }
   componentDidMount() {
     this.fetchRetailers();
- }
+  }
+
   render() {
 
     return (

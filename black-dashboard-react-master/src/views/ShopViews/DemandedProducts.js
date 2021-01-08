@@ -8,8 +8,9 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import ProductList from "./ProductList"
-import { Button } from '@material-ui/core';
+
 import {
+    Button,
     Card,
     CardHeader,
     CardBody,
@@ -138,7 +139,7 @@ export default function ProductsTabs() {
                                                             <tr>
                                                                 <td>{product.barcode}</td>
                                                                 <td>{product.qtySold}</td>
-                                                                <td><Button variant="contained" color="primary" onClick={(e) => { setBarcode(product.barcode); handleChange(e, 0) }}>Get Product</Button></td>
+                                                                <td><Button variant="contained" color="info" onClick={(e) => { setBarcode(product.barcode); handleChange(e, 0) }}>Get Product</Button></td>
 
                                                             </tr>
                                                         </>

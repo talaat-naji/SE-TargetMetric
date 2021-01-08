@@ -10,6 +10,9 @@ import { Table } from "reactstrap";
 import VerticalTabs  from "./Tabs";
 import Row from 'reactstrap/lib/Row';
 import Col from 'reactstrap/lib/Col';
+import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 export default function CustomerTable(props) {
     const [open, setOpen] = React.useState(false);
   const [customerId, setCustomerId] = React.useState();
@@ -29,12 +32,24 @@ export default function CustomerTable(props) {
       setOpen(false);
   };
 
-    
+  const HtmlTooltip = withStyles((theme) => ({
+    tooltip: {
+      backgroundColor: '#f5f5f9',
+      color: 'rgba(0, 0, 0, 0.87)',
+      maxWidth: 220,
+      display: "inline-block",
+      mode: "nearest",
+      position: "nearest",
+      fontSize: theme.typography.pxToRem(12),
+      border: '1px solid #dadde9',
+    },
+}))(Tooltip);
     
 
   return (
-      <div>
-          <Table className="tablesorter" responsive>
+    <div>
+     
+          <Table className="tablesorter" >
                   <thead className="text-primary">
                     <tr>
                       <th>Name</th>
@@ -45,12 +60,21 @@ export default function CustomerTable(props) {
                   </thead>
                   <tbody>
                     {props.customersData.map((customer) => {
-                      return (<tr style={{ cursor: 'pointer'}} onClick={() => { handleClickOpen(customer.shop_id,customer.name) }}>
+                      return (
+                        <HtmlTooltip
+                        title={
+                          <React.Fragment>
+                            <Typography color="inherit">Click on the shop row for more detailed statistics</Typography>
+                
+                          </React.Fragment>
+                        }>
+                      <tr style={{ cursor: 'pointer'}} onClick={() => { handleClickOpen(customer.shop_id,customer.name) }}>
                         <td ><Row><Col xs="auto"><img className="avatar" src={customer.profile_url}/></Col><Col>{customer.name}</Col></Row></td>
                         <td>{customer.govName}</td>
                         <td>{customer.distName}</td>
                         <td className="text-center">{customer.total} L.L</td>
-                      </tr>);
+                          </tr>
+                          </HtmlTooltip>);
                     })}
 
 
@@ -59,11 +83,11 @@ export default function CustomerTable(props) {
             
     
           <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullScreen={true} >
-        <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#1e1e2e" }}>
+        <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#c9d0b6" }}>
           <Button onClick={handleClose} color="primary">
             <i className="tim-icons icon-minimal-left"/>
           </Button>{customerName}</DialogTitle>
-        <DialogContent style={{ backgroundColor: "#252537" }}>
+        <DialogContent style={{ backgroundColor: "#f5f6fa" }}>
                   <VerticalTabs shopId={customerId}/>
         </DialogContent>
        

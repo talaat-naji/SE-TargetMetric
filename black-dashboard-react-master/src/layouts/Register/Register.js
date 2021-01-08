@@ -1,9 +1,10 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-
+import { Button } from "reactstrap";
+import { Select } from '@material-ui/core';
 const Register = (props) => {
-    const [userType, setUserType] = React.useState(null);
+    const [userType, setUserType] = React.useState("undefined");
     const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
@@ -126,23 +127,23 @@ const Register = (props) => {
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <select
-                                            type="password"
+                                        <Select
+                                            fullWidth={true}
                                             name="userType"
                                             value={userType}
-                                            onChange={e => { setUserType(e.target.value);console.log(e.target.value) }}
+                                            onChange={e => { setUserType(e.target.value); console.log(e.target.value) }}
                                             required
-                                        ><option value={null}>Retailer/Shop</option>
+                                        ><option value={"undefined"}>Retailer/Shop</option>
                                             <option value="retailer">Retailer</option>
                                             <option value="shop">Shop Owner</option>
-                                        </select>
+                                        </Select>
                                     </div>
 
 
 
                                     {authError ? <div className="alert alert-danger">Credentials not recognised. Please try again.</div> : null}
                                     {unknownError ? <div className="alert alert-danger">There was an error submitting your details.</div> : null}
-                                    <button type="submit" className="btn btn-primary">Register</button>
+                                    <Button color="info" type="submit" className="btn btn-primary">Register</Button>
                                 </form>
                                 <hr></hr>
                                 <div className="text-center">

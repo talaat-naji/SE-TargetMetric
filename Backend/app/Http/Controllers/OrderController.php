@@ -31,7 +31,14 @@ class OrderController extends Controller
     return  Order::where('shop_id', Auth::id())
     ->whereIn("status",["0","1"])
       ->with('product')
-      ->with('shop')
+      ->with('user')
+      ->latest()->get();
+  }
+  public function getOrdersShopsidePage()
+  {
+    return  Order::where('shop_id', Auth::id())
+      ->with('product')
+      ->with('user')
       ->latest()->get();
   }
 

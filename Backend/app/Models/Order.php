@@ -9,13 +9,14 @@ class Order extends Model
 {
     use HasFactory;
 
-    public function retailer(){
+    public function user(){
         return $this->belongsTo(User::class);
     }
 
     public function shop(){
         return $this->belongsTo(User::class);
     }
+    
 
     public function product(){
         return $this->hasOne(Product::class,"id","product_id");

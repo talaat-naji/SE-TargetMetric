@@ -339,11 +339,11 @@ handleClose = () => {
       <>
         <div className="content">
         <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" fullWidth={true} >
-        <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#1e1e2e" }}>
+        <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#c9d0b6" }}>
           <Button2 onClick={this.handleClose} color="primary">
             <i className="tim-icons icon-minimal-left"/>
               </Button2>{this.state.month} {this.state.bigChartData === "data1" ? "Sales" : "Profits"}</DialogTitle>
-        <DialogContent style={{ backgroundColor: "#252537" }}>
+        <DialogContent style={{ backgroundColor: "#f5f6fa" }}>
         <Card className="card-chart">
                 <CardHeader>
                   <Row>
@@ -460,7 +460,7 @@ handleClose = () => {
                         ],
                         datasets: [
                           {
-                            label: this.state.bigChartData === "data1" ? "Sales" : "Profits" ,
+                            label:this.state.bigChartData === "data1" ? "click for daily Sales" : "click for daily Profits" ,
                             fill: true,
                             backgroundColor: "powderblue",
                             borderColor: "#1f8ef1",

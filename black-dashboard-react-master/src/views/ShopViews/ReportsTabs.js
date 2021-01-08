@@ -62,7 +62,7 @@ function a11yProps(index) {
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        backgroundColor: "#252537",
+        backgroundColor: "#f5f6fa",
         display: 'flex',
         height: 224,
     },
@@ -506,11 +506,11 @@ export default function ReportsTabs(props) {
                                 placeholder="enter the recieved amount from the customer here"
                                 onChange={(e) => { setCustomerDebts2(customerDebts); recievePayment(e.target.value) }}
                             /></Col><Col md="auto">
-                                <Button onClick={savePayment}>Save</Button>
+                                <Button color="info" onClick={savePayment}>Save</Button>
                             </Col>
                             <Col>
                                 <Paper className="text-center" elevation={3}>
-                                    <h4 style={{ color: "black", fontWeight: "bolder" }}> Change <br />
+                                    <h4 style={{fontFamily:"timesnewroman", color: "#676c7d", fontWeight: "bolder" }}> Change <br />
                                         {recieved}
                                     </h4>
 

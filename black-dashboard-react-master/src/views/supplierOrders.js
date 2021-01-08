@@ -16,7 +16,7 @@
 
 */
 import React from "react";
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -28,6 +28,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 // reactstrap components
 import {
   Card,
+  Button,
   CardHeader,
   CardBody,
   CardTitle,
@@ -123,9 +124,9 @@ class Suppliers extends React.Component {
                   <CardTitle tag="h4"><Row><Col>
                     <Typography variant="h5" component="h5"> My Suppliers </Typography></Col>
                     <Col><Button
-                      variant="contained" color="primary"
+                      variant="contained" color="info"
                       onClick={this.handleClickOpen}
-                      style={{ marginRight: "1em", float: "right"}}>NEW Supplier</Button>
+                      style={{ marginRight: "1em", float: "right"}}>New Supplier</Button>
                     </Col>
                     
                   </Row>
@@ -192,10 +193,10 @@ class Suppliers extends React.Component {
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleClose} color="primary">
+              <Button onClick={this.handleClose} color="danger">
                 Cancel
           </Button>
-              <Button onClick={this.handleSubmit} color="primary">
+              <Button onClick={this.handleSubmit} color="info">
                 Add Supplier
           </Button>
             </DialogActions>

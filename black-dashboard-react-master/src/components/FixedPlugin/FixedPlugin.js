@@ -36,14 +36,17 @@ class FixedPlugin extends Component {
   };
   activateMode = mode => {
     switch (mode) {
-      case "light":
-        document.body.classList.add("white-content");
+      case "dark":
+        document.body.classList.remove("white-content");
         break;
       default:
-        document.body.classList.remove("white-content");
+        document.body.classList.add("white-content");
         break;
     }
   };
+  componentDidMount() {
+    document.body.classList.add("white-content");
+  }
   render() {
     return (
       <div className="fixed-plugin">

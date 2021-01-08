@@ -28,7 +28,7 @@ import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
 import shopRoutes from "ShopRoutes.js";
 
-import logo from "assets/img/react-logo.svg";
+import logo from "assets/img/react-logo.jpg";
 
 var ps;
 

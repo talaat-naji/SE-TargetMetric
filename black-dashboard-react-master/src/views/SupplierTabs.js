@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import moment from "moment";
 import apiClient from "../services/api";
+import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+
 import {
     Table,
     Button,
@@ -20,9 +22,7 @@ import {
     Col,
 
 } from "reactstrap";
-import classNames from "classnames";
 
-import { setScrollbarWidth } from 'reactstrap/lib/utils';
 import AutoOrder from "./AutoOrder";
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -60,7 +60,7 @@ function a11yProps(index) {
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        backgroundColor: "#252537",
+        backgroundColor: "#f5f6fa",
         display: 'flex',
         height: 224,
     },
@@ -189,6 +189,16 @@ export default function VerticalTabs(props) {
 
     };
 
+    const HtmlTooltip = withStyles((theme) => ({
+        tooltip: {
+          backgroundColor: '#f5f5f9',
+            color: 'rgba(0, 0, 0, 0.87)',
+        
+          maxWidth: 220,
+          fontSize: theme.typography.pxToRem(12),
+          border: '1px solid #dadde9',
+        },
+      }))(Tooltip);
     // React.useEffect(() => {
     //     fetchOrders();
     // }, [])
@@ -206,9 +216,34 @@ export default function VerticalTabs(props) {
                 className={classes.tabs}
             >
                 <Tab label="Supplier info" {...a11yProps(0)} />
-                <Tab label="Supplier Products" {...a11yProps(1)} />
-                <Tab label="Supplier Orders" {...a11yProps(2)} />
-                <Tab label="Orders History" {...a11yProps(3)} />
+                <HtmlTooltip placement="right"
+            title={
+              <React.Fragment>
+                <Typography color="inherit">Add or Edit supplier products </Typography>
+    
+              </React.Fragment>
+            }
+          >
+                
+                    <Tab label="Supplier Products" {...a11yProps(1)} /></HtmlTooltip>
+                    <HtmlTooltip placement="right"
+            title={
+              <React.Fragment>
+                <Typography color="inherit">Send supplier an order containing your deficiet products </Typography>
+    
+              </React.Fragment>
+            }
+          >
+                    <Tab label="Issue Order" {...a11yProps(2)} /></HtmlTooltip>
+                    <HtmlTooltip placement="right"
+            title={
+              <React.Fragment>
+                <Typography color="inherit">Review supplier order history </Typography>
+    
+              </React.Fragment>
+            }
+          >
+                <Tab label="Orders History" {...a11yProps(3)} /></HtmlTooltip>
                 {detail ? <Tab label="order details" {...a11yProps(4)} /> : <></>}
 
             </Tabs>
@@ -229,6 +264,7 @@ export default function VerticalTabs(props) {
 
             <TabPanel  value={value} index={1} style={{ width: "90%"}}>
                 <Card>
+                    <CardTitle>ADD/Edit {props.supplier.name} Products</CardTitle>
                     <CardBody>
 
 
@@ -256,7 +292,7 @@ export default function VerticalTabs(props) {
                                     <td><Input type="text" onChange={(e) => { setPrice(e.target.value) }} /></td>
                                     <td><Input type="number" onChange={(e) => { setQtyMin(e.target.value) }} /></td>
                                     <td><Input type="number" onChange={(e) => { setQtyMax(e.target.value) }} /></td>
-                                    <td><Button onClick={() => { addProduct(); fetchProducts() }}><i className="tim-icons icon-simple-add"/></Button></td>
+                                    <td><Button color="info" onClick={() => { addProduct(); fetchProducts() }}><i className="tim-icons icon-simple-add"/></Button></td>
                                 </tr>
                                 {products.map((product) => {
 
@@ -287,7 +323,7 @@ export default function VerticalTabs(props) {
                                                     <td>{editing ? prod.price : <Input defaultValue={prod.price} type="number" onChange={(e) => { setPrice(e.target.value) }} />}</td>
                                                     <td>{editing ? prod.stock.min_qty : <Input defaultValue={prod.stock.min_qty} type="number" onChange={(e) => { setQtyMin(e.target.value) }} />}</td>
                                                     <td>{editing ? prod.stock.max_orderQty : <Input defaultValue={prod.stock.max_orderQty} type="number" onChange={(e) => { setQtyMax(e.target.value) }} />}</td>
-                                                    <td>{editing ? <Button  onClick={() => { { setEditId(prod.id); test() } }}><i className="tim-icons icon-pencil"/></Button> : <><Button  onClick={() => { { editProduct(editId); setEditId(0); } }}><i className="tim-icons icon-check-2"/></Button> <Button onClick={() => { {  setEditId(0); } }}><i className="tim-icons icon-simple-remove"/></Button></>}</td>
+                                                    <td>{editing ? <Button color="warning" onClick={() => { { setEditId(prod.id); test() } }}><i className="tim-icons icon-pencil"/></Button> : <><Button color="info" onClick={() => { { editProduct(editId); setEditId(0); } }}><i className="tim-icons icon-check-2"/></Button> <Button color="danger" onClick={() => { {  setEditId(0); } }}><i className="tim-icons icon-simple-remove"/></Button></>}</td>
 
                                                 </tr>
                                             );

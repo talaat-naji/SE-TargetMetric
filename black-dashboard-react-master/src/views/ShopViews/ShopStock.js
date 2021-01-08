@@ -206,13 +206,13 @@ export default function ShopStock(props) {
                         </CardBody>
                         <CardFooter>
                             <Row>
-                                <Col><Button style={{ float: "right" }}  //  PREVIOS PAGE
+                                <Col><Button color="info" style={{ float: "right" }}  //  PREVIOS PAGE
                                     onClick={() => {
                                         if (pageNb - 1 >= 1) { fetchProducts(pageNb - 1); setPageNb(pageNb - 1) }
                                     }
                                     }><i className="tim-icons icon-minimal-left" /></Button></Col>
-                                <Col><span className="title" style={{ color: "#c2d0d4", marginLeft: "43%" }}>Products</span><div style={{ color: "#c2d0d4", marginLeft: "43%" }}>Page: {pageNb + " / " + lastPage}</div></Col>
-                                <Col><Button style={{ float: "left" }} //NEXT PAGE
+                                <Col><span className="title" style={{ marginLeft: "43%" }}>Products</span><div style={{ color: "#c2d0d4", marginLeft: "43%" }}>Page: {pageNb + " / " + lastPage}</div></Col>
+                                <Col><Button color="info" style={{ float: "left" }} //NEXT PAGE
                                     onClick={() => {
 
                                         if (pageNb + 1 <= lastPage) {

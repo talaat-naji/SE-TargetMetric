@@ -10,6 +10,9 @@ import { Table } from "reactstrap";
 import RetailerTabs  from "./RetailerTabs";
 import Row from 'reactstrap/lib/Row';
 import Col from 'reactstrap/lib/Col';
+import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 export default function RetailerRow(props) {
     const [open, setOpen] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
@@ -31,22 +34,41 @@ export default function RetailerRow(props) {
         setOpen2(false);
     };
 
-    
+   const HtmlTooltip = withStyles((theme) => ({
+        tooltip: {
+          backgroundColor: '#f5f5f9',
+          color: 'rgba(0, 0, 0, 0.87)',
+          maxWidth: 220,
+          display: "inline-block",
+          mode: "nearest",
+          position: "nearest",
+          fontSize: theme.typography.pxToRem(12),
+          border: '1px solid #dadde9',
+        },
+    }))(Tooltip);
+      
     
 
     return (<>
+           <HtmlTooltip
+                        title={
+                          <React.Fragment>
+                            <Typography color="inherit">Click on the retailer row to view their products</Typography>
+                
+                          </React.Fragment>
+                        }>
         <tr style={{ cursor: 'pointer'}} >
             <td><Row><Col xs="auto" onClick={()=>handleClickOpen2(props.retailer)}><img className="avatar" src={props.retailer.profile_url}/></Col><Col onClick={()=>handleClickOpen(props.retailer)}>{props.retailer.name}</Col></Row></td>
             <td>{props.retailer.email}</td>
             <td>{props.retailer.governorate !== null ? props.retailer.governorate.gov_name : null}</td>
             <td>{props.retailer.district !== null ? props.retailer.district.district_name : null}</td>
         </tr>
-      
+        </HtmlTooltip>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullScreen={true} >
-            <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#1e1e2e" }}><h4 style={{ color: "#c2d0d4",fontWeight:"bolder"}}> <Button onClick={handleClose} color="primary">
+            <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#c9d0b6" }}><h4 style={{ fontWeight:"bolder"}}> <Button onClick={handleClose} color="primary">
             <i className="tim-icons icon-minimal-left" />
      </Button>{retailer.name}</h4></DialogTitle>
-            <DialogContent style={{ backgroundColor: "#252537" }}>
+            <DialogContent style={{ backgroundColor: "#f5f6fa" }}>
              
                 <RetailerTabs retailer={retailer} />
             </DialogContent>

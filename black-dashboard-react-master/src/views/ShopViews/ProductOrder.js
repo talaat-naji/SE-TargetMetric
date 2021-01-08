@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+import { Button } from 'reactstrap';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -71,11 +71,11 @@ export default function ProductOrder(props) {
       <>
          
        
-        <Button style={{float:"right"}} variant="contained" color="primary" onClick={handleClickOpen}>Order Now</Button>  
+        <Button color="info" style={{float:"right"}} variant="contained" onClick={handleClickOpen}>Order Now</Button>  
             
     
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth={true}>
-        <DialogTitle id="form-dialog-title"></DialogTitle>
+        <DialogTitle id="form-dialog-title">Order Product {props.product.name}</DialogTitle>
         <DialogContent>
           <DialogContentText >
                      
@@ -91,14 +91,14 @@ export default function ProductOrder(props) {
             type="number"
             fullWidth
           />
-          Pin your Location
+          <Typography> Pin your Location </Typography>
           <MapLocation x={(e)=>setX(e)} y={(e)=>setY(e)}/>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} color="danger">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} color="primary">
+          <Button onClick={handleSubmit} color="info">
             Send Order
           </Button>
         </DialogActions>

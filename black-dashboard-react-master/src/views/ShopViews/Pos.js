@@ -42,8 +42,8 @@ import apiClient from "../../services/api"
 
 
 import ItemTable from "./ItemTable";
-import { Paper, TextField } from "@material-ui/core";
-import { Label, SettingsInputComponentSharp } from "@material-ui/icons";
+import { Paper, TextField, Tooltip, Typography, withStyles } from "@material-ui/core";
+import { Label, SettingsInputComponentSharp, Title } from "@material-ui/icons";
 import Products from "views/Products";
 import TodayData from "./TodayData";
 import Stock from "./StockManagment";
@@ -57,14 +57,14 @@ function PosMain() {
     const [open3, setOpen3] = React.useState(false); //add products that dont have barcode
     const [open4, setOpen4] = React.useState(false); //reports
     const [total, setTotal] = React.useState(0); //invoice total
-    const [recieved, setRecieved] = React.useState(0); //money recieved
+    const [recieved, setRecieved] = React.useState(); //money recieved
     const [cost, setCost] = React.useState(0); //invoice total
     const [totalCost, setTotalCost] = React.useState(0);
-    const [price, setPrice] = React.useState(0); 
+    const [price, setPrice] = React.useState(0);
     const [customer, setCustomer] = React.useState("");
     const [name, setName] = React.useState("");
     const [favProds, setFavProds] = React.useState([]);
-    const [prdId,setPrdId]=React.useState(null); 
+    const [prdId, setPrdId] = React.useState(null);
     const handleClickOpen = () => {
         setOpen(true);
 
@@ -72,18 +72,18 @@ function PosMain() {
 
     const handleClose = () => {
         setOpen(false);
-     
+
     };
     const handleClose2 = () => {
         setOpen2(false);
-     
+
     };
-   
+
     const saveInv = () => {
         if (recieved >= total && customer === "") {
             if (sessionStorage.getItem('loggedIn')) {
 
-                apiClient.post('../api/saveInv', { customer: customer,total: total ,totalCost:totalCost, recieved: recieved, invoice: productList })
+                apiClient.post('../api/saveInv', { customer: customer, total: total, totalCost: totalCost, recieved: recieved, invoice: productList })
                     .then(response => {
                         if (response.status == 200) {
                             setProductList([]);
@@ -96,7 +96,7 @@ function PosMain() {
         } else if (recieved < total && customer !== "") {
             if (sessionStorage.getItem('loggedIn')) {
 
-                apiClient.post('../api/saveInv', { customer: customer, total: total,totalCost:totalCost, recieved: recieved, invoice: productList })
+                apiClient.post('../api/saveInv', { customer: customer, total: total, totalCost: totalCost, recieved: recieved, invoice: productList })
                     .then(response => {
                         if (response.status == 200) {
                             setProductList([]);
@@ -112,17 +112,17 @@ function PosMain() {
     const addProd = () => {
         if (sessionStorage.getItem('loggedIn')) {
 
-            apiClient.post('../api/addProd', {id:prdId, barcode: name, cost: cost, price: price, })
+            apiClient.post('../api/addProd', { id: prdId, barcode: name, cost: cost, price: price, })
                 .then(response => {
                     setOpen3(false);
                     fetchProds();
                     setPrdId(null);
-                 }).catch(error => console.error(error))
+                }).catch(error => console.error(error))
         }
-   }
+    }
     const addToList = (prod) => {
-       
-     
+
+
         let test = true;
         let temp = productList;
         temp.forEach(element => {
@@ -132,7 +132,7 @@ function PosMain() {
                 test = false;
 
             }
-            
+
         });
         setTotal(total + prod.price);
         setTotalCost(totalCost + prod.cost);
@@ -145,8 +145,8 @@ function PosMain() {
                 price: prod.price,
                 cost: prod.cost
             });
-           
-         
+
+
             setProductList(temp);
         }
     }
@@ -157,79 +157,107 @@ function PosMain() {
                 .then(response => {
                     setFavProds(response.data);
 
-                 }).catch(error => console.error(error))
+                }).catch(error => console.error(error))
         }
     }
-React.useEffect(() => {
-    fetchProds();
-}, [])
-
+    React.useEffect(() => {
+        fetchProds();
+    }, [])
+    const HtmlTooltip = withStyles((theme) => ({
+        tooltip: {
+          backgroundColor: '#f5f5f9',
+            color: 'rgba(0, 0, 0, 0.87)',
+        
+          maxWidth: 220,
+          fontSize: theme.typography.pxToRem(12),
+          border: '1px solid #dadde9',
+        },
+      }))(Tooltip);
     return (
         <>
             <div className="content">
-             
+
                 <Row>
                     <Col>
-                    <Button color="info" onClick={handleClickOpen} style={{ height: '175px', width: "95%" , fontWeight:"bolder" ,fontSize:"22px"}}>Sales Entry</Button>
+                        <HtmlTooltip placement="top"
+                            title={
+                                <React.Fragment>
+                                    <Typography color="inherit">Register all your customers sales invoices </Typography>
+
+                                </React.Fragment>
+                            }>
+                            <Button color="info" onClick={handleClickOpen} style={{ height: '175px', width: "95%", fontWeight: "bolder", fontSize: "22px" }}><i className="tim-icons icon-tap-02"/> Sales Entry</Button>
+                        </HtmlTooltip>
                     </Col>
                     <Col>
-                    <TodayData/>
+                        <TodayData />
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                    <Button color="success" onClick={()=>setOpen4(true)} style={{ height: '175px', width: "95%", fontWeight:"bolder",fontSize:"22px"}}>reports</Button>
+                    <HtmlTooltip placement="bottom"
+                            title={
+                                <React.Fragment>
+                                    <Typography color="inherit">View your sales and profits and your customers unpaid invoices </Typography>
+
+                                </React.Fragment>
+                            }>
+                            <Button color="info" onClick={() => setOpen4(true)} style={{ height: '175px', width: "95%", fontWeight: "bolder", fontSize: "22px" }}><i className="tim-icons icon-sound-wave"/> Reports</Button>
+                      </HtmlTooltip>
                     </Col>
                     <Col>
-                    <Stock />
+                  
+                            <Stock />
+                            
                     </Col>
                 </Row>
-                
-                <Dialog open={open4} fullScreen={true} onClose={()=>setOpen4(false)} aria-labelledby="form-dialog-title" >
-                    <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#1e1e2e" ,color:"#cbd0d5"}}><Button2 style={{color:"#cbd0d5"}} onClick={()=>setOpen4(false)} color="primary">
-            <i className="tim-icons icon-minimal-left"/>
-              </Button2>
-                   Reports</DialogTitle>
-                    <DialogContent style={{ backgroundColor: "#252537"}}>
-                   <ReportsTabs/>
+
+                <Dialog open={open4} fullScreen={true} onClose={() => setOpen4(false)} aria-labelledby="form-dialog-title" >
+                    <DialogTitle id="form-dialog-title" style={{ backgroundColor: "#c9d0b6" }}>
+                        <h4 style={{ fontWeight: "bolder" }}><Button2 onClick={() => setOpen4(false)} color="primary">
+                            <i className="tim-icons icon-minimal-left" />
+                        </Button2>
+                     Reports</h4></DialogTitle>
+                    <DialogContent style={{ backgroundColor: "#f5f6fa" }}>
+                        <ReportsTabs />
                     </DialogContent>
-              
+
                 </Dialog>
-               
-                
-                
+
+
+
                 <Dialog open={open2} onClose={handleClose2} aria-labelledby="form-dialog-title" >
-                    <DialogTitle id="form-dialog-title">unPaid invoice</DialogTitle>
+                    <DialogTitle id="form-dialog-title">Unpaid Invoice</DialogTitle>
                     <DialogContent>
-                        The costomer didnt pay all the invoice please enter customer name to save it to unpaid invoices:<br/>
+                        The costomer didnt pay all the invoice please enter customer name to save it to unpaid invoices:<br />
                         <TextField label="customer Name" onChange={(e) => setCustomer(e.target.value)} />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose2}>cancel</Button>
-                        <Button onClick={saveInv}>save</Button>
+                        <Button color="danger" onClick={handleClose2}>cancel</Button>
+                        <Button color="info" onClick={saveInv}>save</Button>
                     </DialogActions>
                 </Dialog>
 
                 <Dialog open={open3} onClose={() => setOpen3(false)} fullWidth={false} aria-labelledby="form-dialog-title" >
-                    <DialogTitle style={{ backgroundColor: "#cbd0d5" ,color:"#1e1e25"}} id="form-dialog-title">Add/Edit Product</DialogTitle>
+                    <DialogTitle style={{ backgroundColor: "#cbd0d5", color: "#1e1e25" }} id="form-dialog-title">Add/Edit Product</DialogTitle>
                     <DialogContent>
                         <TextField label="Product Name" onChange={(e) => setName(e.target.value)} />
-                          <br></br>  
+                        <br></br>
                         <TextField label="Product Cost" onChange={(e) => setCost(e.target.value)} />
-                        <br></br> 
+                        <br></br>
                         <TextField label="Product Price" onChange={(e) => setPrice(e.target.value)} />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={()=>setOpen3(false)}>cancel</Button>
+                        <Button onClick={() => setOpen3(false)}>cancel</Button>
                         <Button onClick={addProd}>save</Button>
                     </DialogActions>
                 </Dialog>
-               
+
                 <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullScreen={true}>
                     {/* <DialogTitle id="form-dialog-title">
                         <Button onClick={handleClose}><i className="tim-icons icon-minimal-left" /></Button>
                     </DialogTitle> */}
-                    <DialogContent style={{ backgroundColor: "#cbd0d5" }}>
+                    <DialogContent style={{ backgroundColor: "#f5f6fa" }}>
 
                         <Row>
 
@@ -237,87 +265,118 @@ React.useEffect(() => {
                                 <Card style={{ backgroundColor: "#ffffff", color: "black", fontSize: "10px" }}>
                                     <CardBody>
                                         <Row>
-                                            <ItemTable onAddProd={(e, c) => { setTotal(e);setTotalCost(c)}} onAdd={(e) => { setProductList(e) }} clear={productList} />
+                                            <ItemTable onAddProd={(e, c) => { setTotal(e); setTotalCost(c) }} onAdd={(e) => { setProductList(e) }} clear={productList} />
                                         </Row>
 
                                     </CardBody>
 
                                 </Card>
+
                             </Col>
 
                             <Col>
-                                <Card style={{ backgroundColor: "#cbd0d5" }}>
+
+                                <Card style={{ backgroundColor: "#a4a6b0d6" }}>
                                     <CardBody>
                                         <Row>
                                             <Col>
-                                                
+
                                                 <Paper className="text-center" elevation={3} >
-                                                <br />
-                                                <h4 style={{color:"#1e1e24",fontWeight:"bolder"}}>Invoice Total <br />{total}</h4>
-                                                <hr />
+                                                    <br />
+                                                    <h4 style={{ color: "#1e1e24", fontWeight: "bolder", fontFamily: "timesnewroman" }}>Invoice Total <br />{total}</h4>
+                                                    <hr />
                                                 </Paper>
                                             </Col>
                                             <Col>
-                                               
+
                                                 <Paper className="text-center" elevation={3} >
-                                                    {recieved - total < 0 ?<> <br /><h4 style={{ color: "red",fontWeight:"bolder" }}> Change  <br />
+                                                    {recieved - total < 0 ? <> <br /><h4 style={{ color: "red", fontWeight: "bolder" }}> Change  <br />
                                                         {recieved - total}
-                                                        </h4>
-                                                        <hr /> </>:
-                                                        <><br /><h4 style={{ color: "green",fontWeight:"bolder" }}>Change  <br />{recieved - total} </h4>
-                                                        <hr /></>}
+                                                    </h4>
+                                                        <hr /> </> :
+                                                        <><br /><h4 style={{ color: "green", fontWeight: "bolder", fontFamily: "timesnewroman" }}>Change  <br />{recieved - total} </h4>
+                                                            <hr /></>}
                                                 </Paper>
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col>
-                                                <br />
-                                                
+                                                {/* <br /> */}
+
                                                 <Paper className="text-center" elevation={3} >
-                                                <h4 style={{color:"#1e1e24",fontWeight:"bolder"}}>Amount Recieved </h4>
-                                                    <Input style={{color:"#1e1e24"}} value={recieved} onChange={(e) => { setRecieved(e.target.value) }} />
+                                                    <h4 style={{ color: "#1e1e24", fontWeight: "bolder", fontFamily: "timesnewroman" }}>Amount Recieved </h4>
+                                                    <Input placeholder="Enter Customer Payment" style={{ color: "#1e1e24", borderColor: "transparent" }} value={recieved} onChange={(e) => { setRecieved(e.target.value) }} />
                                                 </Paper>
                                             </Col>
                                         </Row> <Row>
                                             <Col>
                                                 <br />
-                                                <Button onClick={saveInv} style={{ width: "99%" }}>SAVE</Button>
+                                                <Button color="info" onClick={saveInv} style={{ width: "99%" }}>Save</Button>
 
                                             </Col>
                                             <Col>
                                                 <br />
-                                                <Button onClick={() => setProductList([])} style={{ width: "99%" }}>clear</Button>
+                                                <Button color="danger" onClick={() => setProductList([])} style={{ width: "99%" }}>Clear</Button>
                                             </Col>
                                         </Row>
                                     </CardBody>
                                 </Card>
+
                             </Col>
 
 
 
                         </Row>
-                        <Row style={{ marginLeft: "10px" }}>
+
+
+                        <Card>
+                            <h4 style={{ fontFamily: "timesnewroman" }}>BarcodeLess products :</h4>
+                            <CardBody>
+                                <Row style={{ marginLeft: "10px" }}>
+
+                                    <Col >
+                                        {favProds.map((prod) => {
+                                            return (
+                                                <Button
+                                                    color="info"
+                                                    onDoubleClick={(e) => { setPrdId(prod.id); setOpen3(true); setProductList([]) }}
+                                                    onClick={(e) => { addToList(prod) }}
+                                                    key={prod.barcode}
+                                                    style={{
+                                                        height: '78Px', width: "10%", justifyContent: "center",
+                                                        alignItems: "center", padding: 0
+                                                    }}>
+                                                    {prod.barcode}
+                                                </Button>
+                                            )
+                                        })}
+                                        {favProds.length < 17 ? <Button color="info" onClick={(e) => { setOpen3(true) }} id="11" style={{
+                                            width: "80px",
+                                            height: "80px",
+                                            background: "primary",
+                                            border: 0,
+                                            borderRadius: "50%",
+
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            padding: 0,
+                                        }}><i className="tim-icons icon-simple-add" style={{ fontSize: "25px", fontWeight: "bolder", color: "powderblue" }} /></Button> : <></>}
+                                    </Col><Col md="auto">
+                                        {/* <Button onClick={handleClose} style={{
+                                            justifyContent: "center",
+                                            alignItems: "center", fontSize: "18px", float: "right", height: '160Px', width: "30px", color: "red", fontWeight: "bolder"
+                                        }}></Button> */}
+                                        <img onClick={handleClose} style={{ width: "130px", height: "160px" }} src={require("../../assets/img/exit1.png")} />
+                                    </Col>
+
+                                </Row>
+                                {/* <Row style={{ marginLeft: "10px" }}>
                             <Col>
-                                {favProds.map((prod) => {
-                                    return (
-                                        <Button
-                                            onDoubleClick={(e) => { setPrdId(prod.id); setOpen3(true);setProductList([]) }}
-                                            onClick={(e) => { addToList( prod ) }}
-                                            key={prod.barcode}
-                                            style={{ height: '80Px', width: "10%" }}>
-                                            {prod.barcode}
-                                        </Button>
-                                    )
-                                })}
-                                 {favProds.length<17?<Button onClick={(e)=>{setOpen3(true)}} id="11" style={{ height: '80Px', width: "auto" }}>Add Product</Button>:<></>}
-                                <Button  onClick={handleClose} style={{ height: '80Px', width: "10%", color: "red", fontWeight: "bolder" }}>EXIT</Button>
+E<br />X<br /> I<br />T
                             </Col>
-                        </Row>
-                        <Row style={{ marginLeft: "10px" }}>
-                            <Col>
-                               
-                            </Col>
-                        </Row>
+
+                                </Row> */}
+                            </CardBody></Card>
                     </DialogContent>
 
                 </Dialog>

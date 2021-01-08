@@ -95,7 +95,7 @@ function TodayData() {
         <>
             {/* <div className="content"> */}
 
-            <Button color="info" onClick={handleClickOpen} style={{ height: '175px', width: "95%", fontWeight: "bolder", fontSize: "22px" }}>Today Sales</Button>
+            <Button color="info" onClick={handleClickOpen} style={{ height: '175px', width: "95%", fontWeight: "bolder", fontSize: "22px" }}><i className="tim-icons icon-money-coins"/> Today Sales</Button>
 
             <Dialog open={open} fullWidth={true} onClose={handleClose} aria-labelledby="form-dialog-title" >
                 <DialogTitle id="form-dialog-title"><p style={{ color: 'black' }}>Daily Results</p></DialogTitle>
@@ -137,7 +137,7 @@ function TodayData() {
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>cancel</Button>
+                    <Button color="info" onClick={handleClose}>cancel</Button>
 
                 </DialogActions>
             </Dialog>

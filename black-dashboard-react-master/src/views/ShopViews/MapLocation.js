@@ -84,7 +84,7 @@ class MapLocation extends React.Component {
           <Row>
             <Col md="12">
               <Card className="card-plain">
-                <CardHeader>Google Maps</CardHeader>
+                {/* <CardHeader>Google Maps</CardHeader> */}
                 <CardBody>
                   <div
                     id="map"

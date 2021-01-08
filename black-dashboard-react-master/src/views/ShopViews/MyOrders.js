@@ -15,6 +15,8 @@ import db from "../../services/firebase";
 import { Typography } from "@material-ui/core";
 import NotificationAlert from "react-notification-alert";
 import Notify from "../notify";
+import Row from 'reactstrap/lib/Row';
+import Col from 'reactstrap/lib/Col';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ShopList() {
+export default function MyOrders() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [orders, setOrders] = React.useState([]);
@@ -52,10 +54,10 @@ export default function ShopList() {
         }
     }
 
- 
+
     const fetchOrders = () => {
         if (sessionStorage.getItem('loggedIn')) {
-            apiClient.get('../api/getOrdersShopside')
+            apiClient.get('../api/getOrdersShopsidePage')
                 .then(response => {
                     setBadage(0);
                     setOrders(response.data)
@@ -69,7 +71,7 @@ export default function ShopList() {
             setOrders([]);
             fetchOrders();
             // if (orders.length > 0) {
-                
+
             //   notify();
             // }
         });
@@ -93,61 +95,35 @@ export default function ShopList() {
             };
         });
     }, [orders])
-        
+
 
     return (
-        <div className={classes.root}>
+        <div className="content white-content">
 
-            {badage > 0 ? <Notify /> : <></>}
-            <div>
-                <Button
+
+
+
+           
+            {orders.length === 0 ?<>
+                <Row><Col>
+                
+                    <MenuItem><Typography style={{ color: "#1e1e2e" }}>there are 0 recieved orders</Typography></MenuItem></Col></Row></> :
                     
-                    ref={anchorRef}
-                    aria-controls={open ? 'menu-list-grow' : undefined}
-                    aria-haspopup="true"
-                    onClick={handleToggle}>
+                    orders.map((order) => {
 
-                    <div className="">
-                        {badage>0 ? <>
-                            <Badge badgeContent={badage} color="secondary">
-                                <NotificationsNoneTwoToneIcon style={{ color: "#2870f5" }} />
-                            </Badge>  </> :
-                            <NotificationsNoneTwoToneIcon style={{color: "#2870f5" }} />}
-                    </div>
-
-
-                    <p className="d-lg-none">Notifications</p>
-                </Button>
-
-                <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
-                    {({ TransitionProps, placement }) => (
-                        <Grow
-                            {...TransitionProps}
-                            style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                        >
-                            <Paper>
-                                <ClickAwayListener onClickAway={handleClose}>
-                                    <MenuList style={{backgroundColor:"powderblue"}} autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                                    {orders.length===0? 
-                            <MenuItem><Typography style={{ color: "#1e1e2e" }}>there are 0 recieved orders</Typography></MenuItem>:
-
-                            orders.map((order) => {
-                                
                         return (
-<>
-                            <OrderList key={order.id} order={order} onDeliver={() => { fetchOrders() }} />
-                                <hr />
-                                </>
+            <>
+                 <Row><Col>
+                                <OrderList key={order.id} order={order} onDeliver={() => { fetchOrders() }} />
+                    <hr />
+                    </Col></Row>
+                            </>
                         )
                     })
-                    }
-                                    </MenuList>
-                                </ClickAwayListener>
-                            </Paper>
-                        </Grow>
-                    )}
-                </Popper>
-            </div>
-        </div>
+                }
+          
+                                
+        
+        </div >
     );
 }

@@ -57,20 +57,22 @@ var routes = [
   //   component: Notifications,
   //   layout: "/admin"
   // },
-  {
-    path: "/user-profile",
-    name: "User Profile",
-    rtlName: "ملف تعريفي للمستخدم",
-    icon: "tim-icons icon-single-02",
-    component: UserProfile,
-    layout: "/admin"
-  },
+
   {
     path: "/recieveOrders",
     name: "Recieve Orders",
     rtlName: "قائمة الجدول",
     icon: "tim-icons icon-check-2",
     component: RecieveOrder,
+    layout: "/admin"
+  },
+
+  {
+    path: "/user-profile",
+    name: "User Profile",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: "tim-icons icon-single-02",
+    component: UserProfile,
     layout: "/admin"
   },
   // {

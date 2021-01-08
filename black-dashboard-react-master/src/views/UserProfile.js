@@ -282,8 +282,8 @@ class UserProfile extends React.Component {
                 <CardBody>
                   <CardText />
                   <div className="author">
-                    <div className="block block-one" />
-                    <div className="block block-two" />
+                    <div  className="block block-one" />
+                    <div  className="block block-two" />
                     <div className="block block-three" />
                     <div className="block block-four" />
                     <a href="#pablo" onClick={e => e.preventDefault()}>
@@ -304,13 +304,13 @@ class UserProfile extends React.Component {
                 </CardBody>
                 <CardFooter>
                   <div className="button-container">
-                    <Button className="btn-icon btn-round" color="facebook">
+                    <Button className="btn-icon btn-round" color="info">
                       <i className="fab fa-facebook" />
                     </Button>
-                    <Button className="btn-icon btn-round" color="twitter">
+                    <Button className="btn-icon btn-round" color="info">
                       <i className="fab fa-twitter" />
                     </Button>
-                    <Button className="btn-icon btn-round" color="google">
+                    <Button className="btn-icon btn-round" color="info">
                       <i className="fab fa-google-plus" />
                     </Button>
                   </div>

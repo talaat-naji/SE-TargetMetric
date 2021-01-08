@@ -87,7 +87,7 @@ export default function AutoOrder(props) {
         <Card>
             <CardHeader>
                 <Row><Col xs="auto">
-                    <Button onClick={() => { issueOrder() }}>Issue Order</Button>
+                    <Button color="info" onClick={() => { issueOrder() }}>Issue Order</Button>
                 </Col>
                     <Col>
                         {alert}
@@ -96,7 +96,7 @@ export default function AutoOrder(props) {
             </CardHeader>
             <CardBody>
                 
-                <Table className="tablesorter" responsive>
+                <Table className="tablesorter">
                     <thead className="text-primary">
 
                         <tr>

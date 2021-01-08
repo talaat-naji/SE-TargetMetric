@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -10,6 +10,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {
   Alert,
+  Button,
   Collapse,
   DropdownToggle,
   DropdownMenu,
@@ -30,6 +31,8 @@ import { Link, Redirect } from 'react-router-dom';
 // import MapLocation from './ShopViews/MapLocation';
 import ListGroupItem from 'reactstrap/lib/ListGroupItem';
 import { Typography } from '@material-ui/core';
+import moment from "moment"
+
 export default function OrderList(props) {
   const [open, setOpen] = React.useState(false);
   const [qty, setQty] = React.useState(props.order.qty_ordered);
@@ -92,20 +95,29 @@ export default function OrderList(props) {
        <MenuItem onClick={handleClickOpen} >
       
      
-       <Typography style={{ color: "green",fontWeight:"bold" }}>you have ordered {props.order.qty_ordered} pcs of {props.order.product.name} from {props.order.shop.name}</Typography>
+       <Typography style={{ color: "green",fontWeight:"bold" }}>you have ordered {props.order.qty_ordered} pcs of {props.order.product.name} from {props.order.user.name}</Typography>
       
   
  
         </MenuItem>
-        :
-        <MenuItem  style={{backgroundColor:"powderblue"}}>
+        :props.order.status==="0" ?
+        <MenuItem  >
       
      
-          <Typography style={{ color: "red" ,fontWeight:"bold"}}>you have ordered {props.order.qty_ordered} pcs of {props.order.product.name} from {props.order.shop.name}</Typography>
+          <Typography style={{ color: "red" ,fontWeight:"bold"}}>you have ordered {props.order.qty_ordered} pcs of {props.order.product.name} from {props.order.user.name}</Typography>
          
      
     
-        </MenuItem>}
+          </MenuItem> :
+          <MenuItem >
+      
+     
+      <Typography style={{ color: "black" ,fontWeight:"bold"}}>you have ordered {props.order.qty_ordered} pcs of {props.order.product.name} from {props.order.user.name} (recieved at {moment(props.order.updated_at).format("LLL")})</Typography>
+     
+ 
+
+      </MenuItem>
+        }
       {/* </ListGroupItem> */}
       {/* <li style={{ color: 'black' }} onClick={handleClickOpen}>{props.order.shop.name} ordered {props.order.qty_ordered} pcs of {props.order.product.name}</li> */}
 
@@ -124,16 +136,16 @@ export default function OrderList(props) {
           <Input max={props.order.qty_ordered} style={{ color: 'black' }} type="number" value={qty} onChange={(e) => { setQty(e.target.value) }} />
           <br />
           
-          <Input style={{ color: 'black' }} type="number" value={price} onChange={(e) => { setPrice(e.target.value) }} />
+          <Input placeholder="price" style={{ color: 'black' }} type="number" value={price} onChange={(e) => { setPrice(e.target.value) }} />
           {alert}
           {/* <MapLocation xValue={props.order.lat} yValue={props.order.lng}/> */}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} color="danger">
             Cancel
           </Button>
 
-          <Button onClick={handleDeliver} color="primary">
+          <Button onClick={handleDeliver} color="info">
             Recieve
           </Button>
         </DialogActions>

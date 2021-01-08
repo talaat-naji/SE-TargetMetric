@@ -101,9 +101,9 @@ export default function MenuListComposition() {
                     <div className="">
                         {true ? <>
                             <Badge badgeContent={orders.length} color="secondary">
-                                <NotificationsNoneTwoToneIcon style={{ color: "#ffffff" }} />
+                                <NotificationsNoneTwoToneIcon style={{ color: "#2870f5" }} />
                             </Badge>  </> :
-                            <NotificationsNoneTwoToneIcon style={{ color: "#ffffff" }} />}
+                            <NotificationsNoneTwoToneIcon style={{ color: "#2870f5" }} />}
                     </div>
 
 

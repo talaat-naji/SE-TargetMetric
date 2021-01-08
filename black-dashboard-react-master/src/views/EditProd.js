@@ -8,8 +8,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import apiClient from '../services/api';
 import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
 
 import {
   Table,
@@ -73,7 +74,7 @@ export default function ViewProd(props) {
     <div>
 
 
-      <HtmlTooltip
+      <HtmlTooltip placement="bottom"
         title={
           <React.Fragment>
             <Typography color="inherit">{props.product.description}</Typography>
@@ -81,6 +82,13 @@ export default function ViewProd(props) {
           </React.Fragment>
         }
       ><div>
+          <Row>
+           <Col
+                                                    className="font-icon-list col-xs-auto col-xs-auto"
+                                                    lg="2"
+                                                    md="5"
+                                                    sm="6"
+                                                >
         <Card>
     
          
@@ -88,7 +96,11 @@ export default function ViewProd(props) {
                                                   top style={{ width: "100%", height: "40%" }}
                                                   src={props.product.pic_path} /> : <Button onClick={handleClickOpen}><i className="tim-icons icon-cloud-upload-94" /> upload an image</Button>}
            
-         
+              </Card>
+              
+            </Col>
+          <Col>
+          <Card>
           <CardHeader tag="h4">
             {props.product.name}
           </CardHeader>
@@ -96,14 +108,20 @@ export default function ViewProd(props) {
             <Row>
 
               <Col>
-                <p>selling Price: {props.product.price}</p>
+                      <p>selling Price: {props.product.price}</p>
+                      <hr />
               </Col>
               <Col>
-                <p>Available Qty: {props.product.qty}</p>
-              </Col>
+                      <p>Available Qty: {props.product.qty}</p>
+                      <hr />
+                    </Col>
+                   
             </Row>
           </CardBody>
-        </Card>
+            </Card>
+            </Col>
+          </Row>
+          
         </div>
       </HtmlTooltip>
 
@@ -115,10 +133,10 @@ export default function ViewProd(props) {
                 
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} color="danger">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} color="primary">
+          <Button onClick={handleSubmit} color="info">
             Upload image
           </Button>
         </DialogActions>
