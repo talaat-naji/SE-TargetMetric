@@ -24,6 +24,7 @@
     "react": "16.13.0",
     "react-chartjs-2": "2.9.0",
     "react-dom": "16.13.0",
+    "react-fieldset": "^3.1.6",
     "react-google-maps": "9.4.5",
     "react-image-file-resizer": "^0.3.8",
     "react-notification-alert": "0.0.12",

@@ -89,6 +89,12 @@ class Dashboard extends React.Component {
         mode: "nearest",
         intersect: 0,
         position: "nearest",
+        userCallback: function(value, index, values) {
+          value = value.toString();
+          value = value.split(/(?=(?:...)*$)/);
+          value = value.join(',');
+          return value;
+      },
       },
       responsive: true,
       scales: {
@@ -102,6 +108,12 @@ class Dashboard extends React.Component {
             },
             ticks: {
               suggestedMin: 60,
+              userCallback: function(value, index, values) {
+                value = value.toString();
+                value = value.split(/(?=(?:...)*$)/);
+                value = value.join(',');
+                return value;
+            },
               suggestedMax: 125,
               padding: 20,
               fontColor: "#9a9a9a"
@@ -183,17 +195,19 @@ class Dashboard extends React.Component {
     let sumArr = [];
     let i = 0;
     let j = 0;
-    for (var a = data[0]['month']; a < data[0]['month'] + 12; a++) {
 
+    for (var a = data[0]['month']; a < data[0]['month'] + 12; a++) {
+      let count = 0;
       if (a <= 12) {
         i = a;
       } else { i = a - 12 }
 
-      let count = 0;
+      
 
       if (data[j]['month'] == i) {
-
-        count = data[j]['customerCount'];
+        
+        count += data[j]['customerCount'];
+       
         if (j + 1 < data.length) {
           j++;
         }
@@ -536,8 +550,8 @@ handleClose = () => {
                   <h3 className="card-category">Stock Content</h3>
                   <CardTitle tag="h4">
                     {/* <i className="tim-icons icon-delivery-fast text-primary" />{" "} */}
-                    <p> Selling value: {this.state.stockTotal.saleValue} L.L</p>
-                    <p> Cost value: {this.state.stockTotal.costValue} L.L</p>
+                   <Row><Col> <p style={{fontSize:"15px"}}> Selling value:</p></Col><Col> <p>{this.state.stockTotal.saleValue>0?this.state.stockTotal.saleValue.toLocaleString():"0"} L.L</p></Col></Row>
+                   <Row><Col> <p style={{fontSize:"15px"}}> Cost value: </p></Col><Col> <p>{this.state.stockTotal.costValue>0?this.state.stockTotal.costValue.toLocaleString():"0"} L.L</p></Col></Row>
 
                   </CardTitle>
                 </CardHeader>

@@ -35,8 +35,8 @@ const Verify = (props) => {
         <div className="row justify-content-center">
 
                 <div style={{color:"#ffffff",marginTop:"200px"}}className="col-xl-10 col-lg-12 col-md-9">
-           <h3> A verification link was sent to your email </h3> <br/>
-           <h3> Please Verify your email to benifit from our services :)</h3>
+           <h3> A verification link was sent to your email. </h3> <br/>
+           <h3> Please Verify your email to benefit from our services :)</h3>
                          
             </div>
 

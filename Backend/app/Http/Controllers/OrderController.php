@@ -58,7 +58,7 @@ class OrderController extends Controller
     if ($request->qty < $request->qty_ordered) {
       Order::where("id", $request->oId)->update(['qty_ordered' => $request->qty_ordered - $request->qty]);
     }elseif ($request->qty === $request->qty_ordered) {
-      Order::where("id", $request->oId)->update(['status' => true]);
+      Order::where("id", $request->oId)->update(['status' => "1"]);
     }
 
     Sale::insert([

@@ -46,7 +46,7 @@ class VerifyEmail extends Notification
         return (new MailMessage)
                     ->from("targetMetric@gmail.com")
                     ->line('Your email was registered in our Platform 
-                    if this was you press verify else just disregard this email')
+                    if this was you press verify, else just disregard this email.')
                     ->action('Verify Email', url("/verify"))
                     ->line('Thank you for using our application!');
     }

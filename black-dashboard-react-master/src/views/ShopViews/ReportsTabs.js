@@ -110,7 +110,13 @@ export default function ReportsTabs(props) {
             suggestedMin: 60,
             suggestedMax: 125,
             padding: 20,
-            fontColor: "#9a9a9a"
+            fontColor: "#9a9a9a",
+            userCallback: function(value, index, values) {
+              value = value.toString();
+              value = value.split(/(?=(?:...)*$)/);
+              value = value.join(',');
+              return value;
+          },
           }
         }
       ],
@@ -479,8 +485,8 @@ export default function ReportsTabs(props) {
                                 {debtsFilter.map((debt) => {
                                     return (
                                         <tr className="text-center" onClick={(e) => { setName(debt.customer); setRecieved(-debt.debtValue); fetchCustomerDebts(debt.customer); setValue(2) }}>
-                                            <td>{debt.customer}</td>
-                                            <td>{debt.debtValue}</td>
+                                            <td>{debt.customer.toLocaleString()}</td>
+                                            <td>{debt.debtValue.toLocaleString()}</td>
                                         </tr>
                                     )
                                 })}
@@ -511,7 +517,7 @@ export default function ReportsTabs(props) {
                             <Col>
                                 <Paper className="text-center" elevation={3}>
                                     <h4 style={{fontFamily:"timesnewroman", color: "#676c7d", fontWeight: "bolder" }}> Change <br />
-                                        {recieved}
+                                        {recieved.toLocaleString()}
                                     </h4>
 
 
@@ -532,9 +538,9 @@ export default function ReportsTabs(props) {
                                 {customerDebts2.map((debt) => {
                                     return (
                                         <tr key={debt.id} className="text-center" >
-                                            <td>{debt.total}</td>
-                                            <td>{debt.amountRecieved}</td>
-                                            <td>{debt.total - debt.amountRecieved}</td>
+                                            <td>{debt.total.toLocaleString()}</td>
+                                            <td>{debt.amountRecieved.toLocaleString()}</td>
+                                            <td>{(debt.total - debt.amountRecieved).toLocaleString()}</td>
                                             <td>{moment(debt.created_at).format("LLL")}</td>
                                         </tr>
                                     )

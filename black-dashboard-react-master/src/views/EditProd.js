@@ -30,11 +30,11 @@ export default function ViewProd(props) {
   const [open, setOpen] = React.useState(false);
   const [image, setImage] = React.useState();
 
- function editProductPic () {
-  
+ const editProductPic=()=>{
+   
     const fd = new FormData();
     fd.append('image', image);
-    fd.append("prod_id",props.product.id)
+    fd.append("prod_id",props.product.id+1)
       if (sessionStorage.getItem('loggedIn')) {
         apiClient.post('/api/editProductPic', fd)
             .then(()=>{props.onImageUpdate();})
@@ -108,11 +108,19 @@ export default function ViewProd(props) {
             <Row>
 
               <Col>
-                      <p>selling Price: {props.product.price}</p>
+                      <p>selling Price: {props.product.price.toLocaleString()}</p>
                       <hr />
               </Col>
               <Col>
                       <p>Available Qty: {props.product.qty}</p>
+                      <hr />
+                    </Col>
+                    <Col>
+                      
+                      <p>Qty Sold: {props.sold.map((qty) => {
+                        return(
+                      props.product.id==qty.prodId?qty.totSoldQty.toLocaleString() +"pcs":<></>
+                      )})} </p>
                       <hr />
                     </Col>
                    
@@ -137,7 +145,7 @@ export default function ViewProd(props) {
             Cancel
           </Button>
           <Button onClick={handleSubmit} color="info">
-            Upload image
+            Save Image
           </Button>
         </DialogActions>
       </Dialog> 

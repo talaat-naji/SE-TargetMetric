@@ -25,14 +25,16 @@ class Products extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      products:[]
+      products: [],
+      prodSold:[],
     };
   }
   fetchProducts = () => {
     if (sessionStorage.getItem('loggedIn')) {
       apiClient.get('../api/myProducts')
           .then(response => {
-              this.setState({ products: response.data })
+            this.setState({ products: response.data[0] })
+            this.setState({ prodSold: response.data[1] })
           })
           .catch(error => console.error(error))
 
@@ -61,23 +63,18 @@ class Products extends React.Component {
                 </CardHeader>
                 <CardBody className="all-icons">
                   
-                    {this.state.products.map((product) => {
-                      return (
-                        // product.products.map((prod) => {
-                        
-                        //   return (
-                        //     <Col
-                        //       className="font-icon-list"
-                        //       lg="4.5"
-                        //       md="6"
-                        //       sm="9"
-                        // >
+                  
+                  {this.state.products.map((product) => {
+                      
+                  
+                    return (
+                      
+                        <>
                           
-                             <>
-                              <ViewProd onImageUpdate={this.handleEditProduct} product={product} onEditProduct={this.handleEditProduct} />
-                        
-                          </>
-                          );
+                            <ViewProd onImageUpdate={this.handleEditProduct} product={product} sold={this.state.prodSold} onEditProduct={this.handleEditProduct} />
+                            
+                        </>
+                      )
                         // }));
                     })}
                    

@@ -126,8 +126,8 @@ export default function AutoOrder(props) {
                                         <td>{order.barcode} </td>
                                         <td>{order.description}</td>
                                         <td><Input defaultValue={order.qty} onChange={(e) => { editQty(order.barcode, e.target.value); }} /></td>
-                                        <td>{order.cost}</td>
-                                        <td>{order.total}</td>
+                                        <td>{order.cost.toLocaleString()}</td>
+                                        <td>{order.total.toLocaleString()}</td>
 
 
                                     </tr>

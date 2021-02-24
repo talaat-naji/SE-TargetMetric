@@ -22,7 +22,7 @@ class CreateOrdersTable extends Migration
 
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->double('qty_ordered');
-            $table->boolean('status');
+            $table->enum("status",["0","1","recieved"]);
             $table->double("lat");
             $table->double("lng");
             $table->timestamps();

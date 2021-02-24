@@ -70,9 +70,9 @@ export default function CustomerTable(props) {
                         }>
                       <tr style={{ cursor: 'pointer'}} onClick={() => { handleClickOpen(customer.shop_id,customer.name) }}>
                         <td ><Row><Col xs="auto"><img className="avatar" src={customer.profile_url}/></Col><Col>{customer.name}</Col></Row></td>
-                        <td>{customer.govName}</td>
-                        <td>{customer.distName}</td>
-                        <td className="text-center">{customer.total} L.L</td>
+                        <td>{customer.govName!=null?customer.govName:"--"}</td>
+                        <td>{customer.distName!=null?customer.distName:"--"}</td>
+                        <td className="text-center">{customer.total.toLocaleString()} L.L</td>
                           </tr>
                           </HtmlTooltip>);
                     })}

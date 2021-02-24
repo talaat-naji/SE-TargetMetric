@@ -99,7 +99,7 @@ export default function ShopStock(props) {
     }
     return (
         <div className="content">
-            <Row><Col>
+            {/* <Row><Col>
                 <TextField
                     InputProps={{ className: classes.textField }}
                     InputLabelProps={{ className: classes.textField }}
@@ -132,7 +132,7 @@ export default function ShopStock(props) {
                 />
                 <Button onClick={addToStock} color="info">add</Button>
             </Col>
-            </Row>
+            </Row> */}
             <Row>
 
                 <Col md="12">
@@ -162,9 +162,9 @@ export default function ShopStock(props) {
                                             <Card>
                                                 {prod.pic_path != "" ? <CardImg
                                                     top style={{ width: "100%", height: "40%" }}
-                                                    src="/img/095333-unnamed.png" /> : <CardImg
+                                                    src="/img/212412-unnamed.png" /> : <CardImg
                                                         top style={{ width: "100%", height: "40%" }}
-                                                        src="/img/095333-unnamed.png" />}
+                                                        src="/img/212412-unnamed.png" />}
 
                                             </Card>
                                         </Col>

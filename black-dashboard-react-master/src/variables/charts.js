@@ -220,7 +220,13 @@ let chartExample3 = {
             suggestedMin: 60,
             suggestedMax: 120,
             padding: 20,
-            fontColor: "#9e9e9e"
+            fontColor: "#9e9e9e",
+            userCallback: function(value, index, values) {
+              value = value.toString();
+              value = value.split(/(?=(?:...)*$)/);
+              value = value.join(',');
+              return value;
+          },
           }
         }
       ],

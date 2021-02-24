@@ -135,7 +135,7 @@ class ProductList extends React.Component {
                                 <td>{product.name}</td>
                                 <td>{product.description}</td>
                                 <td>{product.retailer.name}</td>
-                                <td>{product.price}</td>
+                                <td>{product.price.toLocaleString()}</td>
                                 <td><ProductOrder product={product} retailer_id={product.retailer.id}/></td>
 
                               </tr>

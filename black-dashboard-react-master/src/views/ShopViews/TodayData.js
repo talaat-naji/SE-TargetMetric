@@ -75,6 +75,7 @@ function TodayData() {
 
 
     const fetchProds = () => {
+        
         if (sessionStorage.getItem('loggedIn')) {
 
             apiClient.get('../api/getTodaySales')
@@ -95,7 +96,7 @@ function TodayData() {
         <>
             {/* <div className="content"> */}
 
-            <Button color="info" onClick={handleClickOpen} style={{ height: '175px', width: "95%", fontWeight: "bolder", fontSize: "22px" }}><i className="tim-icons icon-money-coins"/> Today Sales</Button>
+            <Button color="info" onClick={handleClickOpen} style={{ height: '175px', width: "95%", fontWeight: "bolder", fontSize: "22px" }}><i className="tim-icons icon-money-coins"/> Today's Sales</Button>
 
             <Dialog open={open} fullWidth={true} onClose={handleClose} aria-labelledby="form-dialog-title" >
                 <DialogTitle id="form-dialog-title"><p style={{ color: 'black' }}>Daily Results</p></DialogTitle>
@@ -103,14 +104,14 @@ function TodayData() {
                     <Row><Col>
                         <Paper className="text-center" elevation={3} >
                             <br /><h4 style={{ color: "black", fontWeight: "bolder" }}> Total Sales <br />
-                                {totalSales}
+                                {totalSales.toLocaleString()} L.L
                             </h4>
                             <hr />
                         </Paper>
                     </Col> <Col>
                             <Paper className="text-center" elevation={3} >
                                 <br /><h4 style={{ color: "black", fontWeight: "bolder" }}> Total Credit Sales <br />
-                                    {totalCredit}
+                                    {totalCredit>0?totalCredit.toLocaleString():"0"} L.L
                                 </h4>
                                 <hr />
                             </Paper>
@@ -120,7 +121,7 @@ function TodayData() {
                         <Paper className="text-center" elevation={3} >
 
                             <br /><h4 style={{ color: color, fontWeight: "bolder" }}> Total Cash Sales <br />
-                                {totalSales - totalCredit}
+                                {(totalSales - totalCredit).toLocaleString()} L.L
                             </h4>
                             <hr />
                         </Paper>
@@ -128,7 +129,7 @@ function TodayData() {
                             <Paper className="text-center" elevation={3} >
 
                                 <br /><h4 style={{ color: color2, fontWeight: "bolder" }}> Total Profit <br />
-                                    {profit}
+                                    {profit.toLocaleString()} L.L
                                 </h4>
                                 <hr />
                             </Paper>

@@ -49,6 +49,7 @@ import TodayData from "./TodayData";
 import Stock from "./StockManagment";
 import ReportsTabs from "./ReportsTabs";
 import Button2 from '@material-ui/core/Button';
+import Fieldset, { withFieldset, withFullName } from 'react-fieldset';
 
 function PosMain() {
     const [open, setOpen] = React.useState(false);
@@ -57,7 +58,7 @@ function PosMain() {
     const [open3, setOpen3] = React.useState(false); //add products that dont have barcode
     const [open4, setOpen4] = React.useState(false); //reports
     const [total, setTotal] = React.useState(0); //invoice total
-    const [recieved, setRecieved] = React.useState(); //money recieved
+    const [recieved, setRecieved] = React.useState(0); //money recieved
     const [cost, setCost] = React.useState(0); //invoice total
     const [totalCost, setTotalCost] = React.useState(0);
     const [price, setPrice] = React.useState(0);
@@ -172,7 +173,9 @@ function PosMain() {
           fontSize: theme.typography.pxToRem(12),
           border: '1px solid #dadde9',
         },
-      }))(Tooltip);
+    }))(Tooltip);
+    
+//    const Field = withFieldset(Field);
     return (
         <>
             <div className="content">
@@ -182,7 +185,7 @@ function PosMain() {
                         <HtmlTooltip placement="top"
                             title={
                                 <React.Fragment>
-                                    <Typography color="inherit">Register all your customers sales invoices </Typography>
+                                    <Typography color="inherit">Register your sales and debts. </Typography>
 
                                 </React.Fragment>
                             }>
@@ -198,7 +201,7 @@ function PosMain() {
                     <HtmlTooltip placement="bottom"
                             title={
                                 <React.Fragment>
-                                    <Typography color="inherit">View your sales and profits and your customers unpaid invoices </Typography>
+                                    <Typography color="inherit">View your sales and profits and your customer's unpaid invoices </Typography>
 
                                 </React.Fragment>
                             }>
@@ -229,7 +232,7 @@ function PosMain() {
                 <Dialog open={open2} onClose={handleClose2} aria-labelledby="form-dialog-title" >
                     <DialogTitle id="form-dialog-title">Unpaid Invoice</DialogTitle>
                     <DialogContent>
-                        The costomer didnt pay all the invoice please enter customer name to save it to unpaid invoices:<br />
+                    The customer didn't pay all the invoice please enter the customer name to save it to unpaid invoices:<br />
                         <TextField label="customer Name" onChange={(e) => setCustomer(e.target.value)} />
                     </DialogContent>
                     <DialogActions>
@@ -248,8 +251,8 @@ function PosMain() {
                         <TextField label="Product Price" onChange={(e) => setPrice(e.target.value)} />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => setOpen3(false)}>cancel</Button>
-                        <Button onClick={addProd}>save</Button>
+                        <Button color="danger" onClick={() => setOpen3(false)}>cancel</Button>
+                        <Button color="info" onClick={addProd}>save</Button>
                     </DialogActions>
                 </Dialog>
 
@@ -257,12 +260,12 @@ function PosMain() {
                     {/* <DialogTitle id="form-dialog-title">
                         <Button onClick={handleClose}><i className="tim-icons icon-minimal-left" /></Button>
                     </DialogTitle> */}
-                    <DialogContent style={{ backgroundColor: "#f5f6fa" }}>
+                    <DialogContent style={{ backgroundColor: "#b0b2bb" }}>
 
                         <Row>
 
                             <Col md="8">
-                                <Card style={{ backgroundColor: "#ffffff", color: "black", fontSize: "10px" }}>
+                                <Card style={{ backgroundColor: "whitesmoke", color: "black", fontSize: "10px" }}>
                                     <CardBody>
                                         <Row>
                                             <ItemTable onAddProd={(e, c) => { setTotal(e); setTotalCost(c) }} onAdd={(e) => { setProductList(e) }} clear={productList} />
@@ -276,25 +279,25 @@ function PosMain() {
 
                             <Col>
 
-                                <Card style={{ backgroundColor: "#a4a6b0d6" }}>
+                                <Card style={{ backgroundColor: "whitesmoke" }}>{/*#a4a6b0d6*/}
                                     <CardBody>
                                         <Row>
                                             <Col>
 
                                                 <Paper className="text-center" elevation={3} >
                                                     <br />
-                                                    <h4 style={{ color: "#1e1e24", fontWeight: "bolder", fontFamily: "timesnewroman" }}>Invoice Total <br />{total}</h4>
+                                                    <h4 style={{ color: "#1e1e24", fontWeight: "bolder", fontFamily: "timesnewroman" }}>Invoice Total <br />{total.toLocaleString()} L.L</h4>
                                                     <hr />
                                                 </Paper>
                                             </Col>
                                             <Col>
 
                                                 <Paper className="text-center" elevation={3} >
-                                                    {recieved - total < 0 ? <> <br /><h4 style={{ color: "red", fontWeight: "bolder" }}> Change  <br />
-                                                        {recieved - total}
+                                                    {recieved - total < 0 ? <> <br /><h4 style={{ color: "red", fontWeight: "bolder", fontFamily: "timesnewroman" }}> Change  <br />
+                                                        {(recieved - total).toLocaleString()} L.L
                                                     </h4>
                                                         <hr /> </> :
-                                                        <><br /><h4 style={{ color: "green", fontWeight: "bolder", fontFamily: "timesnewroman" }}>Change  <br />{recieved - total} </h4>
+                                                        <><br /><h4 style={{ color: "green", fontWeight: "bolder", fontFamily: "timesnewroman" }}>Change  <br />{(recieved - total).toLocaleString()} L.L</h4>
                                                             <hr /></>}
                                                 </Paper>
                                             </Col>
@@ -305,7 +308,7 @@ function PosMain() {
 
                                                 <Paper className="text-center" elevation={3} >
                                                     <h4 style={{ color: "#1e1e24", fontWeight: "bolder", fontFamily: "timesnewroman" }}>Amount Recieved </h4>
-                                                    <Input placeholder="Enter Customer Payment" style={{ color: "#1e1e24", borderColor: "transparent" }} value={recieved} onChange={(e) => { setRecieved(e.target.value) }} />
+                                                    <Input placeholder="Enter Customer Payment in L.L" style={{ color: "#1e1e24", borderColor: "transparent" }} onChange={(e) => { setRecieved(e.target.value) }} />
                                                 </Paper>
                                             </Col>
                                         </Row> <Row>
@@ -328,10 +331,15 @@ function PosMain() {
 
                         </Row>
 
-
-                        <Card>
-                            <h4 style={{ fontFamily: "timesnewroman" }}>BarcodeLess products :</h4>
-                            <CardBody>
+                        
+                        
+                        <Card style={{ backgroundColor: "whitesmoke" }}>
+                        
+                            {/* <h4 style={{ fontFamily: "timesnewroman" }}>BarcodeLess products :</h4> */}
+                          
+                    
+                            <CardBody >
+                            <legend > <h4 style={{ fontFamily: "timesnewroman" }}>BarcodeLess products :</h4> </legend>
                                 <Row style={{ marginLeft: "10px" }}>
 
                                     <Col >
@@ -350,7 +358,7 @@ function PosMain() {
                                                 </Button>
                                             )
                                         })}
-                                        {favProds.length < 17 ? <Button color="info" onClick={(e) => { setOpen3(true) }} id="11" style={{
+                                        {favProds.length <= 17 ? <Button color="info" onClick={(e) => { setOpen3(true) }} id="11" style={{
                                             width: "80px",
                                             height: "80px",
                                             background: "primary",
@@ -361,12 +369,12 @@ function PosMain() {
                                             alignItems: "center",
                                             padding: 0,
                                         }}><i className="tim-icons icon-simple-add" style={{ fontSize: "25px", fontWeight: "bolder", color: "powderblue" }} /></Button> : <></>}
-                                    </Col><Col md="auto">
-                                        {/* <Button onClick={handleClose} style={{
-                                            justifyContent: "center",
-                                            alignItems: "center", fontSize: "18px", float: "right", height: '160Px', width: "30px", color: "red", fontWeight: "bolder"
-                                        }}></Button> */}
-                                        <img onClick={handleClose} style={{ width: "130px", height: "160px" }} src={require("../../assets/img/exit1.png")} />
+                                    </Col><Col md="1">
+                                        <Button color="danger" onClick={handleClose} style={{
+                                           marginRight:"20px",
+                                           float: "right", height: '160Px', width: "30px", alignItems: "center",
+                                        }}><p style={{ fontSize: "17px",fontWeight: "bolder",justifyContent: "center",color:"#ffffff"}}>E<br/>x<br/>i<br/>t</p></Button>
+                                        {/* <img onClick={handleClose} style={{ width: "130px", height: "160px" }} src={require("../../assets/img/exit2.png")} /> */}
                                     </Col>
 
                                 </Row>
@@ -376,7 +384,10 @@ E<br />X<br /> I<br />T
                             </Col>
 
                                 </Row> */}
-                            </CardBody></Card>
+                                </CardBody>
+                              
+                                </Card>
+                               
                     </DialogContent>
 
                 </Dialog>

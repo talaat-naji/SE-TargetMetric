@@ -47,6 +47,7 @@ export default function RetailerTabs(props) {
     const [lastPage, setLastPage] = React.useState();
     const [pageNb, setPageNb] = React.useState(1);
     const [products, setProducts] = React.useState([]);
+    let i = 0;
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -107,10 +108,12 @@ export default function RetailerTabs(props) {
                         <CardBody className="all-icons">
 
                             {products.map((prod) => {
+                                
+                                i++;
 
-
-                                return (
-                                    <Row>
+                                return (<>
+                                    <hr/>
+                                    <Row >
 
                                         <Col
                                             className="font-icon-list col-xs-auto col-xs-auto"
@@ -132,7 +135,7 @@ export default function RetailerTabs(props) {
 
                                             </Card>
                                         </Col>
-                                        <Col>
+                                        <Col className="font-icon-list col-xs-auto col-xs-auto">
                                             <Card>
                                                 <CardHeader tag="h4">
                                                     {prod.name}
@@ -141,8 +144,13 @@ export default function RetailerTabs(props) {
                                                     <Row>
 
                                                         <Col>
-                                                            <p>Price: {prod.price}</p>
+                                                            <p>Price: {prod.price.toLocaleString()} L.L</p>
                                                             <Typography color="inherit">{prod.description}</Typography>
+                                                        </Col>
+                                                        <Col md="auto">
+                                                            <Typography color="inherit">Prod. Date: {i+4}/{i}/2020 <br/>
+                                                            Exp. Date:   {i+2}/{i}/2021
+                                                            </Typography>
                                                         </Col>
                                                         <Col>
                                                             <ProductOrder product={prod} retailer_id={props.retailer.id} />
@@ -153,8 +161,9 @@ export default function RetailerTabs(props) {
                                             {/* </div> */}
 
                                         </Col>
-
+                                       
                                     </Row>
+                                    </>
                                 );
 
                             })}
